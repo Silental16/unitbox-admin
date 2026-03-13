@@ -4,8 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   Building2Icon,
-  LayoutDashboardIcon,
-  SettingsIcon,
+  EyeIcon,
   SunIcon,
   MoonIcon,
 } from "lucide-react"
@@ -26,19 +25,14 @@ import {
 
 const navItems = [
   {
-    title: "Overview",
-    href: "/overview",
-    icon: LayoutDashboardIcon,
-  },
-  {
     title: "Developers",
     href: "/developers",
     icon: Building2Icon,
   },
   {
-    title: "Settings",
-    href: "/settings-dashboard",
-    icon: SettingsIcon,
+    title: "Preview",
+    href: "/preview",
+    icon: EyeIcon,
   },
 ]
 
