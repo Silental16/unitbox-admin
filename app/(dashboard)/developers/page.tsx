@@ -1,0 +1,122 @@
+"use client"
+
+import { useState, useMemo } from "react"
+import { developers } from "@/lib/data/developers"
+import type { Developer } from "@/lib/data/developers"
+import { calculateIcpScore } from "@/lib/data/scoring"
+import {
+  FilterBar,
+  type OriginFilter,
+  type AgentFilter,
+  type ScaleFilter,
+  type SortOption,
+} from "@/components/developers/filter-bar"
+import { DevelopersTable } from "@/components/developers/developers-table"
+import { DeveloperSheet } from "@/components/developers/developer-sheet"
+
+export default function DevelopersPage() {
+  const [search, setSearch] = useState("")
+  const [origin, setOrigin] = useState<OriginFilter>("all")
+  const [agent, setAgent] = useState<AgentFilter>("all")
+  const [scale, setScale] = useState<ScaleFilter>("all")
+  const [sort, setSort] = useState<SortOption>("activeUnits")
+  const [selectedDeveloper, setSelectedDeveloper] = useState<Developer | null>(
+    null
+  )
+  const [sheetOpen, setSheetOpen] = useState(false)
+
+  const filteredDevelopers = useMemo(() => {
+    let result = [...developers]
+
+    if (search) {
+      const q = search.toLowerCase()
+      result = result.filter(
+        (d) =>
+          d.name.toLowerCase().includes(q) ||
+          d.founder.toLowerCase().includes(q) ||
+          d.origin.toLowerCase().includes(q) ||
+          d.projectList.some((p) => p.name.toLowerCase().includes(q))
+      )
+    }
+
+    if (origin !== "all") {
+      result = result.filter((d) => d.originTag === origin)
+    }
+
+    if (agent === "has-agent") {
+      result = result.filter((d) => d.hasAgent)
+    } else if (agent === "no-agent") {
+      result = result.filter((d) => !d.hasAgent)
+    }
+
+    if (scale === "large") {
+      result = result.filter((d) => d.activeUnits >= 100)
+    } else if (scale === "medium") {
+      result = result.filter(
+        (d) => d.activeUnits >= 20 && d.activeUnits < 100
+      )
+    } else if (scale === "small") {
+      result = result.filter((d) => d.activeUnits < 20)
+    }
+
+    result.sort((a, b) => {
+      switch (sort) {
+        case "activeUnits":
+          return b.activeUnits - a.activeUnits
+        case "icpScore":
+          return calculateIcpScore(b) - calculateIcpScore(a)
+        case "name":
+          return a.name.localeCompare(b.name)
+        case "projects":
+          return b.projects - a.projects
+        default:
+          return 0
+      }
+    })
+
+    return result
+  }, [search, origin, agent, scale, sort])
+
+  function handleSelectDeveloper(developer: Developer) {
+    setSelectedDeveloper(developer)
+    setSheetOpen(true)
+  }
+
+  return (
+    <div className="flex flex-col gap-6 p-6">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          Bali Developers
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          {developers.length} developers in BD pipeline. Sorted by
+          active construction scale.
+        </p>
+      </div>
+
+      <FilterBar
+        search={search}
+        onSearchChange={setSearch}
+        origin={origin}
+        onOriginChange={setOrigin}
+        agent={agent}
+        onAgentChange={setAgent}
+        scale={scale}
+        onScaleChange={setScale}
+      />
+
+      <DevelopersTable
+        developers={filteredDevelopers}
+        sort={sort}
+        onSortChange={setSort}
+        onSelectDeveloper={handleSelectDeveloper}
+      />
+
+      <DeveloperSheet
+        developer={selectedDeveloper}
+        open={sheetOpen}
+        onOpenChange={setSheetOpen}
+      />
+    </div>
+  )
+}
