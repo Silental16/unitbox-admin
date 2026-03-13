@@ -83,27 +83,6 @@ export const developers: Developer[] = [
     pitch: "Enterprise-level: 216 branded residences with Anantara Hotels, opening 2027. Won multiple international awards. Direct-sales only — chess board for 216 units + agent distribution across Asia/Europe."
   },
   {
-    name: "Nuanu Creative City",
-    origin: "Russia", originTag: "ru",
-    founder: "Sergey Solonin (QIWI co-founder, $10B+ fintech)",
-    website: "nuanu.com", instagram: "@nuanucreativecity",
-    whatsapp: "", email: "",
-    projects: 18, activeProjects: 7, activeUnits: 200,
-    priceRange: "$150K — multi-million", hasAgent: false, aum: "$100M+ invested", isNew: true,
-    projectList: [
-      {name:"OXO The Residences",location:"Nyanyi",type:"Villas",units:"40",price:"From $500K",status:"construction"},
-      {name:"Ecoverse Residences",location:"Nyanyi",type:"Apartments + Townhouses",units:"49",price:"$150K-$400K",status:"construction"},
-      {name:"Flower Estates",location:"Nyanyi",type:"Villas",units:"28",price:"N/A",status:"construction"},
-      {name:"The Collection Vol.1",location:"Nyanyi",type:"Villas",units:"10+",price:"$300K+",status:"construction"},
-      {name:"The Collection Vol.3",location:"Nyanyi",type:"4+1BR Villas",units:"5",price:"$500K+",status:"construction"},
-      {name:"OXO The Pavilions",location:"Nyanyi",type:"Mixed",units:"TBD",price:"N/A",status:"construction"},
-      {name:"BIOM Residences",location:"Nyanyi",type:"Apartments",units:"50+",price:"From $150K",status:"offplan"},
-      {name:"Commercial/lifestyle venues",location:"44ha master plan",type:"Mixed (school, galleries, wellness)",units:"N/A",price:"N/A",status:"construction"}
-    ],
-    contacts: {website:"https://nuanu.com",instagram:"https://instagram.com/nuanucreativecity"},
-    pitch: "Massive 44-hectare master community, $100M+ invested, 7 residential projects under construction. 400+ units target by 2027. Enterprise-level platform opportunity for unit-level cataloging."
-  },
-  {
     name: "Pertama Property",
     origin: "France", originTag: "eu",
     founder: "CEO Anisse Bouzidi (French)",
@@ -134,41 +113,6 @@ export const developers: Developer[] = [
     ],
     contacts: {website:"https://sansaradevelopment.com",instagram:"https://instagram.com/pandawa_residence",whatsapp:"+62 822 3537 2572",telegram:"@DenisEcolit"},
     pitch: "155 units in flagship mixed-use project (nearing completion). Has agent page but NO digital tools. Needs chess board for 155 units + agent catalog. Transitioning to multi-project developer brand."
-  },
-  {
-    name: "OXO Living",
-    origin: "Austria/UK", originTag: "eu",
-    founder: "Johannes Weissenbaeck (Austrian, 25+ years)",
-    website: "oxoliving.com", instagram: "@oxoliving",
-    whatsapp: "", email: "",
-    projects: 30, activeProjects: 3, activeUnits: 130,
-    priceRange: "From $500K", hasAgent: false, aum: "$43M (IDR 700B)", isNew: true,
-    projectList: [
-      {name:"OXO The Residences",location:"Nyanyi",type:"Villas",units:"40 (sold out day 1)",price:"From $500K",status:"construction"},
-      {name:"Ecoverse (with Nuanu)",location:"Nyanyi",type:"Apartments + Townhouses",units:"49",price:"$200K-$400K",status:"construction"},
-      {name:"OXO The Pavilions",location:"Nyanyi/Nuanu",type:"Mixed",units:"40+",price:"N/A",status:"construction"},
-      {name:"Five Oceans Residence (certified)",location:"Berawa",type:"Villas",units:"44",price:"$500K+",status:"construction"},
-      {name:"25+ managed properties",location:"Various Bali",type:"Villas, coworking, resorts",units:"150+",price:"$500K+",status:"completed"}
-    ],
-    contacts: {website:"https://oxoliving.com",instagram:"https://instagram.com/oxoliving"},
-    pitch: "Premium brand, $43M portfolio. 3 projects under construction + certification partner for more. Sold out in 1 day. Complex multi-property portfolio needs professional catalog tool."
-  },
-  {
-    name: "Sunny Development Group",
-    origin: "Ukraine/Moldova", originTag: "ru",
-    founder: "Igor Grosu & Viktoria Halitska (13+ years, 6 countries)",
-    website: "sunnydg.com", instagram: "@sunny.development",
-    whatsapp: "", email: "",
-    projects: 4, activeProjects: 3, activeUnits: 136,
-    priceRange: "$200K — $500K", hasAgent: false, aum: "1M sqm built across 6 countries", isNew: true,
-    projectList: [
-      {name:"LUMA Biohacking Resort",location:"Uluwatu",type:"Resort + Villas",units:"63",price:"$250K-$500K",status:"construction"},
-      {name:"Sunny Family Ubud",location:"Ubud",type:"Apartments",units:"33",price:"$150K-$300K",status:"offplan"},
-      {name:"Amara Wedding Resort",location:"Amed",type:"Resort (14 villas + 26 apts)",units:"40",price:"$200K-$400K",status:"construction"},
-      {name:"Completed: Muse, Nine, Aparts, Cuddles, etc.",location:"Various",type:"Mixed",units:"170+",price:"Various",status:"completed"}
-    ],
-    contacts: {website:"https://sunnydg.com",instagram:"https://instagram.com/sunny.development"},
-    pitch: "Large international operation (6 countries, 1M sqm), 100% completion rate. 3 active Bali projects + expanding to Phuket (297 units). Multi-market platform opportunity."
   },
   {
     name: "Conlex Group",
@@ -240,37 +184,6 @@ export const developers: Developer[] = [
     pitch: "Boutique villa builder — many small projects, NOT large complexes. SSL expired on site. Needs digital infrastructure. 20K IG followers = has audience but no tools."
   },
   {
-    name: "BAZA Development",
-    origin: "Russia", originTag: "ru",
-    founder: "Russian founders, Nuanu ecosystem",
-    website: "balibaza.com", instagram: "@balibaza.eng",
-    whatsapp: "", email: "",
-    projects: 4, activeProjects: 2, activeUnits: 88,
-    priceRange: "$150K — $400K", hasAgent: true, aum: "", isNew: false,
-    projectList: [
-      {name:"BAZA Nyanyi",location:"Nyanyi/Nuanu",type:"Villa Complex",units:"30+",price:"$200K-$400K",status:"construction"},
-      {name:"BAZA active project",location:"Various",type:"Villas",units:"28+",price:"$150K-$350K",status:"construction"},
-      {name:"Completed",location:"Pererenan + others",type:"Villas",units:"30+",price:"$150K-$300K",status:"completed"}
-    ],
-    contacts: {website:"https://balibaza.com",instagram:"https://instagram.com/balibaza.eng"},
-    pitch: "Structured agent program (7-13% commission), Telegram channel, Drive materials. Already invested in agent distribution — Unitbox digitizes and scales it."
-  },
-  {
-    name: "ARCHESTET",
-    origin: "CIS", originTag: "ru",
-    founder: "5 international offices",
-    website: "archestet.com", instagram: "@archestet",
-    whatsapp: "", email: "",
-    projects: 2, activeProjects: 2, activeUnits: 83,
-    priceRange: "$200K — $600K", hasAgent: false, aum: "", isNew: false,
-    projectList: [
-      {name:"White Palm",location:"Canggu",type:"Apartment Complex",units:"75",price:"$200K-$400K",status:"construction"},
-      {name:"ARCHESTET Villas",location:"Uluwatu",type:"Villas",units:"8",price:"$300K-$600K",status:"construction"}
-    ],
-    contacts: {website:"https://archestet.com",instagram:"https://instagram.com/archestet"},
-    pitch: "White Palm (75-unit apartment complex) — exactly the type needing chess board. 5 international offices = centralized agent tools essential."
-  },
-  {
     name: "Kanaan Land",
     origin: "Indonesia/International", originTag: "int",
     founder: "Operating since 2009",
@@ -334,21 +247,6 @@ export const developers: Developer[] = [
     pitch: "1M Instagram followers, 62 staff, huge brand awareness but no agent channel. Unitbox opens a structured distribution network."
   },
   {
-    name: "Bali Investments",
-    origin: "Russia", originTag: "ru",
-    founder: "Felix Demin",
-    website: "", instagram: "",
-    whatsapp: "", email: "",
-    projects: 6, activeProjects: 2, activeUnits: 53,
-    priceRange: "$150K — $500K", hasAgent: true, aum: "", isNew: false,
-    projectList: [
-      {name:"Active projects",location:"Various",type:"Villas",units:"38+",price:"$150K-$500K",status:"construction"},
-      {name:"Green Flow Villas (LEGAL ISSUE)",location:"Canggu",type:"Villa Complex",units:"15",price:"$200K-$400K",status:"completed"}
-    ],
-    contacts: {},
-    pitch: "Has investor portal but Green Flow Villas sealed by authorities (June 2025). Website domain for sale. APPROACH WITH CAUTION — verify legal status first."
-  },
-  {
     name: "Lyvin Properties",
     origin: "Russia", originTag: "ru",
     founder: "Alexander & Victoria Sokovykh (11 years in Bali)",
@@ -397,21 +295,6 @@ export const developers: Developer[] = [
     ],
     contacts: {website:"https://terataigroup.com",instagram:"https://instagram.com/terataigroup_bali",whatsapp:"+62 812 3860 7787"},
     pitch: "Award-winning (PropertyGuru 2022/2023), freehold SHM on 4ha master site. 5 units left in Teratai Royal. Informal agent channel — Unitbox formalizes it."
-  },
-  {
-    name: "OceaniQ Villas",
-    origin: "Russia", originTag: "ru",
-    founder: "Andrey Khazov (15+ years, CBRE Top 5)",
-    website: "oceaniqvillas.com", instagram: "@oceaniq.villas",
-    whatsapp: "", email: "",
-    projects: 2, activeProjects: 2, activeUnits: 40,
-    priceRange: "Premium luxury", hasAgent: false, aum: "", isNew: true,
-    projectList: [
-      {name:"OceaniQ Nusa Dua",location:"Nusa Dua",type:"Luxury oceanfront villas",units:"20+",price:"Premium",status:"construction"},
-      {name:"OceaniQ Nusa Penida",location:"Nusa Penida",type:"Luxury villas",units:"20+",price:"Premium",status:"offplan"}
-    ],
-    contacts: {website:"https://oceaniqvillas.com",instagram:"https://instagram.com/oceaniq.villas"},
-    pitch: "Won 'Best Development Project in Southeast Asia 2025-2026'. Oscar Hartmann as ambassador. Premium brand needs premium tools. Multi-island expansion."
   },
   {
     name: "Art Villas Bali",
