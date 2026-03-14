@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback, useEffect, useRef } from "react"
-import { CheckIcon, XIcon } from "lucide-react"
+import { CheckIcon, XIcon, ExternalLinkIcon, MapPinIcon, CalendarIcon } from "lucide-react"
 import {
   Sheet,
   SheetContent,
@@ -237,14 +237,41 @@ export function DeveloperSheet({
                     {developer.projectList.map((project, i) => (
                       <TableRow key={i}>
                         <TableCell className="py-2.5">
-                          <div>
-                            <p className="font-medium text-sm">
-                              {project.name}
-                            </p>
-                            <p className="text-xs text-muted-foreground mt-0.5">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-1.5">
+                              <p className="font-medium text-sm">
+                                {project.url ? (
+                                  <a href={project.url} target="_blank" rel="noopener noreferrer" className="hover:underline text-primary">
+                                    {project.name}
+                                  </a>
+                                ) : project.name}
+                              </p>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
                               {project.location} · {project.type}
                               {project.units ? ` · ${project.units}` : ""}
                             </p>
+                            {(project.completion || project.mapUrl) && (
+                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                {project.completion && (
+                                  <span className="inline-flex items-center gap-1">
+                                    <CalendarIcon className="size-3" />
+                                    {project.completion}
+                                  </span>
+                                )}
+                                {project.mapUrl && (
+                                  <a href={project.mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-primary hover:underline">
+                                    <MapPinIcon className="size-3" />
+                                    Map
+                                  </a>
+                                )}
+                              </div>
+                            )}
+                            {project.description && (
+                              <p className="text-xs text-muted-foreground/80 leading-relaxed">
+                                {project.description}
+                              </p>
+                            )}
                           </div>
                         </TableCell>
                         <TableCell className="text-right py-2.5 align-top">
