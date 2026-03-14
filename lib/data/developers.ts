@@ -815,51 +815,69 @@ export const developers: Developer[] = [
   // === New developers from Митюхин Rating ===
   {
     name: "Predmet Construction",
-    origin: "", originTag: "ru",
-    founder: "",
-    website: "", instagram: "",
-    whatsapp: "", email: "",
-    projects: 0, activeProjects: 0, activeUnits: 0,
-    priceRange: "", hasAgent: false, aum: "", isNew: true,
-    projectList: [],
-    contacts: {},
-    pitch: ""
+    origin: "Ukraine", originTag: "ru",
+    founder: "Ivan Shamray & Roman Bogach (Ukrainian, based in Bali since ~2022)",
+    website: "predmet.group", instagram: "@predmet.construction",
+    whatsapp: "+6285122637904", email: "",
+    projects: 5, activeProjects: 3, activeUnits: 127,
+    priceRange: "$89K — $320K", hasAgent: false, aum: "", isNew: false,
+    projectList: [
+      {name:"Predmet Cemagi",location:"Cemagi, Canggu",type:"Apartment",units:"95",price:"From $89K",status:"construction",url:"https://predmet.group/",completion:"Q2 2026",description:"95 fully furnished 1–2BR apartments less than 100m from the ocean in Cemagi, rooftop pool with panoramic views. 30/70 payment plan."},
+      {name:"Predmet Cascade",location:"Ubud area",type:"Villa",units:"16",price:"",status:"offplan",url:"https://predmet.group/cascade",description:"New villa development in the Ubud area emphasizing privacy and nature. Pricing not yet publicly disclosed."},
+      {name:"Predmet KabaKaba Resort",location:"Kabakaba, Tabanan",type:"Resort",units:"16",price:"",status:"completed",url:"https://predmetresort.com/",description:"Operational luxury resort: 5 private-pool villas and 11 premium cottages on a jungle cliff, infinity pool, Bar-Barah."},
+      {name:"Predmet KabaKaba Village",location:"Tabanan (Kaba Kaba)",type:"Villa",units:"15",price:"From $320K",status:"completed",url:"https://predmet.group/kabakabavillage",description:"14 two-bedroom private villas + 1 four-bedroom residence amid rice fields. Full management services."},
+      {name:"Predmet Babakan",location:"Canggu (Babakan)",type:"Villa",units:"15",price:"From $175K",status:"completed",url:"https://predmet.group/babakan",completion:"Q4 2022",description:"15 duplex townhouses with private pools in the heart of Canggu. Completed, available for purchase/rental."}
+    ],
+    contacts: {website:"https://predmet.group",instagram:"https://instagram.com/predmet.construction"},
+    pitch: "Ukrainian-founded boutique developer with 5 projects across Canggu, Tabanan, and Ubud. 95-unit Cemagi launching Q2 2026 + new Ubud project. No digital catalog — Unitbox closes the gap on unit management and investor-facing pages."
   },
   {
     name: "Biom Development",
-    origin: "", originTag: "ru",
-    founder: "",
-    website: "", instagram: "",
-    whatsapp: "", email: "",
-    projects: 0, activeProjects: 0, activeUnits: 0,
-    priceRange: "", hasAgent: false, aum: "", isNew: true,
-    projectList: [],
-    contacts: {},
-    pitch: ""
+    origin: "Russia", originTag: "ru",
+    founder: "Sergey Solonin (Russian, founder of Nuanu Creative City), Rustam Kerimov (Russian, Co-Founder & Chief Architect), Andrey Sutormin (CEO)",
+    website: "biomdevelopment.com", instagram: "@biom.development",
+    whatsapp: "+6287822675640", email: "",
+    projects: 1, activeProjects: 1, activeUnits: 67,
+    priceRange: "$147K — $740K", hasAgent: true, aum: "", isNew: true,
+    projectList: [
+      {name:"BIOM — Living District of Nuanu",location:"Kediri, Tabanan",type:"Apartment/Villa/Townhouse",units:"67",price:"From $147K",status:"offplan",url:"https://biomdevelopment.com/",completion:"Q2 2027",mapUrl:"https://www.google.com/maps?q=-8.6337,115.1052",description:"Mixed-format residential complex (studios, 1BR, penthouses, townhouses, villas) within the 44-hectare Nuanu Creative City. 5 min walk to Nyanyi Beach, 12–14% ROI projected, 0% installment plan."}
+    ],
+    contacts: {website:"https://biomdevelopment.com",instagram:"https://instagram.com/biom.development"},
+    pitch: "Russian-founded boutique developer inside Nuanu Creative City — 67 units $147K–$740K with active agent channel (private Telegram) but no digital sales infrastructure. Clean Unitbox pitch for catalog and CRM tooling."
   },
   {
     name: "Anta Group",
-    origin: "", originTag: "int",
-    founder: "",
-    website: "", instagram: "",
-    whatsapp: "", email: "",
-    projects: 0, activeProjects: 0, activeUnits: 0,
-    priceRange: "", hasAgent: false, aum: "", isNew: true,
-    projectList: [],
-    contacts: {},
-    pitch: ""
+    origin: "Ukraine", originTag: "ru",
+    founder: "Anton Taranenko (Ukrainian, PhD in Management, 15+ yrs tourism; co-founder Visit Ukraine / Visit World)",
+    website: "antagroup.info", instagram: "@anta.group_bali",
+    whatsapp: "+905334669479", email: "",
+    projects: 4, activeProjects: 3, activeUnits: 192,
+    priceRange: "$138K — $395K", hasAgent: false, aum: "", isNew: false,
+    projectList: [
+      {name:"Radisson Individuals Anta Canggu",location:"Canggu",type:"Aparthotel",units:"116",price:"From $178K",status:"construction",url:"https://antagroup.info/en",completion:"2027",mapUrl:"https://www.google.com/maps?q=-8.643729,115.142574",description:"116-unit 5-star serviced aparthotel — first Radisson Individual in Canggu. Structural work complete, finishing in progress."},
+      {name:"Ramada Encore by Wyndham Bali Anta",location:"Bali",type:"Aparthotel",units:"76",price:"From $138K",status:"offplan",url:"https://antagroup.info/en",description:"76-unit 5-star concept hotel under Ramada Encore by Wyndham brand. 27 units remaining. Investment entry from $138,500."},
+      {name:"MediSpa Villas Resort",location:"Bali",type:"Villa/Resort",units:"",price:"From $250K",status:"offplan",url:"https://antagroup.info/en",description:"Luxury villas with integrated medical spa services. Unit count and exact location not publicly disclosed."},
+      {name:"Anta Residence Canggu",location:"Canggu",type:"Apartment",units:"113",price:"From $154K",status:"completed",url:"https://bali.realestate/property/residence-canggu-4712/",completion:"Q4 2025",mapUrl:"https://www.google.com/maps?q=-8.643729,115.142574",description:"113-unit luxury aparthotel on Batu Bolong St, 7 min from Indian Ocean. Studios from $154K, 2-bed from $340K, 13% rental yield projected."}
+    ],
+    contacts: {website:"https://antagroup.info/en",instagram:"https://instagram.com/anta.group_bali"},
+    pitch: "Ukrainian developer with 3 active branded hotel projects (Radisson, Wyndham) in Canggu managing 100+ units simultaneously — zero digital catalog infrastructure. Unitbox gives their team real-time unit availability across all projects."
   },
   {
     name: "High Quality Construction",
-    origin: "", originTag: "ru",
-    founder: "",
-    website: "", instagram: "",
-    whatsapp: "", email: "",
-    projects: 0, activeProjects: 0, activeUnits: 0,
-    priceRange: "", hasAgent: false, aum: "", isNew: true,
-    projectList: [],
-    contacts: {},
-    pitch: ""
+    origin: "Russia", originTag: "ru",
+    founder: "Dmitry Barannik (Russian, 19+ yrs construction) & Igor Bazanov (Russian, co-founder, 10 yrs construction/design)",
+    website: "hqc-asia.com", instagram: "@hqc.bali",
+    whatsapp: "+6282147698159", email: "hqc.bali@gmail.com",
+    projects: 4, activeProjects: 2, activeUnits: 90,
+    priceRange: "$190K — $500K+", hasAgent: false, aum: "", isNew: false,
+    projectList: [
+      {name:"HQC Ardhana Residence",location:"Ungasan, Bukit",type:"Apartment/Villa",units:"90",price:"From $190K",status:"construction",url:"https://hqc-asia.com/projects/ardhana",completion:"Q1 2027",mapUrl:"https://www.google.com/maps?q=-8.8155937678607,115.15961109585",description:"82 apartments + 8 villas near Melasti Beach in Ungasan. 5-star hotel infrastructure: pool, spa, gym, restaurant, walking park."},
+      {name:"SATORI Nusa Dua Resort",location:"Benoa, Nusa Dua",type:"Resort/Apartment",units:"",price:"From $180K",status:"construction",url:"https://hqc-asia.com/",completion:"Q1 2027",description:"Luxury resort residences by Salut Sense Architecture, 5 min from Nusa Dua Beach. Launched 2025."},
+      {name:"Black Rock Villas",location:"Ungasan, Bukit",type:"Villa",units:"",price:"From $280K",status:"completed",url:"https://hqc-asia.com/projects/blackrock",completion:"Q1 2024",mapUrl:"https://www.google.com/maps?q=-8.8155937678607,115.15961109585",description:"Boutique luxury villas with private pools, spa, fitness, yoga. 151m²+ units, 600m from sea, leasehold 32+30 years."},
+      {name:"Dzen Green Fields Villas",location:"Ubud",type:"Villa",units:"10",price:"From $240K",status:"completed",url:"https://worldestate.homes/en/indonesia/bali/dzen-green-fields-villas/",completion:"Q2 2024",mapUrl:"https://www.google.com/maps?q=-8.515857675975598,115.29062914572367",description:"10 exclusive 2BR villas with private pools and rice paddy views in central Ubud. Contemporary minimalist design, full furnishing. Freehold."}
+    ],
+    contacts: {website:"https://hqc-asia.com",instagram:"https://instagram.com/hqc.bali"},
+    pitch: "Existing Unitbox subscriber with 4 Bali projects (2 active, 90+ units in pipeline) across Bukit and Nusa Dua. Prime upsell: expand catalog coverage to SATORI, activate financial model and media modules."
   },
   {
     name: "Protected Capital Estate",
@@ -871,7 +889,7 @@ export const developers: Developer[] = [
     priceRange: "", hasAgent: false, aum: "", isNew: true,
     projectList: [],
     contacts: {},
-    pitch: ""
+    pitch: "No verified public presence found — requires manual outreach or name verification before pitching."
   },
   {
     name: "Unit Space",
