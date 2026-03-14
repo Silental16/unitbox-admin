@@ -79,19 +79,19 @@ function icpBadgeClass(tier: string) {
 
 function KVRow({ label, value, href }: { label: string; value: string; href?: string }) {
   return (
-    <div className="flex items-center justify-between py-2 border-b border-border/50 last:border-b-0">
-      <span className="text-sm text-muted-foreground">{label}</span>
+    <div className="flex items-start justify-between gap-4 py-2 border-b border-border/50 last:border-b-0">
+      <span className="text-sm text-muted-foreground shrink-0">{label}</span>
       {href ? (
         <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm font-medium text-right truncate max-w-[60%] text-primary hover:underline"
+          className="text-sm font-medium text-right text-primary hover:underline break-words min-w-0"
         >
           {value}
         </a>
       ) : (
-        <span className="text-sm font-medium text-right truncate max-w-[60%]">{value}</span>
+        <span className="text-sm font-medium text-right break-words min-w-0">{value}</span>
       )}
     </div>
   )
@@ -147,14 +147,13 @@ export function DeveloperSheet({
 
   // Build key-value rows, skipping empty values
   const kvRows: { label: string; value: string; href?: string }[] = [
-    { label: "Total Projects", value: String(developer.projects) },
-    { label: "Active Projects", value: String(developer.activeProjects) },
-    { label: "Units Building", value: developer.activeUnits.toLocaleString() },
-    { label: "Price Range", value: developer.priceRange },
+    ...(developer.origin ? [{ label: "Origin", value: developer.origin }] : []),
+    ...(developer.founder ? [{ label: "Founder", value: developer.founder }] : []),
+    { label: "Projects", value: `${developer.activeProjects} active / ${developer.projects} total` },
+    ...(developer.activeUnits ? [{ label: "Units Building", value: developer.activeUnits.toLocaleString() }] : []),
+    ...(developer.priceRange ? [{ label: "Price Range", value: developer.priceRange }] : []),
     ...(developer.aum ? [{ label: "AUM", value: developer.aum }] : []),
     { label: "Agent Program", value: developer.hasAgent ? "Yes" : "No" },
-    { label: "Origin", value: developer.origin },
-    { label: "Founder", value: developer.founder },
     ...(developer.website
       ? [{ label: "Website", value: developer.website, href: `https://${developer.website}` }]
       : []),
