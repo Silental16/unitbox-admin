@@ -1,14 +1,16 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   Building2Icon,
   EyeIcon,
   SunIcon,
   MoonIcon,
+  LogOutIcon,
 } from "lucide-react"
 import { useTheme } from "next-themes"
+import { createClient } from "@/lib/supabase/client"
 
 import {
   Sidebar,
@@ -36,9 +38,24 @@ const navItems = [
   },
 ]
 
-export function AppSidebar() {
+export function AppSidebar({
+  userName,
+  userEmail,
+  userAvatar,
+}: {
+  userName?: string
+  userEmail?: string
+  userAvatar?: string
+}) {
   const pathname = usePathname()
+  const router = useRouter()
   const { theme, setTheme } = useTheme()
+
+  async function handleSignOut() {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push("/login")
+  }
 
   return (
     <Sidebar collapsible="icon">
@@ -86,6 +103,26 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
+          {userEmail && (
+            <SidebarMenuItem>
+              <SidebarMenuButton tooltip={userEmail}>
+                {userAvatar ? (
+                  <img
+                    src={userAvatar}
+                    alt=""
+                    className="size-5 rounded-full"
+                  />
+                ) : (
+                  <div className="flex size-5 items-center justify-center rounded-full bg-muted text-xs font-medium">
+                    {(userName || userEmail).charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span className="truncate text-sm">
+                  {userName || userEmail}
+                </span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -96,6 +133,14 @@ export function AppSidebar() {
               <span>Toggle theme</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
+          {userEmail && (
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={handleSignOut} tooltip="Sign out">
+                <LogOutIcon className="size-4" />
+                <span>Sign out</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>

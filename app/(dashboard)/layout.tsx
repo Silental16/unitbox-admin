@@ -5,15 +5,25 @@ import {
 } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { Separator } from "@/components/ui/separator"
+import { createClient } from "@/lib/supabase/server"
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar
+        userName={user?.user_metadata?.full_name ?? user?.email ?? ""}
+        userEmail={user?.email ?? ""}
+        userAvatar={user?.user_metadata?.avatar_url ?? ""}
+      />
       <SidebarInset>
         <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
