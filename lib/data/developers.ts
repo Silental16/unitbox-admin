@@ -8,6 +8,9 @@ export interface DeveloperProject {
   price: string
   status: ProjectStatus
   url?: string
+  completion?: string
+  mapUrl?: string
+  description?: string
 }
 
 export interface Developer {
@@ -209,14 +212,14 @@ export const developers: Developer[] = [
     projects: 8, activeProjects: 6, activeUnits: 447,
     priceRange: "$81K — $325K", hasAgent: false, aum: "$30M+ raised, $100M+ portfolio", isNew: false,
     projectList: [
-      {name:"Azoria Living",location:"Uluwatu (Bingin)",type:"Apartments",units:"185",price:"From $95K",status:"construction",url:"https://cocodevelopmentgroup.com/azoria-living/"},
-      {name:"Coco Hills Resort",location:"Uluwatu (Bingin)",type:"Apartments",units:"95",price:"From $155K",status:"construction",url:"https://cocodevelopmentgroup.com/coco-hills-resort-bali/"},
-      {name:"Coco Lifestyle Resort",location:"Uluwatu (Bingin)",type:"Apartments",units:"62",price:"",status:"construction",url:"https://cocodevelopmentgroup.com/lifestyle-resort-bali/"},
-      {name:"Amazona Jungle Resort",location:"Kaba Kaba (Canggu)",type:"Apartments",units:"41",price:"",status:"construction",url:""},
-      {name:"Le Mansion By Coco",location:"Seseh",type:"Villas",units:"17",price:"",status:"construction",url:"https://cocodevelopmentgroup.com/bali-luxury-mansion/"},
-      {name:"Coco Residential Living",location:"Seseh",type:"Apartments",units:"16",price:"",status:"construction",url:"https://cocodevelopmentgroup.com/residential-living-resort-bali/"},
-      {name:"The Coco Boulevard",location:"Uluwatu (Bingin)",type:"Villas",units:"11",price:"",status:"construction",url:"https://cocodevelopmentgroup.com/boulevard-villa-bali/"},
-      {name:"Coco Residential Living 2.0",location:"Seseh",type:"Apartments",units:"20",price:"",status:"offplan"}
+      {name:"Azoria Living",location:"Uluwatu (Bingin)",type:"Apartments",units:"185",price:"From $95K",status:"construction",completion:"Q1 2027",url:"https://cocodevelopmentgroup.com/azoria-living/",mapUrl:"https://www.google.com/maps?q=-8.8372776,115.0992983",description:"Bali's first Padel & Wellness resort — 13,400 sqm, 6 padel courts, wellness sanctuaries, fitness, co-working, 3 min from Nunggalan Beach."},
+      {name:"Coco Hills Resort",location:"Uluwatu (Bingin)",type:"Apartments",units:"95",price:"From $155K",status:"construction",completion:"Q4 2026",url:"https://cocodevelopmentgroup.com/coco-hills-resort-bali/",mapUrl:"https://www.google.com/maps?q=-8.82042,115.125",description:"Hillside resort with panoramic ocean views. Helicopter pad, padel court, gym, co-working, wellness retreat, beach-style pool."},
+      {name:"Coco Lifestyle Resort",location:"Uluwatu (Bingin)",type:"Apartments",units:"62",price:"",status:"construction",completion:"Oct 2025",url:"https://cocodevelopmentgroup.com/lifestyle-resort-bali/",description:"Fully managed apartments designed for comfort and community. Gym, recovery area, co-working, restaurant & bar. Sold out."},
+      {name:"Amazona Jungle Resort",location:"Kaba Kaba (Canggu)",type:"Apartments",units:"41",price:"",status:"construction",completion:"Feb 2026",url:"https://cocodevelopmentgroup.com/amazona-jungle-resort-bali/",mapUrl:"https://www.google.com/maps?q=-8.5926466,115.1506889",description:"7 cascading levels in jungle, vintage 80s aesthetics. Mud treatments, waterfall restaurant, spa cave, 2 infinity pools."},
+      {name:"Le Mansion By Coco",location:"Seseh",type:"Villas",units:"17",price:"",status:"completed",completion:"Completed 2024",url:"https://cocodevelopmentgroup.com/bali-luxury-mansion/",description:"Mediterranean-style luxury villas — 3 bed, private pool, rooftop bar with Jacuzzi, rice field & mountain views. 10 min from Canggu."},
+      {name:"Coco Residential Living",location:"Seseh",type:"Apartments",units:"16",price:"",status:"completed",completion:"Completed 2024",url:"https://cocodevelopmentgroup.com/residential-living-resort-bali/",description:"Luxury apartments in Seseh rice fields, 5 min from Canggu. Co-working, sauna & wellness, premium finishes."},
+      {name:"The Coco Boulevard",location:"Uluwatu (Bingin)",type:"Villas",units:"11",price:"",status:"completed",completion:"Completed 2024",url:"https://cocodevelopmentgroup.com/boulevard-villa-bali/",description:"Private lifestyle villas with own pool. Full access to Coco Lifestyle Resort amenities — padel, gym, sauna, ice bath, co-working."},
+      {name:"Coco Residential Living 2.0",location:"Seseh",type:"Apartments",units:"20",price:"From $145K",status:"completed",completion:"Completed 2025",url:"https://cocodevelopmentgroup.com/residential-living-resort-bali/",description:"Extension with 89 sqm apartments, private rooftops, shared co-working and pool. 80% sold out at launch."}
     ],
     contacts: {website:"https://cocodevelopmentgroup.com",instagram:"https://instagram.com/cocodevelopmentgroup"},
     pitch: "Danish-founded, 8 projects (447 units), $30M+ raised from 150+ investors via crowd-investment platform (Shares by Coco). Focus on lifestyle amenities in $80K-$325K range. No agent portal — large in-house sales team."
@@ -754,9 +757,9 @@ export const developers: Developer[] = [
     projects: 3, activeProjects: 2, activeUnits: 88,
     priceRange: "$79K — $530K", hasAgent: true, aum: "118K sqm under construction (Russia)", isNew: false,
     projectList: [
-      {name:"BAZA Kedungu",location:"Kedungu",type:"Apartments",units:"58",price:"$79K-$96K",status:"construction",url:"https://bali.baza.bz/kedungu"},
-      {name:"Origins at Nuanu City",location:"Kediri (Nuanu)",type:"Villas",units:"18",price:"From $530K",status:"construction",url:"https://bali.baza.bz/origins-nuanu"},
-      {name:"Gate 11",location:"Seminyak",type:"Apartments + Commercial",units:"12",price:"From $110K",status:"completed"}
+      {name:"BAZA Kedungu",location:"Kedungu",type:"Apartments",units:"58",price:"$79K-$96K",status:"construction",completion:"Q2 2026",url:"https://balibaza.com/baza-kedungu-en",mapUrl:"https://maps.app.goo.gl/mR64AyKG2nRAan248",description:"California coastal-style aparthotel, 300m from Kedungu Beach. Infinity pool, gym, surf shop. ROI 15-22%."},
+      {name:"Origins at Nuanu City",location:"Kediri (Nuanu)",type:"Villas",units:"18",price:"From $530K",status:"construction",completion:"Q2 2026",url:"https://balibaza.com/origins-en",mapUrl:"https://maps.app.goo.gl/hxRJACTgewCzYpUy8",description:"First premium villa project inside Nuanu Creative City. 131-258m², award-winning architects, 3 min to ocean. ROI 14-15%."},
+      {name:"Gate 11",location:"Seminyak",type:"Apartments + Commercial",units:"12",price:"From $110K",status:"completed",completion:"Q3 2025",url:"https://bali.baza.bz/gate-11",description:"Boutique 3-story complex on Jl. Sari Dewi — 8 apartments + 4 commercial, 5 min to Seminyak Beach. ROI 15-22%."}
     ],
     contacts: {website:"https://balibaza.com",instagram:"https://instagram.com/baza.bz",telegram:"@Agent_BaliBaza",whatsapp:"+62 895 0521 1764"},
     pitch: "Russian developer from Yekaterinburg (founded 2017, 118K sqm in Russia), entered Bali 2021 with ~$3M. 88 units across 3 projects ($79K-$530K). Structured agent program (7-13% commission). Founder is son of Greenwich mall billionaire."
@@ -785,12 +788,11 @@ export const developers: Developer[] = [
     projects: 6, activeProjects: 2, activeUnits: 53,
     priceRange: "$189K — $399K", hasAgent: true, aum: "", isNew: false,
     projectList: [
-      {name:"Green Flow Villas (SEALED)",location:"Ubud (Sayan)",type:"Villas",units:"20",price:"$329K",status:"completed"},
-      {name:"Canggu Secrets",location:"Canggu",type:"Apartments",units:"TBD",price:"From $189K",status:"offplan",url:"https://bali-investments.com/canggu"},
-      {name:"Private Jet Villa",location:"Uluwatu (Nyang Nyang)",type:"Villa",units:"1",price:"$6,500/night",status:"completed"},
-      {name:"Bubble Hotel Bali",location:"Multiple locations",type:"Hotel",units:"3",price:"",status:"completed",url:"https://bubblehotelbali.com/en/"},
-      {name:"Rice Fields Villas",location:"Bali",type:"Villas",units:"TBD",price:"$189K",status:"offplan"},
-      {name:"Art Boutique Hotel",location:"Bali",type:"Hotel",units:"TBD",price:"",status:"completed"}
+      {name:"Green Flow Villas (SEALED)",location:"Ubud (Sayan)",type:"Villas",units:"20",price:"$329K",status:"completed",completion:"Completed ~2023, sealed June 2025",url:"https://bali-investments.com/ubud",description:"20+ designer villas with private pools on Jl. Raya Sayan, rice field views. Asia Pacific Property Awards 2022-2023. Sealed for zoning violations near sacred temple."},
+      {name:"Canggu Secrets",location:"Canggu",type:"Apartments",units:"TBD",price:"$209K-$279K",status:"completed",completion:"Completed Q4 2024",url:"https://bali-investments.com/canggu",mapUrl:"https://maps.google.com/?q=-8.653365883,115.132130608",description:"Great Gatsby-styled designer apartments at Gg. Nyepi 22. 60 sqm (no pool) and 85 sqm (with pool). 5 min bike to Berawa Beach, 6 min to Atlas/Finns Beach Club."},
+      {name:"Private Jet Villa",location:"Uluwatu (Nyang Nyang)",type:"Villa",units:"1",price:"$4,100-$6,500/night",status:"completed",completion:"Opened Dec 2023",url:"https://privatejetvilla.com/",description:"World's first Boeing 737 converted into cliff-top luxury villa, 150m above Nyang Nyang Beach. 2 bed, infinity pool, cockpit jacuzzi, helipad, butler service."},
+      {name:"Bubble Hotel Bali",location:"Ubud + Uluwatu",type:"Hotel",units:"2 locations",price:"",status:"completed",completion:"Operating since ~2018",url:"https://bubblehotelbali.com/en",mapUrl:"https://www.google.com/maps/place/-8.441599,115.301404",description:"Transparent dome glamping — Jungle Bubbles in Tampaksiring amid rice terraces + Beachside Bubbles at Nyang Nyang Beach. Airbnb Top 10 most unique hotels."},
+      {name:"Art Boutique Hotel",location:"Ubud",type:"Hotel",units:"50",price:"From $23,750 deposit",status:"offplan",url:"https://bali-investments.com/artboutiquehotel_en",description:"Serviced apartment hotel overlooking canyon, jungle, river and Artist's Trail. 50 unique rooms with transparent walls/floors, panoramic pool with jungle views."}
     ],
     contacts: {website:"https://bali-investments.ru/eng",website2:"https://bali-investments.com",instagram:"https://instagram.com/felix.demin",founderSite:"https://felix-demin.com/"},
     pitch: "Creative concept properties (Boeing 737 villa, bubble hotels), Asia Pacific Property Awards 2022-2023. RISK: Green Flow Villas (20 units) sealed June 2025 for zoning violations, founder faces court. Active sales on Canggu Secrets."
@@ -964,15 +966,15 @@ export const developers: Developer[] = [
     projects: 17, activeProjects: 5, activeUnits: 25,
     priceRange: "$90K — $850K", hasAgent: false, aum: "", isNew: false,
     projectList: [
-      {name:"Elysium Apartments",location:"Pererenan, Canggu",type:"Apartments",units:"TBD",price:"$90K-$316K",status:"construction"},
-      {name:"Elysium Villas",location:"Pererenan, Canggu",type:"Villas",units:"TBD",price:"$609K",status:"construction"},
-      {name:"Elysium Smart Villas",location:"Pererenan, Canggu",type:"Villas",units:"TBD",price:"$330K",status:"construction"},
-      {name:"Edem Villas II",location:"Nusa Dua",type:"Villas",units:"3",price:"$90K-$285K",status:"offplan"},
-      {name:"Oasis II",location:"Dalung, Badung",type:"Villas",units:"TBD",price:"$360K",status:"construction"},
-      {name:"Vesna",location:"Canggu",type:"Villas",units:"TBD",price:"$335K",status:"completed"},
-      {name:"Red Sunset",location:"Kuta Utara",type:"Villas",units:"1",price:"$850K",status:"completed"},
+      {name:"Elysium Apartments",location:"Pererenan, Canggu",type:"Apartments",units:"TBD",price:"$90K-$316K",status:"construction",completion:"Q4 2026",url:"https://breig-property.com/elysium-apart/",mapUrl:"https://maps.app.goo.gl/ForAd7RcaACtukNeA",description:"Ocean and rice terrace views, parks, pools, 5 min from beach. 1-2 bed 25-79m², yield 12-16%."},
+      {name:"Elysium Villas",location:"Pererenan, Canggu",type:"Villas",units:"TBD",price:"$609K",status:"construction",completion:"Q4 2026",url:"https://breig-property.com/elysium-villas-test/",mapUrl:"https://maps.app.goo.gl/ForAd7RcaACtukNeA",description:"3-bed luxury villas (230m²) within Elysium complex, parks, pools, ocean views, 3 min to beach. Yield 12-16%."},
+      {name:"Elysium Smart Villas",location:"Pererenan, Canggu",type:"Villas",units:"TBD",price:"$330K",status:"construction",completion:"Q4 2026",url:"https://breig-property.com/elysium-smart-villas-test/",mapUrl:"https://maps.app.goo.gl/ForAd7RcaACtukNeA",description:"Eco smart 2-bed villas (90m²) within Elysium complex, ocean and rice terrace views. Yield 12-16%."},
+      {name:"Edem Villas II",location:"Nusa Dua (Benoa)",type:"Villas",units:"3",price:"$90K-$285K",status:"construction",completion:"Q2 2026",url:"https://breig-property.com/edem-villas-2/",description:"Greek-inspired villas with cascading arrangement, panoramic ocean views. 1-2 bed 24-180m², yield 14-50%."},
+      {name:"Oasis II",location:"Dalung, Badung",type:"Townhouses",units:"TBD",price:"$360K",status:"completed",completion:"Completed Q2 2024",url:"https://breig-property.com/oasis-ii/",mapUrl:"https://maps.app.goo.gl/NkMuCEqVdzJy8Bkf9",description:"Townhouse apartments 750m from ocean, one of most expensive streets of Bali. 2-3 bed 97-136m², yield 12-16%."},
+      {name:"Vesna",location:"Berawa",type:"Townhouses",units:"11",price:"$335K",status:"completed",completion:"Completed Q3 2023",url:"https://breig-property.com/vesna/",mapUrl:"https://maps.app.goo.gl/jKfKcBTfNQNfrYCb6",description:"11 townhouses among rice fields with Mount Agung views, panoramic floor-to-ceiling windows. 1-2 bed 79-92m², yield up to 20%."},
+      {name:"Red Sunset",location:"Berawa",type:"Villas",units:"1",price:"$850K",status:"completed",url:"https://breig-property.com/red-sunset/",mapUrl:"https://maps.app.goo.gl/jKfKcBTfNQNfrYCb6",description:"Luxury 4-bed villa (265m²) near ocean, two separate buildings, exclusive rooftop. Yield up to 20%."},
       {name:"Oasis",location:"Kuta Utara",type:"Villas",units:"1",price:"$365K",status:"completed"},
-      {name:"Baliwood Residence",location:"Mengwi, Badung",type:"Villas",units:"2",price:"$700K-$890K",status:"completed"},
+      {name:"Baliwood Residence",location:"Pererenan, Mengwi",type:"Villas",units:"7",price:"$700K-$890K",status:"completed",url:"https://breig-property.com/baliwood/",mapUrl:"https://maps.app.goo.gl/Fz17uVdtgGVGu7EDA",description:"7 luxury oceanfront villas, 1-min walk from ocean, private pools and rooftop areas. 2-4 bed 235-310m², yield up to 20%."},
       {name:"Aquamarine",location:"Canggu",type:"Villas",units:"TBD",price:"",status:"completed"},
       {name:"Aquamarine II",location:"Canggu",type:"Villas",units:"TBD",price:"",status:"completed"},
       {name:"Aquamarine III",location:"Mengwi",type:"Villas",units:"TBD",price:"",status:"completed"},
