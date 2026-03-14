@@ -79,19 +79,19 @@ function icpBadgeClass(tier: string) {
 
 function KVRow({ label, value, href }: { label: string; value: string; href?: string }) {
   return (
-    <div className="flex items-start justify-between gap-4 py-2 border-b border-border/50 last:border-b-0">
-      <span className="text-sm text-muted-foreground shrink-0">{label}</span>
+    <div className="grid grid-cols-[120px_1fr] gap-2 py-2 border-b border-border/50 last:border-b-0">
+      <span className="text-sm text-muted-foreground">{label}</span>
       {href ? (
         <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm font-medium text-right text-primary hover:underline break-words min-w-0"
+          className="text-sm font-medium text-primary hover:underline break-words"
         >
           {value}
         </a>
       ) : (
-        <span className="text-sm font-medium text-right break-words min-w-0">{value}</span>
+        <span className="text-sm font-medium break-words">{value}</span>
       )}
     </div>
   )
@@ -230,7 +230,7 @@ export function DeveloperSheet({
                   </Badge>
                 </CardAction>
               </CardHeader>
-              <CardContent className="px-0">
+              <CardContent className="!px-0">
                 <Table>
                   <TableBody>
                     {developer.projectList.map((project, i) => (
