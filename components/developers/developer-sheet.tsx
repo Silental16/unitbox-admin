@@ -221,7 +221,7 @@ export function DeveloperSheet({
             </div>
 
             {/* Projects Table */}
-            <Card size="sm">
+            <Card size="sm" className="overflow-hidden">
               <CardHeader>
                 <CardTitle>Projects</CardTitle>
                 <CardAction>
@@ -231,21 +231,19 @@ export function DeveloperSheet({
                 </CardAction>
               </CardHeader>
               <CardContent className="!px-0">
-                <Table>
+                <Table className="table-fixed">
                   <TableBody>
                     {developer.projectList.map((project, i) => (
                       <TableRow key={i}>
-                        <TableCell className="py-2.5">
+                        <TableCell className="py-2.5 whitespace-normal">
                           <div className="space-y-1">
-                            <div className="flex items-center gap-1.5">
-                              <p className="font-medium text-sm">
-                                {project.url ? (
-                                  <a href={project.url} target="_blank" rel="noopener noreferrer" className="hover:underline text-primary">
-                                    {project.name}
-                                  </a>
-                                ) : project.name}
-                              </p>
-                            </div>
+                            <p className="font-medium text-sm">
+                              {project.url ? (
+                                <a href={project.url} target="_blank" rel="noopener noreferrer" className="hover:underline text-primary">
+                                  {project.name}
+                                </a>
+                              ) : project.name}
+                            </p>
                             <p className="text-xs text-muted-foreground">
                               {project.location} · {project.type}
                               {project.units ? ` · ${project.units}` : ""}
@@ -273,7 +271,7 @@ export function DeveloperSheet({
                             )}
                           </div>
                         </TableCell>
-                        <TableCell className="text-right py-2.5 align-top">
+                        <TableCell className="text-right py-2.5 align-top whitespace-normal w-[90px]">
                           {statusBadge(project.status)}
                         </TableCell>
                       </TableRow>
