@@ -24,6 +24,17 @@ import {
   getScoreProgressColor,
 } from "@/lib/data/scoring"
 
+const SUBSCRIBERS = [
+  "Alex Villas", "BREIG", "HQC", "NEXA", "Everville", "TEUS",
+  "Sevensky", "MBM", "Embrace", "BigBaliGroup", "Remarc",
+  "Bridge", "Magnum", "Big Waves", "Ecoinvest"
+]
+
+function isSubscriber(name: string): boolean {
+  const lower = name.toLowerCase()
+  return SUBSCRIBERS.some(s => lower.includes(s.toLowerCase()))
+}
+
 interface DevelopersTableProps {
   developers: Developer[]
   sort: SortOption
@@ -126,17 +137,18 @@ export function DevelopersTable({
             {developers.map((dev) => {
               const score = calculateIcpScore(dev)
               const completed = dev.projects - dev.activeProjects
+              const subscriber = isSubscriber(dev.name)
               return (
                 <TableRow
                   key={dev.name}
-                  className="cursor-pointer hover:bg-muted/50"
+                  className={`cursor-pointer hover:bg-muted/50 ${subscriber ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""}`}
                   onClick={() => onSelectDeveloper(dev)}
                 >
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="font-medium truncate max-w-[220px]">
+                          <span className={`font-medium truncate max-w-[220px] ${subscriber ? "text-emerald-700 dark:text-emerald-400" : ""}`}>
                             {dev.name}
                           </span>
                           <span
