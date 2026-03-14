@@ -7,6 +7,7 @@ export interface DeveloperProject {
   units: string
   price: string
   status: ProjectStatus
+  url?: string
 }
 
 export interface Developer {
@@ -200,20 +201,25 @@ export const developers: Developer[] = [
     pitch: "Uses Houzez CRM, 3 Hideaway phases since 2009. Currently using basic CRM — Unitbox is a major upgrade for unit tracking and agent management."
   },
   {
-    name: "COCO Capital",
+    name: "Coco Development Group",
     origin: "Denmark", originTag: "eu",
-    founder: "Rasmus Holst (Danish)",
-    website: "cocodevelopmentgroup.com", instagram: "@cococapital.id",
-    whatsapp: "", email: "",
-    projects: 5, activeProjects: 2, activeUnits: 60,
-    priceRange: "$200K — $600K", hasAgent: true, aum: "$18M raised", isNew: false,
+    founder: "Rasmus Holst (Danish serial entrepreneur, CEO)",
+    website: "cocodevelopmentgroup.com", instagram: "@cocodevelopmentgroup",
+    whatsapp: "+62 877 6398 4985", email: "hello@cocodevelopmentgroup.com",
+    projects: 8, activeProjects: 6, activeUnits: 447,
+    priceRange: "$81K — $325K", hasAgent: false, aum: "$30M+ raised, $100M+ portfolio", isNew: false,
     projectList: [
-      {name:"Le Mansion Seseh",location:"Seseh",type:"Villas",units:"17",price:"$300K-$600K",status:"construction"},
-      {name:"Residential Living Resort",location:"Bali",type:"Resort villas",units:"30+",price:"$250K-$500K",status:"construction"},
-      {name:"3 completed developments",location:"Various",type:"Villas",units:"78+",price:"$200K-$500K",status:"completed"}
+      {name:"Azoria Living",location:"Uluwatu (Bingin)",type:"Apartments",units:"185",price:"From $95K",status:"construction",url:"https://cocodevelopmentgroup.com/azoria-living/"},
+      {name:"Coco Hills Resort",location:"Uluwatu (Bingin)",type:"Apartments",units:"95",price:"From $155K",status:"construction",url:"https://cocodevelopmentgroup.com/coco-hills-resort-bali/"},
+      {name:"Coco Lifestyle Resort",location:"Uluwatu (Bingin)",type:"Apartments",units:"62",price:"",status:"construction",url:"https://cocodevelopmentgroup.com/lifestyle-resort-bali/"},
+      {name:"Amazona Jungle Resort",location:"Kaba Kaba (Canggu)",type:"Apartments",units:"41",price:"",status:"construction",url:""},
+      {name:"Le Mansion By Coco",location:"Seseh",type:"Villas",units:"17",price:"",status:"construction",url:"https://cocodevelopmentgroup.com/bali-luxury-mansion/"},
+      {name:"Coco Residential Living",location:"Seseh",type:"Apartments",units:"16",price:"",status:"construction",url:"https://cocodevelopmentgroup.com/residential-living-resort-bali/"},
+      {name:"The Coco Boulevard",location:"Uluwatu (Bingin)",type:"Villas",units:"11",price:"",status:"construction",url:"https://cocodevelopmentgroup.com/boulevard-villa-bali/"},
+      {name:"Coco Residential Living 2.0",location:"Seseh",type:"Apartments",units:"20",price:"",status:"offplan"}
     ],
-    contacts: {website:"https://cocodevelopmentgroup.com",instagram:"https://instagram.com/cococapital.id"},
-    pitch: "Danish fintech + real estate, $18M raised. 2-3 active projects. Needs proper agent tools for scaling their crowdfunding + direct sales model."
+    contacts: {website:"https://cocodevelopmentgroup.com",instagram:"https://instagram.com/cocodevelopmentgroup"},
+    pitch: "Danish-founded, 8 projects (447 units), $30M+ raised from 150+ investors via crowd-investment platform (Shares by Coco). Focus on lifestyle amenities in $80K-$325K range. No agent portal — large in-house sales team."
   },
   {
     name: "Anjuna Bay",
@@ -741,19 +747,19 @@ export const developers: Developer[] = [
   },
   {
     name: "BAZA Development",
-    origin: "Russia", originTag: "ru",
-    founder: "Russian founders, Nuanu ecosystem",
-    website: "balibaza.com", instagram: "@balibaza.eng",
-    whatsapp: "", email: "",
-    projects: 4, activeProjects: 2, activeUnits: 88,
-    priceRange: "$150K — $400K", hasAgent: true, aum: "", isNew: false,
+    origin: "Russia (Yekaterinburg)", originTag: "ru",
+    founder: "Mark Zavodovskiy & Alexey Bass (50/50 co-founders, Yekaterinburg)",
+    website: "balibaza.com", instagram: "@baza.bz",
+    whatsapp: "+62895052117640", email: "pr@balibaza.com",
+    projects: 3, activeProjects: 2, activeUnits: 88,
+    priceRange: "$79K — $530K", hasAgent: true, aum: "118K sqm under construction (Russia)", isNew: false,
     projectList: [
-      {name:"BAZA Nyanyi",location:"Nyanyi/Nuanu",type:"Villa Complex",units:"30+",price:"$200K-$400K",status:"construction"},
-      {name:"BAZA active project",location:"Various",type:"Villas",units:"28+",price:"$150K-$350K",status:"construction"},
-      {name:"Completed",location:"Pererenan + others",type:"Villas",units:"30+",price:"$150K-$300K",status:"completed"}
+      {name:"BAZA Kedungu",location:"Kedungu",type:"Apartments",units:"58",price:"$79K-$96K",status:"construction",url:"https://bali.baza.bz/kedungu"},
+      {name:"Origins at Nuanu City",location:"Kediri (Nuanu)",type:"Villas",units:"18",price:"From $530K",status:"construction",url:"https://bali.baza.bz/origins-nuanu"},
+      {name:"Gate 11",location:"Seminyak",type:"Apartments + Commercial",units:"12",price:"From $110K",status:"completed"}
     ],
-    contacts: {website:"https://balibaza.com",instagram:"https://instagram.com/balibaza.eng"},
-    pitch: "Structured agent program (7-13% commission), Telegram channel, Drive materials. Already invested in agent distribution — Unitbox digitizes and scales it."
+    contacts: {website:"https://balibaza.com",instagram:"https://instagram.com/baza.bz",telegram:"@Agent_BaliBaza",whatsapp:"+62 895 0521 1764"},
+    pitch: "Russian developer from Yekaterinburg (founded 2017, 118K sqm in Russia), entered Bali 2021 with ~$3M. 88 units across 3 projects ($79K-$530K). Structured agent program (7-13% commission). Founder is son of Greenwich mall billionaire."
   },
   {
     name: "ARCHESTET",
@@ -773,17 +779,21 @@ export const developers: Developer[] = [
   {
     name: "Bali Investments",
     origin: "Russia", originTag: "ru",
-    founder: "Felix Demin",
-    website: "", instagram: "",
-    whatsapp: "", email: "",
+    founder: "Felix Demin (Russian, 12+ years in Bali, 130K IG followers)",
+    website: "bali-investments.ru", instagram: "@felix.demin",
+    whatsapp: "+62 819 1087 6631", email: "ballinvestmentsgroup@gmail.com",
     projects: 6, activeProjects: 2, activeUnits: 53,
-    priceRange: "$150K — $500K", hasAgent: true, aum: "", isNew: false,
+    priceRange: "$189K — $399K", hasAgent: true, aum: "", isNew: false,
     projectList: [
-      {name:"Active projects",location:"Various",type:"Villas",units:"38+",price:"$150K-$500K",status:"construction"},
-      {name:"Green Flow Villas (LEGAL ISSUE)",location:"Canggu",type:"Villa Complex",units:"15",price:"$200K-$400K",status:"completed"}
+      {name:"Green Flow Villas (SEALED)",location:"Ubud (Sayan)",type:"Villas",units:"20",price:"$329K",status:"completed"},
+      {name:"Canggu Secrets",location:"Canggu",type:"Apartments",units:"TBD",price:"From $189K",status:"offplan",url:"https://bali-investments.com/canggu"},
+      {name:"Private Jet Villa",location:"Uluwatu (Nyang Nyang)",type:"Villa",units:"1",price:"$6,500/night",status:"completed"},
+      {name:"Bubble Hotel Bali",location:"Multiple locations",type:"Hotel",units:"3",price:"",status:"completed",url:"https://bubblehotelbali.com/en/"},
+      {name:"Rice Fields Villas",location:"Bali",type:"Villas",units:"TBD",price:"$189K",status:"offplan"},
+      {name:"Art Boutique Hotel",location:"Bali",type:"Hotel",units:"TBD",price:"",status:"completed"}
     ],
-    contacts: {},
-    pitch: "Has investor portal but Green Flow Villas sealed by authorities (June 2025). Website domain for sale. APPROACH WITH CAUTION — verify legal status first."
+    contacts: {website:"https://bali-investments.ru/eng",website2:"https://bali-investments.com",instagram:"https://instagram.com/felix.demin",founderSite:"https://felix-demin.com/"},
+    pitch: "Creative concept properties (Boeing 737 villa, bubble hotels), Asia Pacific Property Awards 2022-2023. RISK: Green Flow Villas (20 units) sealed June 2025 for zoning violations, founder faces court. Active sales on Canggu Secrets."
   },
   {
     name: "OceaniQ Villas",
@@ -946,16 +956,32 @@ export const developers: Developer[] = [
     pitch: ""
   },
   {
-    name: "Breig Development",
-    origin: "", originTag: "ru",
-    founder: "",
-    website: "", instagram: "",
-    whatsapp: "", email: "",
-    projects: 0, activeProjects: 0, activeUnits: 0,
-    priceRange: "", hasAgent: false, aum: "", isNew: true,
-    projectList: [],
-    contacts: {},
-    pitch: ""
+    name: "BREIG Property",
+    origin: "Russia", originTag: "ru",
+    founder: "Nikita Shelomentsev (Russian, ex-BCG, MBA)",
+    website: "breig-property.com", instagram: "@breig_property",
+    whatsapp: "+6281353934542", email: "sales@breig-property.com",
+    projects: 17, activeProjects: 5, activeUnits: 25,
+    priceRange: "$90K — $850K", hasAgent: false, aum: "", isNew: false,
+    projectList: [
+      {name:"Elysium Apartments",location:"Pererenan, Canggu",type:"Apartments",units:"TBD",price:"$90K-$316K",status:"construction"},
+      {name:"Elysium Villas",location:"Pererenan, Canggu",type:"Villas",units:"TBD",price:"$609K",status:"construction"},
+      {name:"Elysium Smart Villas",location:"Pererenan, Canggu",type:"Villas",units:"TBD",price:"$330K",status:"construction"},
+      {name:"Edem Villas II",location:"Nusa Dua",type:"Villas",units:"3",price:"$90K-$285K",status:"offplan"},
+      {name:"Oasis II",location:"Dalung, Badung",type:"Villas",units:"TBD",price:"$360K",status:"construction"},
+      {name:"Vesna",location:"Canggu",type:"Villas",units:"TBD",price:"$335K",status:"completed"},
+      {name:"Red Sunset",location:"Kuta Utara",type:"Villas",units:"1",price:"$850K",status:"completed"},
+      {name:"Oasis",location:"Kuta Utara",type:"Villas",units:"1",price:"$365K",status:"completed"},
+      {name:"Baliwood Residence",location:"Mengwi, Badung",type:"Villas",units:"2",price:"$700K-$890K",status:"completed"},
+      {name:"Aquamarine",location:"Canggu",type:"Villas",units:"TBD",price:"",status:"completed"},
+      {name:"Aquamarine II",location:"Canggu",type:"Villas",units:"TBD",price:"",status:"completed"},
+      {name:"Aquamarine III",location:"Mengwi",type:"Villas",units:"TBD",price:"",status:"completed"},
+      {name:"Garden Villa II",location:"Ubud",type:"Villas",units:"2",price:"$315K",status:"completed"},
+      {name:"Oasis III Apartments",location:"Tibubeneng",type:"Apartments",units:"TBD",price:"$145K",status:"completed"},
+      {name:"Edem Villas I",location:"Nusa Dua",type:"Villas",units:"TBD",price:"$160K-$310K",status:"completed"}
+    ],
+    contacts: {website:"https://breig-property.com",instagram:"https://instagram.com/breig_property",telegram:"https://t.me/pgodin",whatsapp:"https://wa.link/zut0kk"},
+    pitch: "17 projects (12 completed, 42,000m²), Exquisite Awards 2024 Best Property Developer in Bali. Vertically integrated — in-house construction, legal, management. Paying Unitbox subscriber."
   },
   {
     name: "NEXA",
@@ -1282,16 +1308,16 @@ export const developers: Developer[] = [
     pitch: ""
   },
   {
-    name: "Farsight",
-    origin: "", originTag: "int",
-    founder: "",
-    website: "", instagram: "",
-    whatsapp: "", email: "",
-    projects: 0, activeProjects: 0, activeUnits: 0,
-    priceRange: "", hasAgent: false, aum: "", isNew: true,
+    name: "Farsight Management",
+    origin: "Russia", originTag: "ru",
+    founder: "Victor Plotnikov (CEO), Evgenii Lomonosov (co-founder)",
+    website: "farsight24.com", instagram: "@farsight_management",
+    whatsapp: "+62 823-2280-7135", email: "inquiries@farsight24.com",
+    projects: 8, activeProjects: 0, activeUnits: 0,
+    priceRange: "", hasAgent: false, aum: "250+ managed properties", isNew: false,
     projectList: [],
-    contacts: { "Anatoly Kanaev": "", "Iya Gaivyk": "" },
-    pitch: ""
+    contacts: {website:"https://farsight24.com",instagram:"https://instagram.com/farsight_management","Anatoly Kanaev":"","Iya Gaivyk":""},
+    pitch: "Property management company managing 250-300+ premium rental villas in Bali. Built 8 turnkey villas but primarily operates as management platform for property owners. 14+ years in business."
   },
   {
     name: "J-Hills",
