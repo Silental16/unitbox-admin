@@ -278,10 +278,12 @@ export function DeveloperSheet({
             )}
           </div>
 
-          {/* Row 3: Description (founder) */}
-          <SheetDescription className="text-xs leading-relaxed">
-            {developer.founder}
-          </SheetDescription>
+          {/* Row 3: Pitch */}
+          {developer.pitch && (
+            <SheetDescription className="text-xs leading-relaxed">
+              {developer.pitch}
+            </SheetDescription>
+          )}
         </SheetHeader>
 
         <Separator />
@@ -395,19 +397,6 @@ export function DeveloperSheet({
               </CardContent>
             </Card>
 
-            {/* Pitch */}
-            {developer.pitch && (
-              <Card size="sm" className="bg-muted/50">
-                <CardHeader>
-                  <CardTitle className="text-sm">Pitch Angle</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {developer.pitch}
-                  </p>
-                </CardContent>
-              </Card>
-            )}
           </div>
         </ScrollArea>
       </SheetContent>
