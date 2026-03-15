@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo, useCallback } from "react"
-import type { Developer, ResearchStatus } from "@/lib/data/developers"
+import type { Developer, ResearchStatus, SalesStatus } from "@/lib/data/developers"
 import { calculateIcpScore } from "@/lib/data/scoring"
 import { createClient } from "@/lib/supabase/client"
 import {
@@ -26,21 +26,27 @@ export function DevelopersClient({
   const [agent, setAgent] = useState<AgentFilter>("all")
   const [scale, setScale] = useState<ScaleFilter>("all")
   const [research, setResearch] = useState<ResearchFilter>("all")
+  const [salesFilter, setSalesFilter] = useState<SalesStatus[]>([])
   const [sort, setSort] = useState<SortOption>("activeUnits")
-  const [selectedDeveloper, setSelectedDeveloper] = useState<Developer | null>(
-    null
-  )
+  const [selectedDeveloper, setSelectedDeveloper] = useState<Developer | null>(null)
   const [sheetOpen, setSheetOpen] = useState(false)
 
   const handleResearchStatusChange = useCallback(async (developerId: string, status: ResearchStatus) => {
     setDevelopers((prev) =>
       prev.map((d) => d.id === developerId ? { ...d, researchStatus: status } : d)
     )
+    setSelectedDeveloper((prev) => prev?.id === developerId ? { ...prev, researchStatus: status } : prev)
     const supabase = createClient()
-    await supabase
-      .from("developers")
-      .update({ research_status: status })
-      .eq("id", developerId)
+    await supabase.from("developers").update({ research_status: status }).eq("id", developerId)
+  }, [])
+
+  const handleSalesStatusChange = useCallback(async (developerId: string, status: SalesStatus) => {
+    setDevelopers((prev) =>
+      prev.map((d) => d.id === developerId ? { ...d, salesStatus: status } : d)
+    )
+    setSelectedDeveloper((prev) => prev?.id === developerId ? { ...prev, salesStatus: status } : prev)
+    const supabase = createClient()
+    await supabase.from("developers").update({ sales_status: status }).eq("id", developerId)
   }, [])
 
   const filteredDevelopers = useMemo(() => {
@@ -71,12 +77,14 @@ export function DevelopersClient({
       result = result.filter((d) => d.researchStatus === research)
     }
 
+    if (salesFilter.length > 0) {
+      result = result.filter((d) => salesFilter.includes(d.salesStatus))
+    }
+
     if (scale === "large") {
       result = result.filter((d) => d.activeUnits >= 100)
     } else if (scale === "medium") {
-      result = result.filter(
-        (d) => d.activeUnits >= 20 && d.activeUnits < 100
-      )
+      result = result.filter((d) => d.activeUnits >= 20 && d.activeUnits < 100)
     } else if (scale === "small") {
       result = result.filter((d) => d.activeUnits < 20)
     }
@@ -97,7 +105,7 @@ export function DevelopersClient({
     })
 
     return result
-  }, [developers, search, origin, agent, scale, research, sort])
+  }, [developers, search, origin, agent, scale, research, salesFilter, sort])
 
   function handleSelectDeveloper(developer: Developer) {
     setSelectedDeveloper(developer)
@@ -127,6 +135,8 @@ export function DevelopersClient({
         onScaleChange={setScale}
         research={research}
         onResearchChange={setResearch}
+        salesFilter={salesFilter}
+        onSalesFilterChange={setSalesFilter}
       />
 
       <DevelopersTable
@@ -142,6 +152,7 @@ export function DevelopersClient({
         open={sheetOpen}
         onOpenChange={setSheetOpen}
         onResearchStatusChange={handleResearchStatusChange}
+        onSalesStatusChange={handleSalesStatusChange}
       />
     </div>
   )

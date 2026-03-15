@@ -10,6 +10,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button"
+import type { SalesStatus } from "@/lib/data/developers"
+import { SALES_STATUSES } from "@/lib/data/developers"
 
 export type OriginFilter = "all" | "eu" | "ru" | "au" | "int"
 export type AgentFilter = "all" | "has-agent" | "no-agent"
@@ -28,6 +37,8 @@ interface FilterBarProps {
   onScaleChange: (value: ScaleFilter) => void
   research: ResearchFilter
   onResearchChange: (value: ResearchFilter) => void
+  salesFilter: SalesStatus[]
+  onSalesFilterChange: (value: SalesStatus[]) => void
 }
 
 export function FilterBar({
@@ -41,7 +52,17 @@ export function FilterBar({
   onScaleChange,
   research,
   onResearchChange,
+  salesFilter,
+  onSalesFilterChange,
 }: FilterBarProps) {
+  const toggleSalesStatus = (status: SalesStatus) => {
+    if (salesFilter.includes(status)) {
+      onSalesFilterChange(salesFilter.filter((s) => s !== status))
+    } else {
+      onSalesFilterChange([...salesFilter, status])
+    }
+  }
+
   return (
     <div className="flex flex-wrap items-center gap-3">
       <div className="relative flex-1 min-w-[200px]">
@@ -67,6 +88,32 @@ export function FilterBar({
           </SelectGroup>
         </SelectContent>
       </Select>
+
+      {/* Sales Status — multi-select */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm" className="h-9 text-sm font-normal">
+            {salesFilter.length === 0
+              ? "All Statuses"
+              : salesFilter.length === 1
+                ? SALES_STATUSES.find((s) => s.value === salesFilter[0])?.label
+                : `${salesFilter.length} statuses`}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          {SALES_STATUSES.map((s) => (
+            <DropdownMenuCheckboxItem
+              key={s.value}
+              checked={salesFilter.includes(s.value)}
+              onCheckedChange={() => toggleSalesStatus(s.value)}
+              onSelect={(e) => e.preventDefault()}
+            >
+              <span className={`inline-block rounded px-1.5 py-px text-[10px] mr-1 ${s.color}`}>{s.label}</span>
+            </DropdownMenuCheckboxItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
       <Select value={agent} onValueChange={(v) => onAgentChange(v as AgentFilter)}>
         <SelectTrigger className="w-[150px]">
           <SelectValue placeholder="Agent" />

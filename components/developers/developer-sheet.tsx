@@ -31,7 +31,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import type { Developer, ResearchStatus } from "@/lib/data/developers"
+import type { Developer, ResearchStatus, SalesStatus } from "@/lib/data/developers"
+import { SALES_STATUSES } from "@/lib/data/developers"
 import { calculateIcpScore, getScoreTier } from "@/lib/data/scoring"
 
 const RESEARCH_OPTIONS: { value: ResearchStatus; label: string; dot: string; bg: string; text: string }[] = [
@@ -50,6 +51,7 @@ interface DeveloperSheetProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onResearchStatusChange: (developerId: string, status: ResearchStatus) => void
+  onSalesStatusChange: (developerId: string, status: SalesStatus) => void
 }
 
 function statusBadge(status: string) {
@@ -110,6 +112,7 @@ export function DeveloperSheet({
   open,
   onOpenChange,
   onResearchStatusChange,
+  onSalesStatusChange,
 }: DeveloperSheetProps) {
   const [width, setWidth] = useState(DEFAULT_WIDTH)
   const [dragging, setDragging] = useState(false)
@@ -216,6 +219,31 @@ export function DeveloperSheet({
               </SheetDescription>
             </div>
             <div className="flex items-center gap-2 shrink-0">
+              {/* Sales Status */}
+              {(() => {
+                const sales = SALES_STATUSES.find((s) => s.value === developer.salesStatus) ?? SALES_STATUSES[0]
+                return (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${sales.color}`}>
+                        {sales.label}
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {SALES_STATUSES.map((s) => (
+                        <DropdownMenuItem
+                          key={s.value}
+                          onClick={() => onSalesStatusChange(developer.id, s.value)}
+                          className="gap-2"
+                        >
+                          <span className={`inline-block rounded px-1.5 py-px text-[10px] ${s.color}`}>{s.label}</span>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )
+              })()}
+              {/* Research Status */}
               {(() => {
                 const opt = RESEARCH_OPTIONS.find((o) => o.value === developer.researchStatus) ?? RESEARCH_OPTIONS[0]
                 return (

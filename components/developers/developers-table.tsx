@@ -24,6 +24,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import type { Developer, ResearchStatus } from "@/lib/data/developers"
+import { SALES_STATUSES } from "@/lib/data/developers"
 import type { SortOption } from "@/components/developers/filter-bar"
 import {
   calculateIcpScore,
@@ -178,7 +179,7 @@ export function DevelopersTable({
               return (
                 <TableRow
                   key={dev.id}
-                  className={`cursor-pointer hover:bg-muted/50 ${subscriber ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""}`}
+                  className={`cursor-pointer hover:bg-muted/50 ${subscriber || dev.salesStatus === "client" ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""}`}
                   onClick={() => onSelectDeveloper(dev)}
                 >
                   <TableCell>
@@ -192,6 +193,14 @@ export function DevelopersTable({
                         >
                           {originLabel(dev.originTag)}
                         </span>
+                        {dev.salesStatus && dev.salesStatus !== "lead" && (() => {
+                          const s = SALES_STATUSES.find((st) => st.value === dev.salesStatus)
+                          return s ? (
+                            <span className={`inline-flex items-center rounded px-1.5 py-px text-[10px] font-medium ${s.color}`}>
+                              {s.label}
+                            </span>
+                          ) : null
+                        })()}
                         {dev.isNew && (
                           <Badge variant="outline" className="gap-1 text-[10px]">
                             <SparklesIcon className="size-2.5" />
