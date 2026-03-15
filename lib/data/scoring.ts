@@ -1,30 +1,19 @@
 import type { Developer } from "./developers"
 
 /**
- * ICP Score (0-100): How valuable is this developer as a Unitbox client?
- *
- * Based purely on active construction scale:
- *   - Active units under construction (0-60 pts)
- *   - Active projects count (0-40 pts)
+ * ICP Score (0-100): Based purely on active units under construction.
+ * More units being built = higher value as Unitbox client.
  */
 export function calculateIcpScore(d: Developer): number {
-  let score = 0
-
-  // Active units (0-60 pts)
-  if (d.activeUnits >= 200) score += 60
-  else if (d.activeUnits >= 100) score += 50
-  else if (d.activeUnits >= 50) score += 40
-  else if (d.activeUnits >= 20) score += 28
-  else if (d.activeUnits >= 10) score += 18
-  else if (d.activeUnits > 0) score += 8
-
-  // Active projects (0-40 pts)
-  if (d.activeProjects >= 5) score += 40
-  else if (d.activeProjects >= 3) score += 30
-  else if (d.activeProjects >= 2) score += 22
-  else if (d.activeProjects === 1) score += 12
-
-  return Math.min(100, score)
+  if (d.activeUnits >= 500) return 100
+  if (d.activeUnits >= 300) return 90
+  if (d.activeUnits >= 200) return 80
+  if (d.activeUnits >= 100) return 65
+  if (d.activeUnits >= 50) return 50
+  if (d.activeUnits >= 30) return 38
+  if (d.activeUnits >= 15) return 25
+  if (d.activeUnits > 0) return 12
+  return 0
 }
 
 export function getScoreTier(score: number): "high" | "medium" | "low" {
