@@ -213,7 +213,18 @@ export function DevelopersTable({
                     </div>
                   </TableCell>
                   <TableCell>
-                    <ResearchBadge status={dev.researchStatus} />
+                    {dev.researchedAt ? (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span><ResearchBadge status={dev.researchStatus} /></span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {new Date(dev.researchedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                        </TooltipContent>
+                      </Tooltip>
+                    ) : (
+                      <ResearchBadge status={dev.researchStatus} />
+                    )}
                   </TableCell>
                 </TableRow>
               )

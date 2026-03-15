@@ -36,6 +36,7 @@ export interface Developer {
   contacts: Record<string, string>
   pitch: string
   researchStatus: ResearchStatus
+  researchedAt: string | null
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,5 +62,6 @@ export function mapRowToDeveloper(row: Record<string, any>): Developer {
     contacts: (row.contacts ?? {}) as Record<string, string>,
     pitch: (row.pitch ?? "") as string,
     researchStatus: (row.research_status ?? "not_started") as ResearchStatus,
+    researchedAt: (row.researched_at ?? null) as string | null,
   }
 }
