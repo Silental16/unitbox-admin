@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import type { Developer, ResearchStatus, SalesStatus } from "@/lib/data/developers"
 import { SALES_STATUSES } from "@/lib/data/developers"
-import { calculateIcpScore, getScoreTier, countActiveUnits, countActiveProjects } from "@/lib/data/scoring"
+import { calculateIcpScore, getScoreTier, countActiveUnits, countActiveProjects, isSeaProject } from "@/lib/data/scoring"
 
 const RESEARCH_OPTIONS: { value: ResearchStatus; label: string; dot: string; bg: string; text: string }[] = [
   { value: "not_started", label: "Not Started", dot: "bg-slate-300", bg: "bg-muted", text: "text-muted-foreground" },
@@ -297,31 +297,37 @@ export function DeveloperSheet({
               ))}
             </div>
 
-            {/* Projects Table */}
+            {/* Projects — SEA + Other */}
+            {(() => {
+              const seaProjects = developer.projectList.filter(isSeaProject)
+              const otherProjects = developer.projectList.filter((p) => !isSeaProject(p))
+              const sortProjects = (list: typeof developer.projectList) =>
+                [...list].sort((a, b) => {
+                  const order: Record<string, number> = { presale: 0, building: 1, completed: 2 }
+                  const sa = order[a.status] ?? 1
+                  const sb = order[b.status] ?? 1
+                  if (sa !== sb) return sa - sb
+                  if (!a.completion && !b.completion) return 0
+                  if (!a.completion) return 1
+                  if (!b.completion) return -1
+                  return b.completion.localeCompare(a.completion)
+                })
+              return (
+                <>
             <Card size="sm" className="overflow-hidden">
               <CardHeader>
-                <CardTitle>Projects</CardTitle>
+                <CardTitle>Bali & SEA Projects</CardTitle>
                 <CardAction>
                   <Badge variant="secondary" className="tabular-nums">
-                    {developer.projectList.length}
+                    {seaProjects.length}
                   </Badge>
                 </CardAction>
               </CardHeader>
+              {seaProjects.length > 0 ? (
               <CardContent className="!px-0">
                 <Table className="table-fixed">
                   <TableBody>
-                    {[...developer.projectList]
-                      .sort((a, b) => {
-                        const order: Record<string, number> = { presale: 0, building: 1, completed: 2 }
-                        const sa = order[a.status] ?? 1
-                        const sb = order[b.status] ?? 1
-                        if (sa !== sb) return sa - sb
-                        if (!a.completion && !b.completion) return 0
-                        if (!a.completion) return 1
-                        if (!b.completion) return -1
-                        return b.completion.localeCompare(a.completion)
-                      })
-                      .map((project, i) => (
+                    {sortProjects(seaProjects).map((project, i) => (
                       <TableRow key={i}>
                         <TableCell className="py-3 whitespace-normal" colSpan={2}>
                           <div className="space-y-2">
@@ -395,7 +401,72 @@ export function DeveloperSheet({
                   </TableBody>
                 </Table>
               </CardContent>
+              ) : (
+              <CardContent>
+                <p className="text-sm text-muted-foreground">No SEA projects</p>
+              </CardContent>
+              )}
             </Card>
+
+            {otherProjects.length > 0 && (
+            <Card size="sm" className="overflow-hidden">
+              <CardHeader>
+                <CardTitle>Other Regions</CardTitle>
+                <CardAction>
+                  <Badge variant="secondary" className="tabular-nums">
+                    {otherProjects.length}
+                  </Badge>
+                </CardAction>
+              </CardHeader>
+              <CardContent className="!px-0">
+                <Table className="table-fixed">
+                  <TableBody>
+                    {sortProjects(otherProjects).map((project, i) => (
+                      <TableRow key={`other-${i}`}>
+                        <TableCell className="py-3 whitespace-normal" colSpan={2}>
+                          <div className="space-y-2">
+                            <div className="flex items-start justify-between gap-2">
+                              <p className="font-medium text-sm">
+                                {project.url ? (
+                                  <a href={project.url} target="_blank" rel="noopener noreferrer" className="hover:underline text-primary">
+                                    {project.name}
+                                  </a>
+                                ) : project.name}
+                              </p>
+                              {statusBadge(project.status)}
+                            </div>
+                            <div className="flex flex-wrap items-center gap-1">
+                              {project.location && (
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                  <MapPinIcon className="size-2.5 shrink-0" />
+                                  {project.location}
+                                </span>
+                              )}
+                              {project.units && (
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                  <LayersIcon className="size-2.5 shrink-0" />
+                                  {project.units}
+                                </span>
+                              )}
+                              {project.type && (
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                  <HomeIcon className="size-2.5 shrink-0" />
+                                  {project.type}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+            )}
+                </>
+              )
+            })()}
 
           </div>
         </ScrollArea>

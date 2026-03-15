@@ -1,34 +1,53 @@
-import type { Developer } from "./developers"
+import type { Developer, DeveloperProject } from "./developers"
+
+const SEA_KEYWORDS = [
+  "bali", "canggu", "ubud", "uluwatu", "seminyak", "nusa dua", "bukit", "berawa",
+  "pererenan", "kuta", "sanur", "tabanan", "gianyar", "pecatu", "bingin", "seseh",
+  "jimbaran", "ungasan", "kedungu", "nyanyi", "melasti", "pandawa", "karangasem",
+  "denpasar", "badung", "kerobokan", "umalas", "cemagi", "kediri", "tibubeneng",
+  "sukawati", "nusa penida", "nusa ceningan", "gili", "lombok", "sumba", "sumbawa",
+  "phuket", "nai harn", "thailand", "kaba-kaba", "buwit", "munduk", "amed",
+  "nuanu", "sawangan", "benoa", "kutuh", "abiansemal",
+]
+
+/** Check if a project is in Southeast Asia (Bali, Indonesia islands, Thailand) */
+export function isSeaProject(p: DeveloperProject): boolean {
+  if (!p.location) return true // assume SEA if no location
+  const loc = p.location.toLowerCase()
+  return SEA_KEYWORDS.some((kw) => loc.includes(kw))
+}
+
+function parseUnits(units: string | undefined): number {
+  if (!units) return 0
+  const match = String(units).match(/(\d+)/)
+  return match ? parseInt(match[1], 10) : 0
+}
 
 /**
- * Counts active units from project_list (building + presale projects only).
- * Parses the units string to extract the leading number.
+ * Counts active units from SEA projects only (building + presale).
  */
 export function countActiveUnits(d: Developer): number {
   let total = 0
   for (const p of d.projectList) {
     if (p.status !== "building" && p.status !== "presale") continue
-    if (!p.units) continue
-    const unitsStr = String(p.units)
-    const match = unitsStr.match(/(\d+)/)
-    if (match) total += parseInt(match[1], 10)
+    if (!isSeaProject(p)) continue
+    total += parseUnits(p.units)
   }
   return total
 }
 
-/** Count active (building + presale) projects from project_list */
+/** Count active (building + presale) projects */
 export function countActiveProjects(d: Developer): number {
   return d.projectList.filter((p) => p.status === "building" || p.status === "presale").length
 }
 
-/** Count completed projects from project_list */
+/** Count completed projects */
 export function countCompletedProjects(d: Developer): number {
   return d.projectList.filter((p) => p.status === "completed").length
 }
 
 /**
- * ICP Score (0-100): Based on actual active units from project_list data.
- * Calculated dynamically — not from the static active_units field.
+ * ICP Score (0-100): Based on active SEA units only.
  */
 export function calculateIcpScore(d: Developer): number {
   const units = countActiveUnits(d)
