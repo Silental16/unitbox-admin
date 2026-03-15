@@ -191,9 +191,9 @@ export function DevelopersTable({
               const totalProj = dev.projectList.length
               const subscriber = isSubscriber(dev.name)
               return (
-                <React.Fragment key={dev.id}>
                 <TableRow
-                  className={`cursor-pointer hover:bg-muted/50 ${dev.comment ? "border-b-0" : ""} ${subscriber || dev.salesStatus === "client" ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""}`}
+                  key={dev.id}
+                  className={`cursor-pointer hover:bg-muted/50 ${subscriber || dev.salesStatus === "client" ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""}`}
                   onClick={() => onSelectDeveloper(dev)}
                 >
                   <TableCell>
@@ -220,6 +220,11 @@ export function DevelopersTable({
                       <p className="text-xs text-muted-foreground truncate max-w-[240px]">
                         {dev.founder}
                       </p>
+                      {dev.comment && (
+                        <span className="inline-block text-[11px] text-muted-foreground bg-muted/60 rounded px-1.5 py-px mt-0.5 leading-snug">
+                          {dev.comment}
+                        </span>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell className="text-right tabular-nums font-medium">
@@ -251,19 +256,6 @@ export function DevelopersTable({
                     />
                   </TableCell>
                 </TableRow>
-                {dev.comment && (
-                  <TableRow
-                    className={`cursor-pointer hover:bg-muted/50 border-t-0 ${subscriber || dev.salesStatus === "client" ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""}`}
-                    onClick={() => onSelectDeveloper(dev)}
-                  >
-                    <TableCell colSpan={6} className="pt-0 pb-2">
-                      <span className="inline-block text-[11px] text-muted-foreground bg-muted/60 rounded px-2 py-px leading-snug">
-                        {dev.comment}
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                )}
-                </React.Fragment>
               )
             })}
           </TableBody>
