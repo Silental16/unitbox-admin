@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { LoginForm } from "@/components/auth/login-form"
 
 export default function LoginPage() {
@@ -9,13 +8,13 @@ export default function LoginPage() {
           href="#"
           className="flex items-center justify-center self-center"
         >
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="/unitbox.svg"
             alt="Unitbox"
             width={160}
             height={32}
             className="h-8 w-auto dark:invert"
-            priority
           />
         </a>
         <LoginForm />

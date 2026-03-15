@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
@@ -64,13 +63,21 @@ export function AppSidebar({
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/developers">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/unitbox-icon.svg"
+                  alt="Unitbox"
+                  width={32}
+                  height={32}
+                  className="size-8 dark:invert"
+                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="/unitbox.svg"
                   alt="Unitbox"
                   width={120}
                   height={24}
-                  className="h-6 w-auto dark:invert"
-                  priority
+                  className="h-5 w-auto dark:invert group-data-[collapsible=icon]:hidden"
                 />
               </Link>
             </SidebarMenuButton>
