@@ -59,6 +59,14 @@ npm run lint   # ESLint
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
+## UI Rules
+
+- **ONLY use shadcn/ui components.** No custom UI — everything must be built from shadcn primitives.
+- If something can't be done with shadcn — ask the user first before writing custom code.
+- Always use `/shadcn-design` skill patterns for composition (cards, tables, forms, dashboards).
+- Always use `/shadcn` skill when adding or debugging components.
+- Radix UI is OK only as the foundation under shadcn (it's already there). Don't use raw Radix directly.
+
 ## Important: Do NOT confuse with
 
 - `../catalog/` — Unitbox product catalog (NestJS + React + Mantine, PostgreSQL in Docker). That's where AI training fills real estate projects.
