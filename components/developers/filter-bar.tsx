@@ -24,7 +24,8 @@ export type OriginFilter = "all" | "eu" | "ru" | "au" | "int"
 export type AgentFilter = "all" | "has-agent" | "no-agent"
 export type ScaleFilter = "all" | "large" | "medium" | "small"
 export type ResearchFilter = "all" | "not_started" | "outdated" | "ready" | "completed"
-export type SortOption = "activeUnits" | "icpScore" | "name" | "projects"
+export type SortColumn = "activeUnits" | "icpScore" | "name" | "projects"
+export type SortOption = { column: SortColumn; direction: "asc" | "desc" }
 
 interface FilterBarProps {
   search: string

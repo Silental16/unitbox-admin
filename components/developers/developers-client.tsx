@@ -27,7 +27,7 @@ export function DevelopersClient({
   const [scale, setScale] = useState<ScaleFilter>("all")
   const [research, setResearch] = useState<ResearchFilter>("all")
   const [salesFilter, setSalesFilter] = useState<SalesStatus[]>([])
-  const [sort, setSort] = useState<SortOption>("activeUnits")
+  const [sort, setSort] = useState<SortOption>({ column: "activeUnits", direction: "desc" })
   const [selectedDeveloper, setSelectedDeveloper] = useState<Developer | null>(null)
   const [sheetOpen, setSheetOpen] = useState(false)
 
@@ -91,15 +91,16 @@ export function DevelopersClient({
     }
 
     result.sort((a, b) => {
-      switch (sort) {
+      const dir = sort.direction === "asc" ? 1 : -1
+      switch (sort.column) {
         case "activeUnits":
-          return b.activeUnits - a.activeUnits
+          return (a.activeUnits - b.activeUnits) * dir
         case "icpScore":
-          return calculateIcpScore(b) - calculateIcpScore(a)
+          return (calculateIcpScore(a) - calculateIcpScore(b)) * dir
         case "name":
-          return a.name.localeCompare(b.name)
+          return a.name.localeCompare(b.name) * dir
         case "projects":
-          return b.projects - a.projects
+          return (a.projects - b.projects) * dir
         default:
           return 0
       }

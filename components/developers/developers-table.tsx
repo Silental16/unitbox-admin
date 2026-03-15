@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/tooltip"
 import type { Developer, ResearchStatus } from "@/lib/data/developers"
 import { SALES_STATUSES } from "@/lib/data/developers"
-import type { SortOption } from "@/components/developers/filter-bar"
+import type { SortOption, SortColumn } from "@/components/developers/filter-bar"
 import {
   calculateIcpScore,
   getScoreColor,
@@ -51,6 +51,13 @@ interface DevelopersTableProps {
   onResearchStatusChange: (developerId: string, status: ResearchStatus) => void
 }
 
+function toggleSort(column: SortColumn, current: SortOption, defaultDir: "asc" | "desc" = "desc"): SortOption {
+  if (current.column === column) {
+    return { column, direction: current.direction === "asc" ? "desc" : "asc" }
+  }
+  return { column, direction: defaultDir }
+}
+
 function originBadgeVariant(tag: string) {
   switch (tag) {
     case "eu":
@@ -73,9 +80,9 @@ function originLabel(tag: string) {
   }
 }
 
-function SortIcon({ column, current }: { column: SortOption; current: SortOption }) {
-  if (column !== current) return null
-  return column === "name" ? (
+function SortIcon({ column, current }: { column: SortColumn; current: SortOption }) {
+  if (column !== current.column) return null
+  return current.direction === "asc" ? (
     <ArrowUpIcon className="size-3.5" />
   ) : (
     <ArrowDownIcon className="size-3.5" />
@@ -128,7 +135,7 @@ export function DevelopersTable({
             <TableRow>
               <TableHead
                 className="cursor-pointer select-none"
-                onClick={() => onSortChange("name")}
+                onClick={() => onSortChange(toggleSort("name", sort, "asc"))}
               >
                 <span className="inline-flex items-center gap-1">
                   Developer
@@ -137,7 +144,7 @@ export function DevelopersTable({
               </TableHead>
               <TableHead
                 className="text-right cursor-pointer select-none"
-                onClick={() => onSortChange("activeUnits")}
+                onClick={() => onSortChange(toggleSort("activeUnits", sort))}
               >
                 <span className="inline-flex items-center justify-end gap-1 w-full">
                   Units
@@ -146,7 +153,7 @@ export function DevelopersTable({
               </TableHead>
               <TableHead
                 className="text-right cursor-pointer select-none"
-                onClick={() => onSortChange("projects")}
+                onClick={() => onSortChange(toggleSort("projects", sort))}
               >
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -161,7 +168,7 @@ export function DevelopersTable({
               <TableHead>Price Range</TableHead>
               <TableHead
                 className="cursor-pointer select-none"
-                onClick={() => onSortChange("icpScore")}
+                onClick={() => onSortChange(toggleSort("icpScore", sort))}
               >
                 <span className="inline-flex items-center gap-1">
                   ICP Score
