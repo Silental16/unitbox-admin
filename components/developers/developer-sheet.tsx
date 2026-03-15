@@ -339,6 +339,18 @@ export function DeveloperSheet({
 
                             {/* Tags */}
                             <div className="flex flex-wrap items-center gap-1">
+                              {project.completion && (
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                  <CalendarIcon className="size-2.5 shrink-0" />
+                                  {project.completion}
+                                </span>
+                              )}
+                              {project.units && (
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                  <LayersIcon className="size-2.5 shrink-0" />
+                                  {project.units}
+                                </span>
+                              )}
                               {project.location && (
                                 <a
                                   href={project.mapUrl || `https://www.google.com/maps/search/${encodeURIComponent(project.location + ", Bali")}`}
@@ -356,22 +368,10 @@ export function DeveloperSheet({
                                   {project.type}
                                 </span>
                               )}
-                              {project.units && (
-                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
-                                  <LayersIcon className="size-2.5 shrink-0" />
-                                  {project.units}
-                                </span>
-                              )}
                               {project.price && (
                                 <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
                                   <DollarSignIcon className="size-2.5 shrink-0" />
                                   {project.price}
-                                </span>
-                              )}
-                              {project.completion && (
-                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
-                                  <CalendarIcon className="size-2.5 shrink-0" />
-                                  {project.completion}
                                 </span>
                               )}
                               {project.roi && (
