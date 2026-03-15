@@ -59,8 +59,8 @@ export function AppSidebar({
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="px-3 pt-4 pb-2 group-data-[collapsible=icon]:px-0">
-        <div className="flex items-center gap-2 overflow-hidden group-data-[collapsible=icon]:justify-center">
+      <SidebarHeader className="p-3">
+        <div className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/unitbox-icon.svg"
@@ -71,7 +71,7 @@ export function AppSidebar({
           <img
             src="/unitbox-wordmark.svg"
             alt="Unitbox"
-            className="h-[18px] w-auto dark:invert transition-[opacity,margin] duration-200 ease-in-out group-data-[collapsible=icon]:opacity-0 group-data-[collapsible=icon]:-ml-2"
+            className="h-[18px] w-auto dark:invert transition-opacity duration-200 group-data-[collapsible=icon]:hidden"
           />
         </div>
       </SidebarHeader>
