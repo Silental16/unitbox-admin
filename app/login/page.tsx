@@ -1,4 +1,4 @@
-import { Building2Icon } from "lucide-react"
+import Image from "next/image"
 import { LoginForm } from "@/components/auth/login-form"
 
 export default function LoginPage() {
@@ -7,12 +7,16 @@ export default function LoginPage() {
       <div className="flex w-full max-w-sm flex-col gap-6">
         <a
           href="#"
-          className="flex items-center gap-2 self-center font-medium"
+          className="flex items-center justify-center self-center"
         >
-          <div className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <Building2Icon className="size-4" />
-          </div>
-          Unitbox
+          <Image
+            src="/unitbox.svg"
+            alt="Unitbox"
+            width={160}
+            height={32}
+            className="h-8 w-auto dark:invert"
+            priority
+          />
         </a>
         <LoginForm />
       </div>

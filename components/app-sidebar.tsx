@@ -1,9 +1,9 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
-  Building2Icon,
   EyeIcon,
   SunIcon,
   MoonIcon,
@@ -64,15 +64,14 @@ export function AppSidebar({
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/developers">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                  <Building2Icon className="size-4" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Unitbox</span>
-                  <span className="truncate text-xs text-muted-foreground">
-                    BD Pipeline
-                  </span>
-                </div>
+                <Image
+                  src="/unitbox.svg"
+                  alt="Unitbox"
+                  width={120}
+                  height={24}
+                  className="h-6 w-auto dark:invert"
+                  priority
+                />
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
