@@ -40,27 +40,21 @@ interface DeveloperSheetProps {
 
 function statusBadge(status: string) {
   switch (status) {
+    case "presale":
+      return (
+        <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+          Presale
+        </Badge>
+      )
+    case "building":
     case "construction":
       return (
         <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
           Building
         </Badge>
       )
-    case "offplan":
-      return (
-        <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-          Off-plan
-        </Badge>
-      )
     case "completed":
       return <Badge variant="secondary">Completed</Badge>
-    case "sold out":
-    case "soldout":
-      return (
-        <Badge className="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300">
-          Sold Out
-        </Badge>
-      )
     default:
       return <Badge variant="outline">{status}</Badge>
   }
@@ -233,7 +227,18 @@ export function DeveloperSheet({
               <CardContent className="!px-0">
                 <Table className="table-fixed">
                   <TableBody>
-                    {developer.projectList.map((project, i) => (
+                    {[...developer.projectList]
+                      .sort((a, b) => {
+                        const order: Record<string, number> = { presale: 0, building: 1, completed: 2 }
+                        const sa = order[a.status] ?? 1
+                        const sb = order[b.status] ?? 1
+                        if (sa !== sb) return sa - sb
+                        if (!a.completion && !b.completion) return 0
+                        if (!a.completion) return 1
+                        if (!b.completion) return -1
+                        return b.completion.localeCompare(a.completion)
+                      })
+                      .map((project, i) => (
                       <TableRow key={i}>
                         <TableCell className="py-2.5 whitespace-normal">
                           <div className="space-y-1">

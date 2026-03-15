@@ -23,6 +23,39 @@ import {
   getScoreColor,
   getScoreProgressColor,
 } from "@/lib/data/scoring"
+import type { ResearchStatus } from "@/lib/data/developers"
+
+function researchIndicator(status: ResearchStatus) {
+  switch (status) {
+    case "completed":
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className="inline-block size-2 rounded-full bg-emerald-500 shrink-0" />
+          </TooltipTrigger>
+          <TooltipContent>Research completed</TooltipContent>
+        </Tooltip>
+      )
+    case "outdated":
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className="inline-block size-2 rounded-full bg-amber-500 shrink-0" />
+          </TooltipTrigger>
+          <TooltipContent>Research outdated</TooltipContent>
+        </Tooltip>
+      )
+    default:
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className="inline-block size-2 rounded-full bg-slate-300 dark:bg-slate-600 shrink-0" />
+          </TooltipTrigger>
+          <TooltipContent>Not researched</TooltipContent>
+        </Tooltip>
+      )
+  }
+}
 
 const SUBSCRIBERS = [
   "Alex Villas", "BREIG", "HQC", "NEXA", "Everville", "TEUS",
@@ -146,6 +179,7 @@ export function DevelopersTable({
                 >
                   <TableCell>
                     <div className="flex items-center gap-2">
+                      {researchIndicator(dev.researchStatus)}
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
                           <span className={`font-medium truncate max-w-[220px] ${subscriber ? "text-emerald-700 dark:text-emerald-400" : ""}`}>

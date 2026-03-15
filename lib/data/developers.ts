@@ -1,4 +1,6 @@
-export type ProjectStatus = "construction" | "offplan" | "completed" | "sold out" | "soldout"
+export type ProjectStatus = "presale" | "building" | "completed"
+
+export type ResearchStatus = "not_started" | "completed" | "outdated"
 
 export interface DeveloperProject {
   name: string
@@ -33,6 +35,7 @@ export interface Developer {
   projectList: DeveloperProject[]
   contacts: Record<string, string>
   pitch: string
+  researchStatus: ResearchStatus
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -57,5 +60,6 @@ export function mapRowToDeveloper(row: Record<string, any>): Developer {
     projectList: (row.project_list ?? []) as DeveloperProject[],
     contacts: (row.contacts ?? {}) as Record<string, string>,
     pitch: (row.pitch ?? "") as string,
+    researchStatus: (row.research_status ?? "not_started") as ResearchStatus,
   }
 }
