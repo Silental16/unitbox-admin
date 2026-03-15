@@ -214,70 +214,76 @@ export function DeveloperSheet({
         </div>
 
         {/* Header */}
-        <SheetHeader className="px-6 pt-6 pb-4 pr-12">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              <SheetTitle className="text-lg">{developer.name}</SheetTitle>
-              <SheetDescription className="mt-1">
-                {developer.origin} · {developer.founder}
-              </SheetDescription>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              {/* Sales Status */}
-              {(() => {
-                const sales = SALES_STATUSES.find((s) => s.value === developer.salesStatus) ?? SALES_STATUSES[0]
-                return (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${sales.color}`}>
-                        {sales.label}
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      {SALES_STATUSES.map((s) => (
-                        <DropdownMenuItem
-                          key={s.value}
-                          onClick={() => onSalesStatusChange(developer.id, s.value)}
-                          className="gap-2"
-                        >
-                          <span className={`inline-block rounded px-1.5 py-px text-[10px] ${s.color}`}>{s.label}</span>
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                )
-              })()}
-              {/* Research Status */}
-              {(() => {
-                const opt = RESEARCH_OPTIONS.find((o) => o.value === developer.researchStatus) ?? RESEARCH_OPTIONS[0]
-                return (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${opt.bg} ${opt.text}`}>
-                        <span className={`size-1.5 rounded-full shrink-0 ${opt.dot}`} />
-                        {opt.label}
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      {RESEARCH_OPTIONS.map((o) => (
-                        <DropdownMenuItem
-                          key={o.value}
-                          onClick={() => onResearchStatusChange(developer.id, o.value)}
-                          className="gap-2"
-                        >
-                          <span className={`size-1.5 rounded-full ${o.dot}`} />
-                          {o.label}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                )
-              })()}
-              <Badge className={`tabular-nums ${icpBadgeClass(tier)}`}>
-                ICP {score}
-              </Badge>
-            </div>
+        <SheetHeader className="px-6 pt-6 pb-4 pr-12 space-y-3">
+          {/* Row 1: Title */}
+          <SheetTitle className="text-lg">{developer.name}</SheetTitle>
+
+          {/* Row 2: Tags */}
+          <div className="flex flex-wrap items-center gap-1.5">
+            {/* Sales Status */}
+            {(() => {
+              const sales = SALES_STATUSES.find((s) => s.value === developer.salesStatus) ?? SALES_STATUSES[0]
+              return (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${sales.color}`}>
+                      {sales.label}
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+                    {SALES_STATUSES.map((s) => (
+                      <DropdownMenuItem
+                        key={s.value}
+                        onClick={() => onSalesStatusChange(developer.id, s.value)}
+                        className="gap-2"
+                      >
+                        <span className={`inline-block rounded px-1.5 py-px text-[10px] ${s.color}`}>{s.label}</span>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )
+            })()}
+            {/* Research Status */}
+            {(() => {
+              const opt = RESEARCH_OPTIONS.find((o) => o.value === developer.researchStatus) ?? RESEARCH_OPTIONS[0]
+              return (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${opt.bg} ${opt.text}`}>
+                      <span className={`size-1.5 rounded-full shrink-0 ${opt.dot}`} />
+                      {opt.label}
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+                    {RESEARCH_OPTIONS.map((o) => (
+                      <DropdownMenuItem
+                        key={o.value}
+                        onClick={() => onResearchStatusChange(developer.id, o.value)}
+                        className="gap-2"
+                      >
+                        <span className={`size-1.5 rounded-full ${o.dot}`} />
+                        {o.label}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )
+            })()}
+            <Badge className={`tabular-nums ${icpBadgeClass(tier)}`}>
+              ICP {score}
+            </Badge>
+            {developer.origin && (
+              <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
+                {developer.origin}
+              </span>
+            )}
           </div>
+
+          {/* Row 3: Description (founder) */}
+          <SheetDescription className="text-xs leading-relaxed">
+            {developer.founder}
+          </SheetDescription>
         </SheetHeader>
 
         <Separator />
