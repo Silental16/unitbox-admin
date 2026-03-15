@@ -196,7 +196,8 @@ export function DevelopersTable({
                         {dev.salesStatus && dev.salesStatus !== "lead" && (() => {
                           const s = SALES_STATUSES.find((st) => st.value === dev.salesStatus)
                           return s ? (
-                            <span className={`inline-flex items-center rounded px-1.5 py-px text-[10px] font-medium ${s.color}`}>
+                            <span className={`inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-medium ${s.bg} ${s.text}`}>
+                              <span className={`size-1.5 rounded-full ${s.dot}`} />
                               {s.label}
                             </span>
                           ) : null

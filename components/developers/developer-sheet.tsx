@@ -42,8 +42,6 @@ const RESEARCH_OPTIONS: { value: ResearchStatus; label: string; dot: string; bg:
   { value: "completed", label: "Done", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
 ]
 
-const LANGUAGE_OPTIONS = ["EN", "RU", "ID", "FR", "DE", "ES", "IT", "PT", "ZH", "JA", "KO", "AR", "TR", "UK", "PL", "NL"]
-
 const MIN_WIDTH = 400
 const MAX_WIDTH = 900
 const DEFAULT_WIDTH = 500
@@ -54,7 +52,6 @@ interface DeveloperSheetProps {
   onOpenChange: (open: boolean) => void
   onResearchStatusChange: (developerId: string, status: ResearchStatus) => void
   onSalesStatusChange: (developerId: string, status: SalesStatus) => void
-  onLanguagesChange: (developerId: string, languages: string[]) => void
 }
 
 function statusBadge(status: string) {
@@ -116,7 +113,6 @@ export function DeveloperSheet({
   onOpenChange,
   onResearchStatusChange,
   onSalesStatusChange,
-  onLanguagesChange: handleLanguagesChange,
 }: DeveloperSheetProps) {
   const [width, setWidth] = useState(DEFAULT_WIDTH)
   const [dragging, setDragging] = useState(false)
@@ -226,7 +222,8 @@ export function DeveloperSheet({
               return (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${sales.color}`}>
+                    <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${sales.bg} ${sales.text}`}>
+                      <span className={`size-1.5 rounded-full shrink-0 ${sales.dot}`} />
                       {sales.label}
                     </button>
                   </DropdownMenuTrigger>
@@ -237,7 +234,8 @@ export function DeveloperSheet({
                         onClick={() => onSalesStatusChange(developer.id, s.value)}
                         className="gap-2"
                       >
-                        <span className={`inline-block rounded px-1.5 py-px text-[10px] ${s.color}`}>{s.label}</span>
+                        <span className={`size-1.5 rounded-full ${s.dot}`} />
+                        {s.label}
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
@@ -295,34 +293,6 @@ export function DeveloperSheet({
               {kvRows.map((row) => (
                 <KVRow key={row.label} {...row} />
               ))}
-            </div>
-
-            {/* Languages */}
-            <div>
-              <p className="text-xs font-medium text-muted-foreground mb-2">Languages</p>
-              <div className="flex flex-wrap gap-1.5">
-                {LANGUAGE_OPTIONS.map((lang) => {
-                  const active = developer.languages.includes(lang)
-                  return (
-                    <button
-                      key={lang}
-                      onClick={() => {
-                        const next = active
-                          ? developer.languages.filter((l) => l !== lang)
-                          : [...developer.languages, lang]
-                        handleLanguagesChange(developer.id, next)
-                      }}
-                      className={`rounded-md px-2 py-0.5 text-xs font-medium transition-colors cursor-pointer ${
-                        active
-                          ? "bg-foreground text-background"
-                          : "bg-muted text-muted-foreground hover:bg-muted/80"
-                      }`}
-                    >
-                      {lang}
-                    </button>
-                  )
-                })}
-              </div>
             </div>
 
             {/* Projects Table */}

@@ -4,12 +4,12 @@ export type ResearchStatus = "not_started" | "outdated" | "ready" | "completed"
 
 export type SalesStatus = "lead" | "intro_sent" | "meeting_done" | "offer_sent" | "client"
 
-export const SALES_STATUSES: { value: SalesStatus; label: string; color: string }[] = [
-  { value: "lead", label: "Lead", color: "bg-muted text-muted-foreground" },
-  { value: "intro_sent", label: "Intro Sent", color: "bg-blue-100 text-blue-700" },
-  { value: "meeting_done", label: "Meeting Done", color: "bg-amber-100 text-amber-700" },
-  { value: "offer_sent", label: "Offer Sent", color: "bg-purple-100 text-purple-700" },
-  { value: "client", label: "Client", color: "bg-emerald-100 text-emerald-700" },
+export const SALES_STATUSES: { value: SalesStatus; label: string; dot: string; bg: string; text: string }[] = [
+  { value: "lead", label: "Lead", dot: "bg-slate-300", bg: "bg-muted", text: "text-muted-foreground" },
+  { value: "intro_sent", label: "Intro Sent", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
+  { value: "meeting_done", label: "Meeting Done", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
+  { value: "offer_sent", label: "Offer Sent", dot: "bg-purple-500", bg: "bg-purple-100 dark:bg-purple-900/30", text: "text-purple-700 dark:text-purple-400" },
+  { value: "client", label: "Client", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
 ]
 
 export interface DeveloperProject {

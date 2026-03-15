@@ -108,7 +108,8 @@ export function FilterBar({
               onCheckedChange={() => toggleSalesStatus(s.value)}
               onSelect={(e) => e.preventDefault()}
             >
-              <span className={`inline-block rounded px-1.5 py-px text-[10px] mr-1 ${s.color}`}>{s.label}</span>
+              <span className={`size-1.5 rounded-full ${s.dot}`} />
+              {s.label}
             </DropdownMenuCheckboxItem>
           ))}
         </DropdownMenuContent>
