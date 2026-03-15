@@ -9,8 +9,8 @@ export function countActiveUnits(d: Developer): number {
   for (const p of d.projectList) {
     if (p.status !== "building" && p.status !== "presale") continue
     if (!p.units) continue
-    // Extract first number from strings like "50", "120 (88 studios + 32 1BR)", "65+ rooms", "TBD"
-    const match = p.units.match(/(\d+)/)
+    const unitsStr = String(p.units)
+    const match = unitsStr.match(/(\d+)/)
     if (match) total += parseInt(match[1], 10)
   }
   return total
