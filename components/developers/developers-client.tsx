@@ -161,6 +161,7 @@ export function DevelopersClient({
         onSortChange={setSort}
         onSelectDeveloper={handleSelectDeveloper}
         onResearchStatusChange={handleResearchStatusChange}
+        onSalesStatusChange={handleSalesStatusChange}
       />
 
       <DeveloperSheet

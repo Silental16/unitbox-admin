@@ -24,7 +24,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import type { Developer, ResearchStatus } from "@/lib/data/developers"
+import type { Developer, ResearchStatus, SalesStatus } from "@/lib/data/developers"
 import { SALES_STATUSES } from "@/lib/data/developers"
 import type { SortOption, SortColumn } from "@/components/developers/filter-bar"
 import {
@@ -53,6 +53,7 @@ interface DevelopersTableProps {
   onSortChange: (sort: SortOption) => void
   onSelectDeveloper: (developer: Developer) => void
   onResearchStatusChange: (developerId: string, status: ResearchStatus) => void
+  onSalesStatusChange: (developerId: string, status: SalesStatus) => void
 }
 
 function toggleSort(column: SortColumn, current: SortOption, defaultDir: "asc" | "desc" = "desc"): SortOption {
@@ -124,12 +125,41 @@ function ResearchStatusSelect({ status, onChange }: { status: ResearchStatus; on
   )
 }
 
+const SALES_STATUS_CONFIG: Record<string, { label: string; dot: string; bg: string; text: string }> = Object.fromEntries(
+  SALES_STATUSES.map((s) => [s.value, { label: s.label, dot: s.dot, bg: s.bg, text: s.text }])
+)
+
+function SalesStatusSelect({ status, onChange }: { status: SalesStatus; onChange: (v: SalesStatus) => void }) {
+  const config = SALES_STATUS_CONFIG[status] ?? SALES_STATUS_CONFIG.lead
+  return (
+    <Select value={status} onValueChange={(v) => onChange(v as SalesStatus)}>
+      <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
+        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
+          <span className={`size-1.5 rounded-full shrink-0 ${config.dot}`} />
+          {config.label}
+        </span>
+      </SelectTrigger>
+      <SelectContent align="end">
+        {SALES_STATUSES.map((s) => (
+          <SelectItem key={s.value} value={s.value}>
+            <span className="inline-flex items-center gap-1.5">
+              <span className={`size-1.5 rounded-full ${s.dot}`} />
+              {s.label}
+            </span>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
 export function DevelopersTable({
   developers,
   sort,
   onSortChange,
   onSelectDeveloper,
   onResearchStatusChange,
+  onSalesStatusChange,
 }: DevelopersTableProps) {
   return (
     <TooltipProvider>
@@ -179,6 +209,7 @@ export function DevelopersTable({
                   <SortIcon column="icpScore" current={sort} />
                 </span>
               </TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Research</TableHead>
             </TableRow>
           </TableHeader>
@@ -246,6 +277,12 @@ export function DevelopersTable({
                     </div>
                   </TableCell>
                   <TableCell className="align-top" onClick={(e) => e.stopPropagation()}>
+                    <SalesStatusSelect
+                      status={dev.salesStatus}
+                      onChange={(v) => onSalesStatusChange(dev.id, v)}
+                    />
+                  </TableCell>
+                  <TableCell className="align-top" onClick={(e) => e.stopPropagation()}>
                     <ResearchStatusSelect
                       status={dev.researchStatus}
                       onChange={(v) => onResearchStatusChange(dev.id, v)}
@@ -254,7 +291,7 @@ export function DevelopersTable({
                 </tr>
                 {dev.comment && (
                   <tr className="group-hover:bg-muted/50 transition-colors">
-                    <td colSpan={6} className="px-4 pt-0 pb-2">
+                    <td colSpan={7} className="px-4 pt-0 pb-2">
                       <span className="inline-block text-[11px] text-muted-foreground bg-muted/60 rounded px-1.5 py-px leading-snug">
                         {dev.comment}
                       </span>
