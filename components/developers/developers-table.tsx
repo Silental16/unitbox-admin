@@ -245,16 +245,16 @@ export function DevelopersTable({
                       </p>
                     </div>
                   </TableCell>
-                  <TableCell className="text-right tabular-nums font-medium align-top">
+                  <TableCell className="text-right tabular-nums font-medium">
                     {activeUnits.toLocaleString()}
                   </TableCell>
-                  <TableCell className="text-right tabular-nums align-top">
+                  <TableCell className="text-right tabular-nums">
                     <span className="font-medium">{activeProj}</span>
                     <span className="text-muted-foreground/50">/</span>
                     <span className="text-muted-foreground">{totalProj}</span>
                   </TableCell>
-                  <TableCell className="text-sm align-top">{dev.priceRange}</TableCell>
-                  <TableCell className="align-top">
+                  <TableCell className="text-sm">{dev.priceRange}</TableCell>
+                  <TableCell className="">
                     <div className="flex items-center gap-2">
                       <span className={`text-sm font-semibold tabular-nums ${getScoreColor(score)}`}>
                         {score}
@@ -267,13 +267,13 @@ export function DevelopersTable({
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="align-top" onClick={(e) => e.stopPropagation()}>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
                     <SalesStatusSelect
                       status={dev.salesStatus}
                       onChange={(v) => onSalesStatusChange(dev.id, v)}
                     />
                   </TableCell>
-                  <TableCell className="align-top" onClick={(e) => e.stopPropagation()}>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
                     <ResearchStatusSelect
                       status={dev.researchStatus}
                       onChange={(v) => onResearchStatusChange(dev.id, v)}
