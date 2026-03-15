@@ -182,7 +182,6 @@ export function DevelopersTable({
               <TableHead>Research</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
             {developers.map((dev) => {
               const score = calculateIcpScore(dev)
               const activeUnits = countActiveUnits(dev)
@@ -190,12 +189,14 @@ export function DevelopersTable({
               const completedProj = countCompletedProjects(dev)
               const totalProj = dev.projectList.length
               const subscriber = isSubscriber(dev.name)
+              const highlight = subscriber || dev.salesStatus === "client" ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""
               return (
-                <TableRow
-                  key={dev.id}
-                  className={`cursor-pointer hover:bg-muted/50 ${subscriber || dev.salesStatus === "client" ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""}`}
-                  onClick={() => onSelectDeveloper(dev)}
-                >
+              <tbody
+                key={dev.id}
+                className={`group cursor-pointer [&>tr]:border-b-0 [&:not(:last-child)]:border-b [&:not(:last-child)]:border-border ${highlight}`}
+                onClick={() => onSelectDeveloper(dev)}
+              >
+                <tr className="group-hover:bg-muted/50 transition-colors">
                   <TableCell>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
@@ -220,23 +221,18 @@ export function DevelopersTable({
                       <p className="text-xs text-muted-foreground truncate max-w-[240px]">
                         {dev.founder}
                       </p>
-                      {dev.comment && (
-                        <span className="inline-block text-[11px] text-muted-foreground bg-muted/60 rounded px-1.5 py-px mt-0.5 leading-snug">
-                          {dev.comment}
-                        </span>
-                      )}
                     </div>
                   </TableCell>
-                  <TableCell className="text-right tabular-nums font-medium">
+                  <TableCell className="text-right tabular-nums font-medium align-top">
                     {activeUnits.toLocaleString()}
                   </TableCell>
-                  <TableCell className="text-right tabular-nums">
+                  <TableCell className="text-right tabular-nums align-top">
                     <span className="font-medium">{activeProj}</span>
                     <span className="text-muted-foreground/50">/</span>
                     <span className="text-muted-foreground">{totalProj}</span>
                   </TableCell>
-                  <TableCell className="text-sm">{dev.priceRange}</TableCell>
-                  <TableCell>
+                  <TableCell className="text-sm align-top">{dev.priceRange}</TableCell>
+                  <TableCell className="align-top">
                     <div className="flex items-center gap-2">
                       <span className={`text-sm font-semibold tabular-nums ${getScoreColor(score)}`}>
                         {score}
@@ -249,16 +245,25 @@ export function DevelopersTable({
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell onClick={(e) => e.stopPropagation()}>
+                  <TableCell className="align-top" onClick={(e) => e.stopPropagation()}>
                     <ResearchStatusSelect
                       status={dev.researchStatus}
                       onChange={(v) => onResearchStatusChange(dev.id, v)}
                     />
                   </TableCell>
-                </TableRow>
+                </tr>
+                {dev.comment && (
+                  <tr className="group-hover:bg-muted/50 transition-colors">
+                    <td colSpan={6} className="px-4 pt-0 pb-2">
+                      <span className="inline-block text-[11px] text-muted-foreground bg-muted/60 rounded px-1.5 py-px leading-snug">
+                        {dev.comment}
+                      </span>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
               )
             })}
-          </TableBody>
         </Table>
       </div>
     </TooltipProvider>
