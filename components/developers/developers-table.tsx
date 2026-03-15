@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowDownIcon, ArrowUpIcon, SparklesIcon } from "lucide-react"
+import { ArrowDownIcon, ArrowUpIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import {
   Select,
@@ -201,12 +201,6 @@ export function DevelopersTable({
                             </span>
                           ) : null
                         })()}
-                        {dev.isNew && (
-                          <Badge variant="outline" className="gap-1 text-[10px]">
-                            <SparklesIcon className="size-2.5" />
-                            New
-                          </Badge>
-                        )}
                       </div>
                       <p className="text-xs text-muted-foreground truncate max-w-[240px]">
                         {dev.founder}

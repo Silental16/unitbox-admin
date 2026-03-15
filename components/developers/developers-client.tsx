@@ -49,6 +49,15 @@ export function DevelopersClient({
     await supabase.from("developers").update({ sales_status: status }).eq("id", developerId)
   }, [])
 
+  const handleLanguagesChange = useCallback(async (developerId: string, languages: string[]) => {
+    setDevelopers((prev) =>
+      prev.map((d) => d.id === developerId ? { ...d, languages } : d)
+    )
+    setSelectedDeveloper((prev) => prev?.id === developerId ? { ...prev, languages } : prev)
+    const supabase = createClient()
+    await supabase.from("developers").update({ languages }).eq("id", developerId)
+  }, [])
+
   const filteredDevelopers = useMemo(() => {
     let result = [...developers]
 
@@ -153,6 +162,7 @@ export function DevelopersClient({
         onOpenChange={setSheetOpen}
         onResearchStatusChange={handleResearchStatusChange}
         onSalesStatusChange={handleSalesStatusChange}
+        onLanguagesChange={handleLanguagesChange}
       />
     </div>
   )
