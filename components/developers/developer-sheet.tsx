@@ -25,8 +25,21 @@ import {
   TableCell,
   TableRow,
 } from "@/components/ui/table"
-import type { Developer } from "@/lib/data/developers"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select"
+import type { Developer, ResearchStatus } from "@/lib/data/developers"
 import { calculateIcpScore, getScoreTier } from "@/lib/data/scoring"
+
+const RESEARCH_OPTIONS: { value: ResearchStatus; label: string; dot: string; bg: string; text: string }[] = [
+  { value: "not_started", label: "Not Started", dot: "bg-slate-300", bg: "bg-muted", text: "text-muted-foreground" },
+  { value: "outdated", label: "Outdated", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
+  { value: "ready", label: "Ready", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
+  { value: "completed", label: "Done", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
+]
 
 const MIN_WIDTH = 400
 const MAX_WIDTH = 900
@@ -36,6 +49,7 @@ interface DeveloperSheetProps {
   developer: Developer | null
   open: boolean
   onOpenChange: (open: boolean) => void
+  onResearchStatusChange: (developerId: string, status: ResearchStatus) => void
 }
 
 function statusBadge(status: string) {
@@ -95,6 +109,7 @@ export function DeveloperSheet({
   developer,
   open,
   onOpenChange,
+  onResearchStatusChange,
 }: DeveloperSheetProps) {
   const [width, setWidth] = useState(DEFAULT_WIDTH)
   const [dragging, setDragging] = useState(false)
@@ -200,9 +215,37 @@ export function DeveloperSheet({
                 {developer.origin} · {developer.founder}
               </SheetDescription>
             </div>
-            <Badge className={`shrink-0 tabular-nums ${icpBadgeClass(tier)}`}>
-              ICP {score}
-            </Badge>
+            <div className="flex items-center gap-2 shrink-0">
+              {(() => {
+                const opt = RESEARCH_OPTIONS.find((o) => o.value === developer.researchStatus) ?? RESEARCH_OPTIONS[0]
+                return (
+                  <Select
+                    value={developer.researchStatus}
+                    onValueChange={(v) => onResearchStatusChange(developer.id, v as ResearchStatus)}
+                  >
+                    <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
+                      <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${opt.bg} ${opt.text}`}>
+                        <span className={`size-1.5 rounded-full shrink-0 ${opt.dot}`} />
+                        {opt.label}
+                      </span>
+                    </SelectTrigger>
+                    <SelectContent align="end">
+                      {RESEARCH_OPTIONS.map((o) => (
+                        <SelectItem key={o.value} value={o.value}>
+                          <span className="inline-flex items-center gap-1.5">
+                            <span className={`size-1.5 rounded-full ${o.dot}`} />
+                            {o.label}
+                          </span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )
+              })()}
+              <Badge className={`tabular-nums ${icpBadgeClass(tier)}`}>
+                ICP {score}
+              </Badge>
+            </div>
           </div>
         </SheetHeader>
 

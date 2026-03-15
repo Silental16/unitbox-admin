@@ -141,6 +141,7 @@ export function DevelopersClient({
         developer={selectedDeveloper}
         open={sheetOpen}
         onOpenChange={setSheetOpen}
+        onResearchStatusChange={handleResearchStatusChange}
       />
     </div>
   )
