@@ -1,18 +1,35 @@
 import type { Developer } from "./developers"
 
 /**
- * ICP Score (0-100): Based purely on active units under construction.
- * More units being built = higher value as Unitbox client.
+ * Counts active units from project_list (building + presale projects only).
+ * Parses the units string to extract the leading number.
+ */
+export function countActiveUnits(d: Developer): number {
+  let total = 0
+  for (const p of d.projectList) {
+    if (p.status !== "building" && p.status !== "presale") continue
+    if (!p.units) continue
+    // Extract first number from strings like "50", "120 (88 studios + 32 1BR)", "65+ rooms", "TBD"
+    const match = p.units.match(/(\d+)/)
+    if (match) total += parseInt(match[1], 10)
+  }
+  return total
+}
+
+/**
+ * ICP Score (0-100): Based on actual active units from project_list data.
+ * Calculated dynamically — not from the static active_units field.
  */
 export function calculateIcpScore(d: Developer): number {
-  if (d.activeUnits >= 500) return 100
-  if (d.activeUnits >= 300) return 90
-  if (d.activeUnits >= 200) return 80
-  if (d.activeUnits >= 100) return 65
-  if (d.activeUnits >= 50) return 50
-  if (d.activeUnits >= 30) return 38
-  if (d.activeUnits >= 15) return 25
-  if (d.activeUnits > 0) return 12
+  const units = countActiveUnits(d)
+  if (units >= 500) return 100
+  if (units >= 300) return 90
+  if (units >= 200) return 80
+  if (units >= 100) return 65
+  if (units >= 50) return 50
+  if (units >= 30) return 38
+  if (units >= 15) return 25
+  if (units > 0) return 12
   return 0
 }
 
