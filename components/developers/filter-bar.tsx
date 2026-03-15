@@ -14,6 +14,7 @@ import {
 export type OriginFilter = "all" | "eu" | "ru" | "au" | "int"
 export type AgentFilter = "all" | "has-agent" | "no-agent"
 export type ScaleFilter = "all" | "large" | "medium" | "small"
+export type ResearchFilter = "all" | "not_started" | "completed" | "outdated"
 export type SortOption = "activeUnits" | "icpScore" | "name" | "projects"
 
 interface FilterBarProps {
@@ -25,6 +26,8 @@ interface FilterBarProps {
   onAgentChange: (value: AgentFilter) => void
   scale: ScaleFilter
   onScaleChange: (value: ScaleFilter) => void
+  research: ResearchFilter
+  onResearchChange: (value: ResearchFilter) => void
 }
 
 export function FilterBar({
@@ -36,6 +39,8 @@ export function FilterBar({
   onAgentChange,
   scale,
   onScaleChange,
+  research,
+  onResearchChange,
 }: FilterBarProps) {
   return (
     <div className="flex flex-wrap items-center gap-3">
@@ -84,6 +89,19 @@ export function FilterBar({
             <SelectItem value="large">Large (100+)</SelectItem>
             <SelectItem value="medium">Medium (20-100)</SelectItem>
             <SelectItem value="small">Small (&lt;20)</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <Select value={research} onValueChange={(v) => onResearchChange(v as ResearchFilter)}>
+        <SelectTrigger className="w-[150px]">
+          <SelectValue placeholder="Research" />
+        </SelectTrigger>
+        <SelectContent position="popper" align="start">
+          <SelectGroup>
+            <SelectItem value="all">All Research</SelectItem>
+            <SelectItem value="not_started">Not Researched</SelectItem>
+            <SelectItem value="completed">Researched</SelectItem>
+            <SelectItem value="outdated">Outdated</SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>

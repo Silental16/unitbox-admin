@@ -8,6 +8,7 @@ import {
   type OriginFilter,
   type AgentFilter,
   type ScaleFilter,
+  type ResearchFilter,
   type SortOption,
 } from "@/components/developers/filter-bar"
 import { DevelopersTable } from "@/components/developers/developers-table"
@@ -22,6 +23,7 @@ export function DevelopersClient({
   const [origin, setOrigin] = useState<OriginFilter>("all")
   const [agent, setAgent] = useState<AgentFilter>("all")
   const [scale, setScale] = useState<ScaleFilter>("all")
+  const [research, setResearch] = useState<ResearchFilter>("all")
   const [sort, setSort] = useState<SortOption>("activeUnits")
   const [selectedDeveloper, setSelectedDeveloper] = useState<Developer | null>(
     null
@@ -52,6 +54,10 @@ export function DevelopersClient({
       result = result.filter((d) => !d.hasAgent)
     }
 
+    if (research !== "all") {
+      result = result.filter((d) => d.researchStatus === research)
+    }
+
     if (scale === "large") {
       result = result.filter((d) => d.activeUnits >= 100)
     } else if (scale === "medium") {
@@ -78,7 +84,7 @@ export function DevelopersClient({
     })
 
     return result
-  }, [developers, search, origin, agent, scale, sort])
+  }, [developers, search, origin, agent, scale, research, sort])
 
   function handleSelectDeveloper(developer: Developer) {
     setSelectedDeveloper(developer)
@@ -106,6 +112,8 @@ export function DevelopersClient({
         onAgentChange={setAgent}
         scale={scale}
         onScaleChange={setScale}
+        research={research}
+        onResearchChange={setResearch}
       />
 
       <DevelopersTable

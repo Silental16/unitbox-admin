@@ -16,46 +16,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import type { Developer } from "@/lib/data/developers"
+import type { Developer, ResearchStatus } from "@/lib/data/developers"
 import type { SortOption } from "@/components/developers/filter-bar"
 import {
   calculateIcpScore,
   getScoreColor,
   getScoreProgressColor,
 } from "@/lib/data/scoring"
-import type { ResearchStatus } from "@/lib/data/developers"
-
-function researchIndicator(status: ResearchStatus) {
-  switch (status) {
-    case "completed":
-      return (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="inline-block size-2 rounded-full bg-emerald-500 shrink-0" />
-          </TooltipTrigger>
-          <TooltipContent>Research completed</TooltipContent>
-        </Tooltip>
-      )
-    case "outdated":
-      return (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="inline-block size-2 rounded-full bg-amber-500 shrink-0" />
-          </TooltipTrigger>
-          <TooltipContent>Research outdated</TooltipContent>
-        </Tooltip>
-      )
-    default:
-      return (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="inline-block size-2 rounded-full bg-slate-300 dark:bg-slate-600 shrink-0" />
-          </TooltipTrigger>
-          <TooltipContent>Not researched</TooltipContent>
-        </Tooltip>
-      )
-  }
-}
 
 const SUBSCRIBERS = [
   "Alex Villas", "BREIG", "HQC", "NEXA", "Everville", "TEUS",
@@ -90,14 +57,10 @@ function originBadgeVariant(tag: string) {
 
 function originLabel(tag: string) {
   switch (tag) {
-    case "eu":
-      return "EU"
-    case "ru":
-      return "RU"
-    case "au":
-      return "AU"
-    default:
-      return "INT"
+    case "eu": return "EU"
+    case "ru": return "RU"
+    case "au": return "AU"
+    default: return "INT"
   }
 }
 
@@ -108,6 +71,32 @@ function SortIcon({ column, current }: { column: SortOption; current: SortOption
   ) : (
     <ArrowDownIcon className="size-3.5" />
   )
+}
+
+function ResearchBadge({ status }: { status: ResearchStatus }) {
+  switch (status) {
+    case "completed":
+      return (
+        <span className="inline-flex items-center gap-1.5 rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+          <span className="size-1.5 rounded-full bg-emerald-500 shrink-0" />
+          Done
+        </span>
+      )
+    case "outdated":
+      return (
+        <span className="inline-flex items-center gap-1.5 rounded-md bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+          <span className="size-1.5 rounded-full bg-amber-500 shrink-0" />
+          Outdated
+        </span>
+      )
+    default:
+      return (
+        <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+          <span className="size-1.5 rounded-full bg-slate-300 dark:bg-slate-600 shrink-0" />
+          Pending
+        </span>
+      )
+  }
 }
 
 export function DevelopersTable({
@@ -164,6 +153,7 @@ export function DevelopersTable({
                   <SortIcon column="icpScore" current={sort} />
                 </span>
               </TableHead>
+              <TableHead>Research</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -173,34 +163,31 @@ export function DevelopersTable({
               const subscriber = isSubscriber(dev.name)
               return (
                 <TableRow
-                  key={dev.name}
+                  key={dev.id}
                   className={`cursor-pointer hover:bg-muted/50 ${subscriber ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""}`}
                   onClick={() => onSelectDeveloper(dev)}
                 >
                   <TableCell>
-                    <div className="flex items-center gap-2">
-                      {researchIndicator(dev.researchStatus)}
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className={`font-medium truncate max-w-[220px] ${subscriber ? "text-emerald-700 dark:text-emerald-400" : ""}`}>
-                            {dev.name}
-                          </span>
-                          <span
-                            className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${originBadgeVariant(dev.originTag)}`}
-                          >
-                            {originLabel(dev.originTag)}
-                          </span>
-                          {dev.isNew && (
-                            <Badge variant="outline" className="gap-1 text-[10px]">
-                              <SparklesIcon className="size-2.5" />
-                              New
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-xs text-muted-foreground truncate max-w-[240px]">
-                          {dev.founder}
-                        </p>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className={`font-medium truncate max-w-[220px] ${subscriber ? "text-emerald-700 dark:text-emerald-400" : ""}`}>
+                          {dev.name}
+                        </span>
+                        <span
+                          className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${originBadgeVariant(dev.originTag)}`}
+                        >
+                          {originLabel(dev.originTag)}
+                        </span>
+                        {dev.isNew && (
+                          <Badge variant="outline" className="gap-1 text-[10px]">
+                            <SparklesIcon className="size-2.5" />
+                            New
+                          </Badge>
+                        )}
                       </div>
+                      <p className="text-xs text-muted-foreground truncate max-w-[240px]">
+                        {dev.founder}
+                      </p>
                     </div>
                   </TableCell>
                   <TableCell className="text-right tabular-nums font-medium">
@@ -214,9 +201,7 @@ export function DevelopersTable({
                   <TableCell className="text-sm">{dev.priceRange}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <span
-                        className={`text-sm font-semibold tabular-nums ${getScoreColor(score)}`}
-                      >
+                      <span className={`text-sm font-semibold tabular-nums ${getScoreColor(score)}`}>
                         {score}
                       </span>
                       <div className="relative h-2 w-16 overflow-hidden rounded-full bg-muted">
@@ -226,6 +211,9 @@ export function DevelopersTable({
                         />
                       </div>
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <ResearchBadge status={dev.researchStatus} />
                   </TableCell>
                 </TableRow>
               )
