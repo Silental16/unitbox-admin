@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { ArrowDownIcon, ArrowUpIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -190,8 +191,8 @@ export function DevelopersTable({
               const totalProj = dev.projectList.length
               const subscriber = isSubscriber(dev.name)
               return (
+                <React.Fragment key={dev.id}>
                 <TableRow
-                  key={dev.id}
                   className={`cursor-pointer hover:bg-muted/50 ${subscriber || dev.salesStatus === "client" ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""}`}
                   onClick={() => onSelectDeveloper(dev)}
                 >
@@ -250,6 +251,20 @@ export function DevelopersTable({
                     />
                   </TableCell>
                 </TableRow>
+                {dev.comment && (
+                <TableRow
+                  key={`${dev.id}-comment`}
+                  className="cursor-pointer hover:bg-muted/50 border-t-0"
+                  onClick={() => onSelectDeveloper(dev)}
+                >
+                  <TableCell colSpan={6} className="pt-0 pb-2 px-4">
+                    <p className="text-xs text-muted-foreground bg-muted/50 rounded-md px-3 py-1.5 leading-relaxed">
+                      {dev.comment}
+                    </p>
+                  </TableCell>
+                </TableRow>
+                )}
+              </React.Fragment>
               )
             })}
           </TableBody>

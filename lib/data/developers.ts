@@ -52,6 +52,7 @@ export interface Developer {
   researchedAt: string | null
   salesStatus: SalesStatus
   languages: string[]
+  comment: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,5 +81,6 @@ export function mapRowToDeveloper(row: Record<string, any>): Developer {
     researchedAt: (row.researched_at ?? null) as string | null,
     salesStatus: (row.sales_status ?? "lead") as SalesStatus,
     languages: (row.languages ?? []) as string[],
+    comment: (row.comment ?? "") as string,
   }
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useCallback } from "react"
+import { useState, useMemo, useCallback, useRef } from "react"
 import type { Developer, ResearchStatus, SalesStatus } from "@/lib/data/developers"
 import { calculateIcpScore, countActiveUnits } from "@/lib/data/scoring"
 import { createClient } from "@/lib/supabase/client"
@@ -49,6 +49,20 @@ export function DevelopersClient({
     await supabase.from("developers").update({ sales_status: status }).eq("id", developerId)
   }, [])
 
+
+  const commentTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const handleCommentChange = useCallback((developerId: string, comment: string) => {
+    setDevelopers((prev) =>
+      prev.map((d) => d.id === developerId ? { ...d, comment } : d)
+    )
+    setSelectedDeveloper((prev) => prev?.id === developerId ? { ...prev, comment } : prev)
+    // Debounce save to Supabase
+    if (commentTimerRef.current) clearTimeout(commentTimerRef.current)
+    commentTimerRef.current = setTimeout(async () => {
+      const supabase = createClient()
+      await supabase.from("developers").update({ comment }).eq("id", developerId)
+    }, 800)
+  }, [])
 
   const filteredDevelopers = useMemo(() => {
     let result = [...developers]
@@ -155,6 +169,7 @@ export function DevelopersClient({
         onOpenChange={setSheetOpen}
         onResearchStatusChange={handleResearchStatusChange}
         onSalesStatusChange={handleSalesStatusChange}
+        onCommentChange={handleCommentChange}
       />
     </div>
   )

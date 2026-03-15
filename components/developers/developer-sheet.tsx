@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useEffect, useRef } from "react"
+import { useState, useCallback, useEffect, useRef, useMemo } from "react"
 import { CheckIcon, XIcon, ExternalLinkIcon, MapPinIcon, CalendarIcon, HomeIcon, DollarSignIcon, LayersIcon, TrendingUpIcon } from "lucide-react"
 import {
   Sheet,
@@ -19,6 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Table,
   TableBody,
@@ -52,6 +53,7 @@ interface DeveloperSheetProps {
   onOpenChange: (open: boolean) => void
   onResearchStatusChange: (developerId: string, status: ResearchStatus) => void
   onSalesStatusChange: (developerId: string, status: SalesStatus) => void
+  onCommentChange: (developerId: string, comment: string) => void
 }
 
 function statusBadge(status: string) {
@@ -113,6 +115,7 @@ export function DeveloperSheet({
   onOpenChange,
   onResearchStatusChange,
   onSalesStatusChange,
+  onCommentChange,
 }: DeveloperSheetProps) {
   const [width, setWidth] = useState(DEFAULT_WIDTH)
   const [dragging, setDragging] = useState(false)
@@ -295,6 +298,17 @@ export function DeveloperSheet({
               {kvRows.map((row) => (
                 <KVRow key={row.label} {...row} />
               ))}
+            </div>
+
+            {/* Comment */}
+            <div>
+              <p className="text-xs font-medium text-muted-foreground mb-1.5">Comment</p>
+              <Textarea
+                placeholder="Add notes about this developer..."
+                value={developer.comment}
+                onChange={(e) => onCommentChange(developer.id, e.target.value)}
+                className="min-h-[60px] text-sm resize-y"
+              />
             </div>
 
             {/* Projects — SEA + Other */}
