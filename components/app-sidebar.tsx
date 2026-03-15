@@ -65,7 +65,7 @@ export function AppSidebar({
           <img
             src="/unitbox-icon.svg"
             alt="Unitbox"
-            className="size-8 shrink-0 dark:invert"
+            className="size-7 shrink-0 dark:invert"
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
