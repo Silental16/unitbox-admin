@@ -71,7 +71,7 @@ export function AppSidebar({
           <img
             src="/unitbox-wordmark.svg"
             alt="Unitbox"
-            className="h-5 w-auto dark:invert transition-[opacity,margin] duration-200 ease-in-out group-data-[collapsible=icon]:opacity-0 group-data-[collapsible=icon]:-ml-2"
+            className="h-[18px] w-auto dark:invert transition-[opacity,margin] duration-200 ease-in-out group-data-[collapsible=icon]:opacity-0 group-data-[collapsible=icon]:-ml-2"
           />
         </div>
       </SidebarHeader>
