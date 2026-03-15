@@ -192,7 +192,7 @@ export function DeveloperSheet({
   ]
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
+    <Sheet open={open} onOpenChange={onOpenChange} modal={false}>
       <SheetContent
         side="right"
         className={`!max-w-none overflow-visible p-0 flex flex-col ${dragging ? "select-none" : ""}`}
