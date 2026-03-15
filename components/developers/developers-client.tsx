@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback, useRef } from "react"
 import type { Developer, ResearchStatus, SalesStatus } from "@/lib/data/developers"
 import { calculateIcpScore, countActiveUnits } from "@/lib/data/scoring"
 import { createClient } from "@/lib/supabase/client"
+import { logChange } from "@/lib/audit"
 import {
   FilterBar,
   type OriginFilter,
@@ -32,22 +33,26 @@ export function DevelopersClient({
   const [sheetOpen, setSheetOpen] = useState(false)
 
   const handleResearchStatusChange = useCallback(async (developerId: string, status: ResearchStatus) => {
+    const old = developers.find((d) => d.id === developerId)?.researchStatus
     setDevelopers((prev) =>
       prev.map((d) => d.id === developerId ? { ...d, researchStatus: status } : d)
     )
     setSelectedDeveloper((prev) => prev?.id === developerId ? { ...prev, researchStatus: status } : prev)
     const supabase = createClient()
     await supabase.from("developers").update({ research_status: status }).eq("id", developerId)
-  }, [])
+    logChange(developerId, "research_status", old ?? null, status)
+  }, [developers])
 
   const handleSalesStatusChange = useCallback(async (developerId: string, status: SalesStatus) => {
+    const old = developers.find((d) => d.id === developerId)?.salesStatus
     setDevelopers((prev) =>
       prev.map((d) => d.id === developerId ? { ...d, salesStatus: status } : d)
     )
     setSelectedDeveloper((prev) => prev?.id === developerId ? { ...prev, salesStatus: status } : prev)
     const supabase = createClient()
     await supabase.from("developers").update({ sales_status: status }).eq("id", developerId)
-  }, [])
+    logChange(developerId, "sales_status", old ?? null, status)
+  }, [developers])
 
 
   const commentTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -61,6 +66,7 @@ export function DevelopersClient({
     commentTimerRef.current = setTimeout(async () => {
       const supabase = createClient()
       await supabase.from("developers").update({ comment }).eq("id", developerId)
+      logChange(developerId, "comment", null, comment)
     }, 800)
   }, [])
 
