@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { ArrowDownIcon, ArrowUpIcon } from "lucide-react"
+import { ArrowDownIcon, ArrowUpIcon, MessageSquareIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import {
   Select,
@@ -282,8 +282,9 @@ export function DevelopersTable({
                 </tr>
                 {dev.comment && (
                   <tr className="group-hover:bg-muted/50 transition-colors">
-                    <td colSpan={7} className="px-4 pt-0 pb-2">
-                      <span className="inline-block text-[11px] text-muted-foreground bg-muted/60 rounded px-1.5 py-px leading-snug">
+                    <td colSpan={7} className="px-4 pt-0 pb-3">
+                      <span className="inline-flex items-start gap-1.5 text-[11px] text-muted-foreground bg-muted/80 rounded-md px-2.5 py-1 leading-snug">
+                        <MessageSquareIcon className="size-3 shrink-0 mt-px" />
                         {dev.comment}
                       </span>
                     </td>
