@@ -59,31 +59,19 @@ export function AppSidebar({
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link href="/developers">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/unitbox-icon.svg"
-                  alt="Unitbox"
-                  width={32}
-                  height={32}
-                  className="size-8 dark:invert"
-                />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/unitbox.svg"
-                  alt="Unitbox"
-                  width={120}
-                  height={24}
-                  className="h-5 w-auto dark:invert group-data-[collapsible=icon]:hidden"
-                />
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+      <SidebarHeader className="px-4 pt-4 pb-2 group-data-[collapsible=icon]:px-2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/unitbox.svg"
+          alt="Unitbox"
+          className="h-6 w-auto dark:invert group-data-[collapsible=icon]:hidden"
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/unitbox-icon.svg"
+          alt="Unitbox"
+          className="size-8 dark:invert hidden group-data-[collapsible=icon]:block"
+        />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
