@@ -26,11 +26,11 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/select"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import type { Developer, ResearchStatus } from "@/lib/data/developers"
 import { calculateIcpScore, getScoreTier } from "@/lib/data/scoring"
 
@@ -219,27 +219,26 @@ export function DeveloperSheet({
               {(() => {
                 const opt = RESEARCH_OPTIONS.find((o) => o.value === developer.researchStatus) ?? RESEARCH_OPTIONS[0]
                 return (
-                  <Select
-                    value={developer.researchStatus}
-                    onValueChange={(v) => onResearchStatusChange(developer.id, v as ResearchStatus)}
-                  >
-                    <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
-                      <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${opt.bg} ${opt.text}`}>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${opt.bg} ${opt.text}`}>
                         <span className={`size-1.5 rounded-full shrink-0 ${opt.dot}`} />
                         {opt.label}
-                      </span>
-                    </SelectTrigger>
-                    <SelectContent align="end">
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
                       {RESEARCH_OPTIONS.map((o) => (
-                        <SelectItem key={o.value} value={o.value}>
-                          <span className="inline-flex items-center gap-1.5">
-                            <span className={`size-1.5 rounded-full ${o.dot}`} />
-                            {o.label}
-                          </span>
-                        </SelectItem>
+                        <DropdownMenuItem
+                          key={o.value}
+                          onClick={() => onResearchStatusChange(developer.id, o.value)}
+                          className="gap-2"
+                        >
+                          <span className={`size-1.5 rounded-full ${o.dot}`} />
+                          {o.label}
+                        </DropdownMenuItem>
                       ))}
-                    </SelectContent>
-                  </Select>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 )
               })()}
               <Badge className={`tabular-nums ${icpBadgeClass(tier)}`}>
