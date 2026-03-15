@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
+  Building2Icon,
   EyeIcon,
   SunIcon,
   MoonIcon,
