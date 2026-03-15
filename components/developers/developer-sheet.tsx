@@ -209,6 +209,7 @@ export function DeveloperSheet({
           <div className={`absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 transition-colors ${dragging ? "bg-primary" : "bg-transparent group-hover:bg-primary/40"}`} />
         </div>
 
+        <ScrollArea className="flex-1 min-h-0">
         {/* Header */}
         <SheetHeader className="px-6 pt-6 pb-4 pr-12 space-y-3">
           {/* Row 1: Title */}
@@ -288,7 +289,6 @@ export function DeveloperSheet({
 
         <Separator />
 
-        <ScrollArea className="flex-1 min-h-0">
           <div className="flex flex-col gap-6 p-6">
             {/* Key-Value Parameters */}
             <div>
