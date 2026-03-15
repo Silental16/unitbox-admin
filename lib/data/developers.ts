@@ -13,6 +13,8 @@ export interface DeveloperProject {
   completion?: string
   mapUrl?: string
   description?: string
+  notes?: string
+  roi?: string
 }
 
 export interface Developer {

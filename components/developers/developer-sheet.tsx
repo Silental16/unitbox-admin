@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback, useEffect, useRef } from "react"
-import { CheckIcon, XIcon, ExternalLinkIcon, MapPinIcon, CalendarIcon } from "lucide-react"
+import { CheckIcon, XIcon, ExternalLinkIcon, MapPinIcon, CalendarIcon, HomeIcon, DollarSignIcon, LayersIcon, TrendingUpIcon } from "lucide-react"
 import {
   Sheet,
   SheetContent,
@@ -285,44 +285,74 @@ export function DeveloperSheet({
                       })
                       .map((project, i) => (
                       <TableRow key={i}>
-                        <TableCell className="py-2.5 whitespace-normal">
-                          <div className="space-y-1">
-                            <p className="font-medium text-sm">
-                              {project.url ? (
-                                <a href={project.url} target="_blank" rel="noopener noreferrer" className="hover:underline text-primary">
-                                  {project.name}
-                                </a>
-                              ) : project.name}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {project.location} · {project.type}
-                              {project.units ? ` · ${project.units}` : ""}
-                            </p>
-                            {(project.completion || project.mapUrl) && (
-                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                {project.completion && (
-                                  <span className="inline-flex items-center gap-1">
-                                    <CalendarIcon className="size-3" />
-                                    {project.completion}
-                                  </span>
-                                )}
-                                {project.mapUrl && (
-                                  <a href={project.mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-primary hover:underline">
-                                    <MapPinIcon className="size-3" />
-                                    Map
+                        <TableCell className="py-3 whitespace-normal" colSpan={2}>
+                          <div className="space-y-2">
+                            {/* Name + Status */}
+                            <div className="flex items-start justify-between gap-2">
+                              <p className="font-medium text-sm">
+                                {project.url ? (
+                                  <a href={project.url} target="_blank" rel="noopener noreferrer" className="hover:underline text-primary">
+                                    {project.name}
                                   </a>
-                                )}
-                              </div>
-                            )}
-                            {project.description && (
-                              <p className="text-xs text-muted-foreground/80 leading-relaxed">
-                                {project.description}
+                                ) : project.name}
+                              </p>
+                              {statusBadge(project.status)}
+                            </div>
+
+                            {/* Tags */}
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              {project.location && (
+                                project.mapUrl ? (
+                                  <a href={project.mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs text-primary hover:bg-muted/80 transition-colors">
+                                    <MapPinIcon className="size-3" />
+                                    {project.location}
+                                  </a>
+                                ) : (
+                                  <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                                    <MapPinIcon className="size-3" />
+                                    {project.location}
+                                  </span>
+                                )
+                              )}
+                              {project.type && (
+                                <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                                  <HomeIcon className="size-3" />
+                                  {project.type}
+                                </span>
+                              )}
+                              {project.units && (
+                                <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                                  <LayersIcon className="size-3" />
+                                  {project.units} units
+                                </span>
+                              )}
+                              {project.price && (
+                                <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                                  <DollarSignIcon className="size-3" />
+                                  {project.price}
+                                </span>
+                              )}
+                              {project.completion && (
+                                <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                                  <CalendarIcon className="size-3" />
+                                  {project.completion}
+                                </span>
+                              )}
+                              {project.roi && (
+                                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-100 px-2 py-0.5 text-xs text-emerald-700">
+                                  <TrendingUpIcon className="size-3" />
+                                  {project.roi}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Description / Notes */}
+                            {(project.description || project.notes) && (
+                              <p className="text-xs text-muted-foreground/70 leading-relaxed">
+                                {project.description || project.notes}
                               </p>
                             )}
                           </div>
-                        </TableCell>
-                        <TableCell className="text-right py-2.5 align-top whitespace-normal w-[90px]">
-                          {statusBadge(project.status)}
                         </TableCell>
                       </TableRow>
                     ))}
