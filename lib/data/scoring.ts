@@ -16,6 +16,16 @@ export function countActiveUnits(d: Developer): number {
   return total
 }
 
+/** Count active (building + presale) projects from project_list */
+export function countActiveProjects(d: Developer): number {
+  return d.projectList.filter((p) => p.status === "building" || p.status === "presale").length
+}
+
+/** Count completed projects from project_list */
+export function countCompletedProjects(d: Developer): number {
+  return d.projectList.filter((p) => p.status === "completed").length
+}
+
 /**
  * ICP Score (0-100): Based on actual active units from project_list data.
  * Calculated dynamically — not from the static active_units field.

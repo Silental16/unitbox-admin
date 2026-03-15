@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from "react"
 import type { Developer, ResearchStatus, SalesStatus } from "@/lib/data/developers"
-import { calculateIcpScore } from "@/lib/data/scoring"
+import { calculateIcpScore, countActiveUnits } from "@/lib/data/scoring"
 import { createClient } from "@/lib/supabase/client"
 import {
   FilterBar,
@@ -94,13 +94,13 @@ export function DevelopersClient({
       const dir = sort.direction === "asc" ? 1 : -1
       switch (sort.column) {
         case "activeUnits":
-          return (a.activeUnits - b.activeUnits) * dir
+          return (countActiveUnits(a) - countActiveUnits(b)) * dir
         case "icpScore":
           return (calculateIcpScore(a) - calculateIcpScore(b)) * dir
         case "name":
           return a.name.localeCompare(b.name) * dir
         case "projects":
-          return (a.projects - b.projects) * dir
+          return (a.projectList.length - b.projectList.length) * dir
         default:
           return 0
       }

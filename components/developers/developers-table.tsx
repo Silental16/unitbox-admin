@@ -28,6 +28,9 @@ import { SALES_STATUSES } from "@/lib/data/developers"
 import type { SortOption, SortColumn } from "@/components/developers/filter-bar"
 import {
   calculateIcpScore,
+  countActiveUnits,
+  countActiveProjects,
+  countCompletedProjects,
   getScoreColor,
   getScoreProgressColor,
 } from "@/lib/data/scoring"
@@ -181,7 +184,10 @@ export function DevelopersTable({
           <TableBody>
             {developers.map((dev) => {
               const score = calculateIcpScore(dev)
-              const completed = dev.projects - dev.activeProjects
+              const activeUnits = countActiveUnits(dev)
+              const activeProj = countActiveProjects(dev)
+              const completedProj = countCompletedProjects(dev)
+              const totalProj = dev.projectList.length
               const subscriber = isSubscriber(dev.name)
               return (
                 <TableRow
@@ -216,12 +222,12 @@ export function DevelopersTable({
                     </div>
                   </TableCell>
                   <TableCell className="text-right tabular-nums font-medium">
-                    {dev.activeUnits.toLocaleString()}
+                    {activeUnits.toLocaleString()}
                   </TableCell>
                   <TableCell className="text-right tabular-nums">
-                    <span className="text-muted-foreground">{completed}</span>
+                    <span className="font-medium">{activeProj}</span>
                     <span className="text-muted-foreground/50">/</span>
-                    <span className="font-medium">{dev.projects}</span>
+                    <span className="text-muted-foreground">{totalProj}</span>
                   </TableCell>
                   <TableCell className="text-sm">{dev.priceRange}</TableCell>
                   <TableCell>

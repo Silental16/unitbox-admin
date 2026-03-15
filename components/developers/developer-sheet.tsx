@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import type { Developer, ResearchStatus, SalesStatus } from "@/lib/data/developers"
 import { SALES_STATUSES } from "@/lib/data/developers"
-import { calculateIcpScore, getScoreTier } from "@/lib/data/scoring"
+import { calculateIcpScore, getScoreTier, countActiveUnits, countActiveProjects } from "@/lib/data/scoring"
 
 const RESEARCH_OPTIONS: { value: ResearchStatus; label: string; dot: string; bg: string; text: string }[] = [
   { value: "not_started", label: "Not Started", dot: "bg-slate-300", bg: "bg-muted", text: "text-muted-foreground" },
@@ -161,8 +161,8 @@ export function DeveloperSheet({
   const kvRows: { label: string; value: string; href?: string }[] = [
     ...(developer.origin ? [{ label: "Origin", value: developer.origin }] : []),
     ...(developer.founder ? [{ label: "Founder", value: developer.founder }] : []),
-    { label: "Projects", value: `${developer.activeProjects} active / ${developer.projects} total` },
-    ...(developer.activeUnits ? [{ label: "Units Building", value: developer.activeUnits.toLocaleString() }] : []),
+    { label: "Projects", value: `${countActiveProjects(developer)} active / ${developer.projectList.length} total` },
+    ...(countActiveUnits(developer) ? [{ label: "Units Building", value: countActiveUnits(developer).toLocaleString() }] : []),
     ...(developer.priceRange ? [{ label: "Price Range", value: developer.priceRange }] : []),
     ...(developer.aum ? [{ label: "AUM", value: developer.aum }] : []),
     { label: "Agent Program", value: developer.hasAgent ? "Yes" : "No" },
