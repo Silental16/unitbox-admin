@@ -171,6 +171,9 @@ export function DeveloperSheet({
     ...(developer.contacts?.telegram
       ? [{ label: "Telegram", value: "Open", href: developer.contacts.telegram }]
       : []),
+    ...(developer.researchedAt
+      ? [{ label: "Last Research", value: new Date(developer.researchedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) }]
+      : []),
   ]
 
   return (
