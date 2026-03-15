@@ -191,8 +191,8 @@ export function DevelopersTable({
               const totalProj = dev.projectList.length
               const subscriber = isSubscriber(dev.name)
               return (
-                <React.Fragment key={dev.id}>
                 <TableRow
+                  key={dev.id}
                   className={`cursor-pointer hover:bg-muted/50 ${subscriber || dev.salesStatus === "client" ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""}`}
                   onClick={() => onSelectDeveloper(dev)}
                 >
@@ -220,6 +220,11 @@ export function DevelopersTable({
                       <p className="text-xs text-muted-foreground truncate max-w-[240px]">
                         {dev.founder}
                       </p>
+                      {dev.comment && (
+                        <p className="inline-block text-[11px] text-muted-foreground bg-muted/60 rounded px-2 py-0.5 mt-0.5 max-w-[300px] truncate">
+                          {dev.comment}
+                        </p>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell className="text-right tabular-nums font-medium">
@@ -251,20 +256,6 @@ export function DevelopersTable({
                     />
                   </TableCell>
                 </TableRow>
-                {dev.comment && (
-                <TableRow
-                  key={`${dev.id}-comment`}
-                  className="cursor-pointer hover:bg-muted/50 border-t-0"
-                  onClick={() => onSelectDeveloper(dev)}
-                >
-                  <TableCell colSpan={6} className="pt-0 pb-2 px-4">
-                    <p className="text-xs text-muted-foreground bg-muted/50 rounded-md px-3 py-1.5 leading-relaxed">
-                      {dev.comment}
-                    </p>
-                  </TableCell>
-                </TableRow>
-                )}
-              </React.Fragment>
               )
             })}
           </TableBody>
