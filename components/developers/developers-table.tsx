@@ -3,6 +3,13 @@
 import { ArrowDownIcon, ArrowUpIcon, SparklesIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
   Table,
   TableBody,
   TableCell,
@@ -40,6 +47,7 @@ interface DevelopersTableProps {
   sort: SortOption
   onSortChange: (sort: SortOption) => void
   onSelectDeveloper: (developer: Developer) => void
+  onResearchStatusChange: (developerId: string, status: ResearchStatus) => void
 }
 
 function originBadgeVariant(tag: string) {
@@ -73,30 +81,35 @@ function SortIcon({ column, current }: { column: SortOption; current: SortOption
   )
 }
 
-function ResearchBadge({ status }: { status: ResearchStatus }) {
-  switch (status) {
-    case "completed":
-      return (
-        <span className="inline-flex items-center gap-1.5 rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
-          <span className="size-1.5 rounded-full bg-emerald-500 shrink-0" />
-          Done
+const RESEARCH_STATUS_CONFIG: Record<ResearchStatus, { label: string; dot: string; bg: string; text: string }> = {
+  not_started: { label: "Not Started", dot: "bg-slate-300 dark:bg-slate-600", bg: "bg-muted", text: "text-muted-foreground" },
+  outdated: { label: "Outdated", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
+  ready: { label: "Ready", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
+  completed: { label: "Done", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
+}
+
+function ResearchStatusSelect({ status, onChange }: { status: ResearchStatus; onChange: (v: ResearchStatus) => void }) {
+  const config = RESEARCH_STATUS_CONFIG[status]
+  return (
+    <Select value={status} onValueChange={(v) => onChange(v as ResearchStatus)}>
+      <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
+        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
+          <span className={`size-1.5 rounded-full shrink-0 ${config.dot}`} />
+          {config.label}
         </span>
-      )
-    case "outdated":
-      return (
-        <span className="inline-flex items-center gap-1.5 rounded-md bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
-          <span className="size-1.5 rounded-full bg-amber-500 shrink-0" />
-          Outdated
-        </span>
-      )
-    default:
-      return (
-        <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-          <span className="size-1.5 rounded-full bg-slate-300 dark:bg-slate-600 shrink-0" />
-          Pending
-        </span>
-      )
-  }
+      </SelectTrigger>
+      <SelectContent align="end">
+        {(Object.entries(RESEARCH_STATUS_CONFIG) as [ResearchStatus, typeof config][]).map(([key, cfg]) => (
+          <SelectItem key={key} value={key}>
+            <span className="inline-flex items-center gap-1.5">
+              <span className={`size-1.5 rounded-full ${cfg.dot}`} />
+              {cfg.label}
+            </span>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
 }
 
 export function DevelopersTable({
@@ -104,6 +117,7 @@ export function DevelopersTable({
   sort,
   onSortChange,
   onSelectDeveloper,
+  onResearchStatusChange,
 }: DevelopersTableProps) {
   return (
     <TooltipProvider>
@@ -212,19 +226,11 @@ export function DevelopersTable({
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>
-                    {dev.researchedAt ? (
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span><ResearchBadge status={dev.researchStatus} /></span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          {new Date(dev.researchedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
-                        </TooltipContent>
-                      </Tooltip>
-                    ) : (
-                      <ResearchBadge status={dev.researchStatus} />
-                    )}
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <ResearchStatusSelect
+                      status={dev.researchStatus}
+                      onChange={(v) => onResearchStatusChange(dev.id, v)}
+                    />
                   </TableCell>
                 </TableRow>
               )

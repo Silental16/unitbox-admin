@@ -1,8 +1,9 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import type { Developer } from "@/lib/data/developers"
+import { useState, useMemo, useCallback } from "react"
+import type { Developer, ResearchStatus } from "@/lib/data/developers"
 import { calculateIcpScore } from "@/lib/data/scoring"
+import { createClient } from "@/lib/supabase/client"
 import {
   FilterBar,
   type OriginFilter,
@@ -15,10 +16,11 @@ import { DevelopersTable } from "@/components/developers/developers-table"
 import { DeveloperSheet } from "@/components/developers/developer-sheet"
 
 export function DevelopersClient({
-  developers,
+  developers: initialDevelopers,
 }: {
   developers: Developer[]
 }) {
+  const [developers, setDevelopers] = useState(initialDevelopers)
   const [search, setSearch] = useState("")
   const [origin, setOrigin] = useState<OriginFilter>("all")
   const [agent, setAgent] = useState<AgentFilter>("all")
@@ -29,6 +31,17 @@ export function DevelopersClient({
     null
   )
   const [sheetOpen, setSheetOpen] = useState(false)
+
+  const handleResearchStatusChange = useCallback(async (developerId: string, status: ResearchStatus) => {
+    setDevelopers((prev) =>
+      prev.map((d) => d.id === developerId ? { ...d, researchStatus: status } : d)
+    )
+    const supabase = createClient()
+    await supabase
+      .from("developers")
+      .update({ research_status: status })
+      .eq("id", developerId)
+  }, [])
 
   const filteredDevelopers = useMemo(() => {
     let result = [...developers]
@@ -121,6 +134,7 @@ export function DevelopersClient({
         sort={sort}
         onSortChange={setSort}
         onSelectDeveloper={handleSelectDeveloper}
+        onResearchStatusChange={handleResearchStatusChange}
       />
 
       <DeveloperSheet

@@ -1,6 +1,6 @@
 export type ProjectStatus = "presale" | "building" | "completed"
 
-export type ResearchStatus = "not_started" | "completed" | "outdated"
+export type ResearchStatus = "not_started" | "outdated" | "ready" | "completed"
 
 export interface DeveloperProject {
   name: string

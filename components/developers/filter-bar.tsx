@@ -14,7 +14,7 @@ import {
 export type OriginFilter = "all" | "eu" | "ru" | "au" | "int"
 export type AgentFilter = "all" | "has-agent" | "no-agent"
 export type ScaleFilter = "all" | "large" | "medium" | "small"
-export type ResearchFilter = "all" | "not_started" | "completed" | "outdated"
+export type ResearchFilter = "all" | "not_started" | "outdated" | "ready" | "completed"
 export type SortOption = "activeUnits" | "icpScore" | "name" | "projects"
 
 interface FilterBarProps {
@@ -99,9 +99,10 @@ export function FilterBar({
         <SelectContent position="popper" align="start">
           <SelectGroup>
             <SelectItem value="all">All Research</SelectItem>
-            <SelectItem value="not_started">Not Researched</SelectItem>
-            <SelectItem value="completed">Researched</SelectItem>
+            <SelectItem value="not_started">Not Started</SelectItem>
             <SelectItem value="outdated">Outdated</SelectItem>
+            <SelectItem value="ready">Ready</SelectItem>
+            <SelectItem value="completed">Done</SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>
