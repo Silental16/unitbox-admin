@@ -112,10 +112,10 @@ export function CompetitorsClient({
     <div className="flex flex-col gap-6 p-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">
-          Competitors
+          Конкуренты
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          {competitors.length} competitors tracked. Sorted by{" "}
+          {competitors.length} конкурентов. Сортировка по{" "}
           {sort.column === "name" ? "name" : sort.column === "threatLevel" ? "threat level" : "size signal"}.
         </p>
       </div>

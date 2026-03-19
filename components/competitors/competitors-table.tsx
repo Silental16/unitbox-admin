@@ -60,9 +60,9 @@ const CHAIN_LINK_LABELS: Record<ChainLink, string> = {
 }
 
 const RESEARCH_STATUS_CONFIG: Record<CompetitorResearchStatus, { label: string; dot: string; bg: string; text: string }> = {
-  not_started: { label: "Not Started", dot: "bg-slate-300 dark:bg-slate-600", bg: "bg-muted", text: "text-muted-foreground" },
-  in_progress: { label: "In Progress", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
-  completed: { label: "Done", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
+  not_started: { label: "Не начато", dot: "bg-slate-300 dark:bg-slate-600", bg: "bg-muted", text: "text-muted-foreground" },
+  in_progress: { label: "В процессе", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
+  completed: { label: "Готово", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
 }
 
 function ResearchStatusSelect({ status, onChange }: { status: CompetitorResearchStatus; onChange: (v: CompetitorResearchStatus) => void }) {
@@ -106,19 +106,19 @@ export function CompetitorsTable({
               onClick={() => onSortChange(toggleSort("name", sort, "asc"))}
             >
               <span className="inline-flex items-center gap-1">
-                Competitor
+                Конкурент
                 <SortIcon column="name" current={sort} />
               </span>
             </TableHead>
-            <TableHead>Chain Link</TableHead>
-            <TableHead>Geo</TableHead>
-            <TableHead>Business Model</TableHead>
+            <TableHead>Тип</TableHead>
+            <TableHead>Гео</TableHead>
+            <TableHead>Бизнес-модель</TableHead>
             <TableHead
               className="cursor-pointer select-none"
               onClick={() => onSortChange(toggleSort("threatLevel", sort))}
             >
               <span className="inline-flex items-center gap-1">
-                Threat
+                Угроза
                 <SortIcon column="threatLevel" current={sort} />
               </span>
             </TableHead>
@@ -127,11 +127,11 @@ export function CompetitorsTable({
               onClick={() => onSortChange(toggleSort("sizeSignal", sort))}
             >
               <span className="inline-flex items-center gap-1">
-                Size
+                Масштаб
                 <SortIcon column="sizeSignal" current={sort} />
               </span>
             </TableHead>
-            <TableHead>Research</TableHead>
+            <TableHead>Статус</TableHead>
           </TableRow>
         </TableHeader>
         {competitors.map((comp) => {

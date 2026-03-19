@@ -11,12 +11,6 @@ import {
 } from "@/components/ui/sheet"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -28,9 +22,9 @@ import {
 import type { Competitor, CompetitorResearchStatus, ThreatLevel } from "@/lib/data/competitors"
 
 const RESEARCH_OPTIONS: { value: CompetitorResearchStatus; label: string; dot: string; bg: string; text: string }[] = [
-  { value: "not_started", label: "Not Started", dot: "bg-slate-300", bg: "bg-muted", text: "text-muted-foreground" },
-  { value: "in_progress", label: "In Progress", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
-  { value: "completed", label: "Done", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
+  { value: "not_started", label: "Не начато", dot: "bg-slate-300", bg: "bg-muted", text: "text-muted-foreground" },
+  { value: "in_progress", label: "В процессе", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
+  { value: "completed", label: "Готово", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
 ]
 
 const THREAT_LEVEL_CONFIG: Record<ThreatLevel, { label: string; bg: string; text: string }> = {
@@ -50,7 +44,7 @@ const CHAIN_LINK_LABELS: Record<string, string> = {
 
 const MIN_WIDTH = 400
 const MAX_WIDTH = 900
-const DEFAULT_WIDTH = 500
+const DEFAULT_WIDTH = 560
 
 interface CompetitorSheetProps {
   competitor: Competitor | null
@@ -63,7 +57,7 @@ interface CompetitorSheetProps {
 
 function KVRow({ label, value, href }: { label: string; value: string; href?: string }) {
   return (
-    <div className="grid grid-cols-[120px_1fr] gap-2 py-2 border-b border-border/50 last:border-b-0">
+    <div className="grid grid-cols-[130px_1fr] gap-2 py-2 border-b border-border/50 last:border-b-0">
       <span className="text-sm text-muted-foreground">{label}</span>
       {href ? (
         <a
@@ -81,31 +75,63 @@ function KVRow({ label, value, href }: { label: string; value: string; href?: st
   )
 }
 
-interface DossierBlockProps {
+function RichText({ content }: { content: string }) {
+  if (!content) {
+    return <p className="text-sm text-muted-foreground italic">Анализ ещё не проведён</p>
+  }
+
+  const lines = content.split(/\n|(?<=[.!?])\s+(?=[•\-\d])|(?<=\.)\s+(?=[А-ЯA-Z])/g).filter(Boolean)
+
+  return (
+    <div className="space-y-1.5">
+      {lines.map((line, i) => {
+        const trimmed = line.trim()
+        if (!trimmed) return null
+
+        const isBullet = trimmed.startsWith("•") || trimmed.startsWith("- ") || trimmed.startsWith("— ")
+        const isNumbered = /^\d+[.)]/.test(trimmed)
+
+        if (isBullet) {
+          const text = trimmed.replace(/^[•\-—]\s*/, "")
+          return (
+            <div key={i} className="flex gap-2 pl-1">
+              <span className="text-muted-foreground shrink-0 mt-0.5">•</span>
+              <span className="text-sm leading-relaxed">{text}</span>
+            </div>
+          )
+        }
+
+        if (isNumbered) {
+          const match = trimmed.match(/^(\d+[.)]\s*)(.+)/)
+          if (match) {
+            return (
+              <div key={i} className="flex gap-2 pl-1">
+                <span className="text-muted-foreground shrink-0 mt-0.5 tabular-nums text-sm">{match[1]}</span>
+                <span className="text-sm leading-relaxed">{match[2]}</span>
+              </div>
+            )
+          }
+        }
+
+        return (
+          <p key={i} className="text-sm leading-relaxed">{trimmed}</p>
+        )
+      })}
+    </div>
+  )
+}
+
+interface DossierSectionProps {
   title: string
   content: string
 }
 
-function DossierBlock({ title, content }: DossierBlockProps) {
+function DossierSection({ title, content }: DossierSectionProps) {
   return (
-    <Card size="sm">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {content ? (
-          <div className="space-y-2">
-            {content.split("\n\n").map((paragraph, i) => (
-              <p key={i} className="text-sm leading-relaxed">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-muted-foreground">No analysis yet</p>
-        )}
-      </CardContent>
-    </Card>
+    <section>
+      <h3 className="text-sm font-semibold mb-2">{title}</h3>
+      <RichText content={content} />
+    </section>
   )
 }
 
@@ -160,13 +186,12 @@ export function CompetitorSheet({
   const threat = THREAT_LEVEL_CONFIG[competitor.threatLevel]
 
   const kvRows: { label: string; value: string; href?: string }[] = [
-    ...(competitor.geo ? [{ label: "Geo", value: competitor.geo }] : []),
-    ...(competitor.businessModel ? [{ label: "Business Model", value: competitor.businessModel }] : []),
-    ...(competitor.sizeSignal ? [{ label: "Size Signal", value: competitor.sizeSignal }] : []),
-    ...(competitor.whatItDoes ? [{ label: "What It Does", value: competitor.whatItDoes }] : []),
-    ...(competitor.confidence ? [{ label: "Confidence", value: competitor.confidence }] : []),
+    ...(competitor.geo ? [{ label: "География", value: competitor.geo }] : []),
+    ...(competitor.businessModel ? [{ label: "Бизнес-модель", value: competitor.businessModel }] : []),
+    ...(competitor.sizeSignal ? [{ label: "Масштаб", value: competitor.sizeSignal }] : []),
+    ...(competitor.whatItDoes ? [{ label: "Что делает", value: competitor.whatItDoes }] : []),
     ...(competitor.researchedAt
-      ? [{ label: "Last Research", value: new Date(competitor.researchedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) }]
+      ? [{ label: "Исследовано", value: new Date(competitor.researchedAt).toLocaleDateString("ru-RU", { day: "numeric", month: "short", year: "numeric" }) }]
       : []),
   ]
 
@@ -188,12 +213,9 @@ export function CompetitorSheet({
         <ScrollArea className="flex-1 min-h-0 overscroll-contain">
           {/* Header */}
           <SheetHeader className="px-6 pt-6 pb-4 pr-12 space-y-3">
-            {/* Row 1: Title */}
             <SheetTitle className="text-lg">{competitor.name}</SheetTitle>
 
-            {/* Row 2: Tags */}
             <div className="flex flex-wrap items-center gap-1.5">
-              {/* Threat Level */}
               {(() => {
                 const THREAT_OPTIONS: ThreatLevel[] = ["high", "medium", "low"]
                 return (
@@ -222,7 +244,7 @@ export function CompetitorSheet({
                   </DropdownMenu>
                 )
               })()}
-              {/* Research Status */}
+
               {(() => {
                 const opt = RESEARCH_OPTIONS.find((o) => o.value === competitor.researchStatus) ?? RESEARCH_OPTIONS[0]
                 return (
@@ -248,12 +270,12 @@ export function CompetitorSheet({
                   </DropdownMenu>
                 )
               })()}
+
               <Badge variant="outline">
                 {CHAIN_LINK_LABELS[competitor.chainLink] ?? competitor.chainLink}
               </Badge>
             </div>
 
-            {/* Row 3: URL */}
             {competitor.url && (
               <SheetDescription className="text-xs leading-relaxed">
                 <a
@@ -271,7 +293,7 @@ export function CompetitorSheet({
 
           <Separator />
 
-          <div className="flex flex-col gap-6 p-6">
+          <div className="flex flex-col gap-8 p-6">
             {/* Key-Value Parameters */}
             <div>
               {kvRows.map((row) => (
@@ -279,57 +301,40 @@ export function CompetitorSheet({
               ))}
             </div>
 
-            {/* 10 Dossier Blocks */}
-            <DossierBlock title="Snapshot" content={competitor.snapshot} />
-            <DossierBlock title="Product Analysis" content={competitor.productAnalysis} />
-            <DossierBlock title="Target Market" content={competitor.targetMarket} />
-            <DossierBlock title="Business Model / Pricing" content={competitor.pricingModel} />
-            <DossierBlock title="Distribution & GTM" content={competitor.distributionGtm} />
-            <DossierBlock title="Marketing & Messaging" content={competitor.marketing} />
-            <DossierBlock title="Tech Stack" content={competitor.techStack} />
+            <Separator />
 
-            {/* Strengths & Weaknesses — split */}
-            <Card size="sm">
-              <CardHeader>
-                <CardTitle>Strengths & Weaknesses</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground mb-1.5">Strengths</p>
-                  {competitor.strengths ? (
-                    <div className="space-y-2">
-                      {competitor.strengths.split("\n\n").map((p, i) => (
-                        <p key={i} className="text-sm leading-relaxed">{p}</p>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">No analysis yet</p>
-                  )}
-                </div>
-                <Separator />
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground mb-1.5">Weaknesses</p>
-                  {competitor.weaknesses ? (
-                    <div className="space-y-2">
-                      {competitor.weaknesses.split("\n\n").map((p, i) => (
-                        <p key={i} className="text-sm leading-relaxed">{p}</p>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">No analysis yet</p>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            {/* Dossier — article-style sections, no card borders */}
+            <DossierSection title="Обзор" content={competitor.snapshot} />
+            <DossierSection title="Продукт" content={competitor.productAnalysis} />
+            <DossierSection title="Целевой рынок" content={competitor.targetMarket} />
+            <DossierSection title="Бизнес-модель и ценообразование" content={competitor.pricingModel} />
+            <DossierSection title="Дистрибуция и GTM" content={competitor.distributionGtm} />
+            <DossierSection title="Маркетинг" content={competitor.marketing} />
+            <DossierSection title="Технологический стек" content={competitor.techStack} />
 
-            <DossierBlock title="Threat to Unitbox" content={competitor.threatAssessment} />
-            <DossierBlock title="Attack Vectors" content={competitor.attackVectors} />
+            {/* Strengths & Weaknesses */}
+            <section>
+              <h3 className="text-sm font-semibold mb-2">Сильные стороны</h3>
+              <RichText content={competitor.strengths} />
+            </section>
 
-            {/* Notes textarea */}
+            <section>
+              <h3 className="text-sm font-semibold mb-2">Слабые стороны</h3>
+              <RichText content={competitor.weaknesses} />
+            </section>
+
+            <Separator />
+
+            <DossierSection title="Угроза для Unitbox" content={competitor.threatAssessment} />
+            <DossierSection title="Векторы атаки" content={competitor.attackVectors} />
+
+            <Separator />
+
+            {/* Notes */}
             <div>
-              <p className="text-xs font-medium text-muted-foreground mb-1.5">Notes</p>
+              <h3 className="text-sm font-semibold mb-2">Заметки</h3>
               <Textarea
-                placeholder="Add notes about this competitor..."
+                placeholder="Добавьте заметки..."
                 value={competitor.notes}
                 onChange={(e) => onNotesChange(competitor.id, e.target.value)}
                 className="min-h-[60px] text-sm resize-y"

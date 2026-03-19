@@ -48,7 +48,7 @@ export function FilterBar({
       <div className="relative flex-1 min-w-[200px]">
         <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
-          placeholder="Search competitors, URLs..."
+          placeholder="Поиск по названию, URL..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           className="pl-9"
@@ -56,11 +56,11 @@ export function FilterBar({
       </div>
       <Select value={threatFilter} onValueChange={(v) => onThreatFilterChange(v as ThreatFilter)}>
         <SelectTrigger className="w-[150px]">
-          <SelectValue placeholder="Threat Level" />
+          <SelectValue placeholder="Угроза" />
         </SelectTrigger>
         <SelectContent position="popper" align="start">
           <SelectGroup>
-            <SelectItem value="all">All Threats</SelectItem>
+            <SelectItem value="all">Все уровни</SelectItem>
             <SelectItem value="high">High</SelectItem>
             <SelectItem value="medium">Medium</SelectItem>
             <SelectItem value="low">Low</SelectItem>
@@ -69,11 +69,11 @@ export function FilterBar({
       </Select>
       <Select value={chainFilter} onValueChange={(v) => onChainFilterChange(v as ChainFilter)}>
         <SelectTrigger className="w-[170px]">
-          <SelectValue placeholder="Chain Link" />
+          <SelectValue placeholder="Тип" />
         </SelectTrigger>
         <SelectContent position="popper" align="start">
           <SelectGroup>
-            <SelectItem value="all">All Chain Links</SelectItem>
+            <SelectItem value="all">Все типы</SelectItem>
             {(Object.entries(CHAIN_LINK_LABELS) as [ChainLink, string][]).map(([value, label]) => (
               <SelectItem key={value} value={value}>
                 {label}
