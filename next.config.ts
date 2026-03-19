@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  turbopack: {},
+  turbopack: {
+    root: "/Users/andrewlavrenov/Desktop/Projects/Unitbox_Admin",
+  },
 };
 
 export default nextConfig;
