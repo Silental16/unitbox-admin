@@ -4,7 +4,9 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
   Building2Icon,
+  ShieldIcon,
   EyeIcon,
+  TrendingUpIcon,
   SunIcon,
   MoonIcon,
   LogOutIcon,
@@ -32,9 +34,19 @@ const navItems = [
     icon: Building2Icon,
   },
   {
+    title: "Competitors",
+    href: "/competitors",
+    icon: ShieldIcon,
+  },
+  {
     title: "Preview",
     href: "/preview",
     icon: EyeIcon,
+  },
+  {
+    title: "Unitbox ROI",
+    href: "/roi",
+    icon: TrendingUpIcon,
   },
 ]
 
