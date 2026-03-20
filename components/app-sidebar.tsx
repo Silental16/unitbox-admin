@@ -73,8 +73,8 @@ export function AppSidebar({
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="p-2">
-        <div className="flex items-center gap-2">
+      <SidebarHeader className="px-3 pt-4 pb-2">
+        <div className="flex items-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/unitbox-icon.svg"
