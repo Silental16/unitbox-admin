@@ -130,6 +130,8 @@
   html {
     @apply font-sans;
   }
+  h1, h2, h3, h4 { text-wrap: balance; }
+  p { text-wrap: pretty; }
 }
 
 .hero-gradient {
@@ -151,4 +153,12 @@
 }
 .dark [data-slot="button"][data-variant="default"]:hover {
   box-shadow: 0 0 20px oklch(0.555 0.163 48.998 / 0.4), 0 0 4px oklch(0.555 0.163 48.998 / 0.3);
+}
+
+[data-slot="card"] {
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease;
+}
+[data-slot="card"]:hover {
+  box-shadow: var(--shadow-card-hover);
 }
