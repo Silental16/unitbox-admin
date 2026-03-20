@@ -48,6 +48,15 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
     await supabase.from("tasks").update({ priority: newPriority }).eq("id", taskId)
   }, [])
 
+  const handleCommentChange = useCallback(async (taskId: string, newComment: string) => {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, comment: newComment } : t))
+    )
+    setSelectedTask((prev) => (prev?.id === taskId ? { ...prev, comment: newComment } : prev))
+    const supabase = createClient()
+    await supabase.from("tasks").update({ comment: newComment }).eq("id", taskId)
+  }, [])
+
   const filteredTasks = useMemo(() => {
     let result = [...tasks]
 
@@ -160,6 +169,7 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
         onOpenChange={setSheetOpen}
         onStatusChange={handleStatusChange}
         onPriorityChange={handlePriorityChange}
+        onCommentChange={handleCommentChange}
       />
     </div>
   )

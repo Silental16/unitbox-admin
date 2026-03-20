@@ -12,6 +12,8 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { Textarea } from "@/components/ui/textarea"
+import { createClient } from "@/lib/supabase/client"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,6 +39,7 @@ interface TaskSheetProps {
   onOpenChange: (open: boolean) => void
   onStatusChange: (taskId: string, status: TaskStatus) => void
   onPriorityChange: (taskId: string, priority: TaskPriority) => void
+  onCommentChange: (taskId: string, comment: string) => void
 }
 
 export function TaskSheet({
@@ -45,15 +48,21 @@ export function TaskSheet({
   onOpenChange,
   onStatusChange,
   onPriorityChange,
+  onCommentChange,
 }: TaskSheetProps) {
+  const [comment, setComment] = useState("")
+  const commentTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [width, setWidth] = useState(DEFAULT_WIDTH)
   const [dragging, setDragging] = useState(false)
   const startX = useRef(0)
   const startWidth = useRef(0)
 
   useEffect(() => {
-    if (open) setWidth(DEFAULT_WIDTH)
-  }, [open])
+    if (open) {
+      setWidth(DEFAULT_WIDTH)
+      setComment(task?.comment ?? "")
+    }
+  }, [open, task?.id])
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
@@ -228,6 +237,24 @@ export function TaskSheet({
                 </CardContent>
               </Card>
             )}
+
+            {/* Comments */}
+            <div>
+              <p className="text-xs font-medium text-muted-foreground mb-1.5">Комментарий</p>
+              <Textarea
+                value={comment}
+                onChange={(e) => {
+                  const val = e.target.value
+                  setComment(val)
+                  if (commentTimer.current) clearTimeout(commentTimer.current)
+                  commentTimer.current = setTimeout(() => {
+                    if (task) onCommentChange(task.id, val)
+                  }, 800)
+                }}
+                placeholder="Добавить заметку..."
+                className="min-h-[80px] text-sm resize-y"
+              />
+            </div>
           </div>
         </ScrollArea>
       </SheetContent>

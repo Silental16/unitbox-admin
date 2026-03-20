@@ -70,6 +70,7 @@ export interface Task {
   ajtbdTier: AjtbdTier | null
   segment: TaskSegment | null
   order: number
+  comment: string
   createdAt: string
   updatedAt: string
 }
@@ -93,6 +94,7 @@ export function mapRowToTask(row: Record<string, any>): Task {
     ajtbdTier: (row.ajtbd_tier ?? null) as AjtbdTier | null,
     segment: (row.segment ?? null) as TaskSegment | null,
     order: (row.order ?? 0) as number,
+    comment: (row.comment ?? "") as string,
     createdAt: (row.created_at ?? "") as string,
     updatedAt: (row.updated_at ?? "") as string,
   }
