@@ -2,18 +2,18 @@
 
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { MessageSquareIcon } from "lucide-react"
+import { MessageSquareIcon, GripVerticalIcon } from "lucide-react"
 import type { Task } from "@/lib/data/tasks"
 import { TASK_PRIORITIES, TASK_EFFORTS } from "@/lib/data/tasks"
 
 interface TaskCardProps {
   task: Task
   onClick: (task: Task) => void
+  overlay?: boolean
 }
 
-export function TaskCard({ task, onClick }: TaskCardProps) {
+export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
   const priority = TASK_PRIORITIES.find((p) => p.value === task.priority)
   const {
     attributes,
@@ -24,22 +24,39 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
     isDragging,
   } = useSortable({ id: task.id, data: { task } })
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  }
+  const style = overlay
+    ? undefined
+    : {
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }
 
   return (
-    <Card
-      ref={setNodeRef}
+    <div
+      ref={overlay ? undefined : setNodeRef}
       style={style}
-      className={`cursor-grab active:cursor-grabbing hover:bg-muted/50 transition-colors ${isDragging ? "opacity-50 shadow-lg z-50" : ""}`}
-      onClick={() => onClick(task)}
-      {...attributes}
-      {...listeners}
+      className={`group relative rounded-lg border bg-card text-card-foreground shadow-sm hover:bg-muted/50 transition-colors ${isDragging ? "opacity-40" : ""} ${overlay ? "shadow-lg rotate-2 scale-105 opacity-90" : ""}`}
     >
-      <CardContent className="px-2.5 py-2 space-y-1.5">
+      {/* Drag handle — left grip */}
+      <div
+        className="absolute left-0 top-0 bottom-0 w-5 flex items-center justify-center cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-40 transition-opacity"
+        {...attributes}
+        {...listeners}
+      >
+        <GripVerticalIcon className="size-3 text-muted-foreground" />
+      </div>
+
+      {/* Card content — clickable */}
+      <div
+        className="px-2.5 pl-5 py-1 cursor-pointer space-y-1"
+        onClick={() => onClick(task)}
+      >
         <p className="text-[13px] font-medium leading-snug">{task.title}</p>
+
+        {task.description && (
+          <p className="text-[11px] text-muted-foreground line-clamp-2 leading-tight">{task.description}</p>
+        )}
+
         <div className="flex flex-wrap items-center gap-1">
           {priority && (
             <span
@@ -66,7 +83,11 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
             </span>
           )}
         </div>
-      </CardContent>
-    </Card>
+
+        {task.comment && (
+          <p className="text-[10px] text-muted-foreground/70 line-clamp-1 italic leading-tight">{task.comment}</p>
+        )}
+      </div>
+    </div>
   )
 }

@@ -52,7 +52,7 @@ function DroppableColumn({
   return (
     <div
       ref={setNodeRef}
-      className={`flex flex-col gap-1.5 rounded-lg p-2 min-h-[200px] transition-colors ${isOver ? "bg-muted/60" : "bg-muted/30"}`}
+      className={`flex flex-col gap-1 rounded-lg p-2 min-h-[200px] transition-all duration-200 ${isOver ? "bg-primary/5 ring-2 ring-primary/20 ring-inset" : "bg-muted/30"}`}
     >
       <div className="flex items-center gap-2 px-1 py-1">
         <span className={`size-2 rounded-full ${status.dot}`} />
@@ -163,11 +163,9 @@ export function TasksKanban({
           })}
         </div>
       </div>
-      <DragOverlay>
+      <DragOverlay dropAnimation={null}>
         {activeTask ? (
-          <div className="opacity-80 rotate-2 scale-105">
-            <TaskCard task={activeTask} onClick={() => {}} />
-          </div>
+          <TaskCard task={activeTask} onClick={() => {}} overlay />
         ) : null}
       </DragOverlay>
     </DndContext>
