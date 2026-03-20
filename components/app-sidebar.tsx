@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
+  BarChart3Icon,
   Building2Icon,
   ShieldIcon,
   EyeIcon,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { createClient } from "@/lib/supabase/client"
+import { adminOnlyPages, type UserRole } from "@/lib/data/roles"
 
 import {
   Sidebar,
@@ -27,7 +29,12 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-const navItems = [
+const allNavItems = [
+  {
+    title: "Analytics",
+    href: "/analytics",
+    icon: BarChart3Icon,
+  },
   {
     title: "Developers",
     href: "/developers",
@@ -54,14 +61,20 @@ export function AppSidebar({
   userName,
   userEmail,
   userAvatar,
+  userRole = "user",
 }: {
   userName?: string
   userEmail?: string
   userAvatar?: string
+  userRole?: UserRole
 }) {
   const pathname = usePathname()
   const router = useRouter()
   const { theme, setTheme } = useTheme()
+
+  const navItems = allNavItems.filter(
+    (item) => userRole === "admin" || !adminOnlyPages.includes(item.href)
+  )
 
   async function handleSignOut() {
     const supabase = createClient()
