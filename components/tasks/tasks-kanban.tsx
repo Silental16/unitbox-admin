@@ -71,24 +71,24 @@ function DroppableColumn({
   )
 }
 
-// Custom collision: prefer sortable items (cards) first, then columns
+// Custom collision: prefer cards (for reorder), then columns (for cross-column + empty)
 const customCollision: CollisionDetection = (args) => {
-  // Try closest center first — this finds cards for reordering
+  // 1. Try closest center — finds cards for reordering
   const centerCollisions = closestCenter(args)
-  // If we found a card, use it
-  if (centerCollisions.length > 0) {
-    const hasCard = centerCollisions.some((c) => !String(c.id).startsWith("column-"))
-    if (hasCard) {
-      return centerCollisions.filter((c) => !String(c.id).startsWith("column-"))
-    }
-  }
-  // No card found — try pointer within columns (for empty columns)
-  const pointerCollisions = pointerWithin(args)
-  const columnHit = pointerCollisions.find((c) => String(c.id).startsWith("column-"))
-  if (columnHit) return [columnHit]
-  // Fallback
-  const rectCollisions = rectIntersection(args)
-  return rectCollisions.length > 0 ? rectCollisions : centerCollisions
+  const cardHits = centerCollisions.filter((c) => !String(c.id).startsWith("column-"))
+  if (cardHits.length > 0) return cardHits
+
+  // 2. No cards found — find which column the pointer is over
+  //    Use rectIntersection (more reliable than pointerWithin for large areas)
+  const allCollisions = rectIntersection(args)
+  const columnHits = allCollisions.filter((c) => String(c.id).startsWith("column-"))
+  if (columnHits.length > 0) return [columnHits[0]]
+
+  // 3. Last resort — pointerWithin
+  const pointerHits = pointerWithin(args)
+  if (pointerHits.length > 0) return pointerHits
+
+  return centerCollisions
 }
 
 function findColumnForTask(taskId: string, tasks: Task[]): TaskStatus | null {
