@@ -28,38 +28,25 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
 } from "@/components/ui/sidebar"
 
-const allNavItems = [
+const navGroups = [
   {
-    title: "Analytics",
-    href: "/analytics",
-    icon: BarChart3Icon,
+    label: "Dashboard",
+    items: [
+      { title: "Analytics", href: "/analytics", icon: BarChart3Icon },
+      { title: "Developers", href: "/developers", icon: Building2Icon },
+      { title: "Competitors", href: "/competitors", icon: ShieldIcon },
+      { title: "Tasks", href: "/tasks", icon: CheckSquareIcon },
+    ],
   },
   {
-    title: "Developers",
-    href: "/developers",
-    icon: Building2Icon,
-  },
-  {
-    title: "Competitors",
-    href: "/competitors",
-    icon: ShieldIcon,
-  },
-  {
-    title: "Tasks",
-    href: "/tasks",
-    icon: CheckSquareIcon,
-  },
-  {
-    title: "Preview",
-    href: "/preview",
-    icon: EyeIcon,
-  },
-  {
-    title: "Unitbox ROI",
-    href: "/roi",
-    icon: TrendingUpIcon,
+    label: "Tools",
+    items: [
+      { title: "Preview", href: "/preview", icon: EyeIcon },
+      { title: "Unitbox ROI", href: "/roi", icon: TrendingUpIcon },
+    ],
   },
 ]
 
@@ -77,10 +64,6 @@ export function AppSidebar({
   const pathname = usePathname()
   const router = useRouter()
   const { theme, setTheme } = useTheme()
-
-  const navItems = allNavItems.filter(
-    (item) => userRole === "admin" || !adminOnlyPages.includes(item.href)
-  )
 
   async function handleSignOut() {
     const supabase = createClient()
@@ -107,29 +90,38 @@ export function AppSidebar({
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.href}
-                    tooltip={item.title}
-                  >
-                    <Link href={item.href}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {navGroups.map((group) => {
+          const filteredItems = group.items.filter(
+            (item) => userRole === "admin" || !adminOnlyPages.includes(item.href)
+          )
+          if (filteredItems.length === 0) return null
+          return (
+            <SidebarGroup key={group.label}>
+              <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {filteredItems.map((item) => (
+                    <SidebarMenuItem key={item.href}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={pathname === item.href}
+                        tooltip={item.title}
+                      >
+                        <Link href={item.href}>
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          )
+        })}
       </SidebarContent>
       <SidebarFooter>
+        <SidebarSeparator className="opacity-50" />
         <SidebarMenu>
           {userEmail && (
             <SidebarMenuItem>
@@ -141,7 +133,7 @@ export function AppSidebar({
                     className="size-5 rounded-full"
                   />
                 ) : (
-                  <div className="flex size-5 items-center justify-center rounded-full bg-muted text-xs font-medium">
+                  <div className="flex size-5 items-center justify-center rounded-full bg-sidebar-accent text-[11px] font-medium">
                     {(userName || userEmail).charAt(0).toUpperCase()}
                   </div>
                 )}
