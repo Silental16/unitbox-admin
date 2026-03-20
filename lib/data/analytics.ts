@@ -259,6 +259,7 @@ export async function getAnalyticsFromSupabase(period: Period, devFilter?: strin
     .select("*")
     .gte("date", startStr)
     .order("date", { ascending: true })
+    .limit(50000) // Override Supabase default 1000 row limit
 
   if (devFilter && devFilter.length > 0) {
     query = query.in("developer_code", devFilter)
