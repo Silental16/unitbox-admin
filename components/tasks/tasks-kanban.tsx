@@ -1,23 +1,24 @@
 "use client"
 
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 import {
   DndContext,
   DragOverlay,
-  closestCorners,
+  closestCenter,
+  pointerWithin,
+  rectIntersection,
   PointerSensor,
   useSensor,
   useSensors,
   type DragStartEvent,
   type DragEndEvent,
-  type DragOverEvent,
+  type CollisionDetection,
 } from "@dnd-kit/core"
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable"
 import { useDroppable } from "@dnd-kit/core"
-import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import type { Task, TaskStatus, TaskPriority } from "@/lib/data/tasks"
 import { TASK_STATUSES, TASK_PRIORITIES } from "@/lib/data/tasks"
@@ -47,14 +48,14 @@ function DroppableColumn({
   tasks: Task[]
   onSelectTask: (task: Task) => void
 }) {
-  const { setNodeRef, isOver } = useDroppable({ id: status.value })
+  const { setNodeRef, isOver } = useDroppable({ id: `column-${status.value}` })
 
   return (
     <div
       ref={setNodeRef}
-      className={`flex flex-col gap-1 rounded-lg p-2 min-h-[200px] transition-all duration-200 ${isOver ? "bg-primary/5 ring-2 ring-primary/20 ring-inset" : "bg-muted/30"}`}
+      className={`flex flex-col gap-1 rounded-lg p-2 min-h-[300px] transition-all duration-200 ${isOver ? "bg-primary/8 ring-2 ring-primary/30 ring-inset" : "bg-muted/30"}`}
     >
-      <div className="flex items-center gap-2 px-1 py-1">
+      <div className="flex items-center gap-2 px-1 py-1 mb-1">
         <span className={`size-2 rounded-full ${status.dot}`} />
         <span className="text-xs font-medium">{status.label}</span>
         <Badge variant="secondary" className="ml-auto text-[10px] px-1.5 py-0 tabular-nums">
@@ -66,8 +67,30 @@ function DroppableColumn({
           <TaskCard key={task.id} task={task} onClick={onSelectTask} />
         ))}
       </SortableContext>
+      {tasks.length === 0 && (
+        <div className="flex-1 flex items-center justify-center text-xs text-muted-foreground/50 py-8">
+          Drop here
+        </div>
+      )}
     </div>
   )
+}
+
+// Custom collision detection: prefer droppable columns, fall back to closest center
+const customCollision: CollisionDetection = (args) => {
+  // First try pointer-within for columns
+  const pointerCollisions = pointerWithin(args)
+  if (pointerCollisions.length > 0) {
+    // Prefer column droppables
+    const columnHit = pointerCollisions.find((c) => String(c.id).startsWith("column-"))
+    if (columnHit) return [columnHit]
+    return pointerCollisions
+  }
+  // Fallback to rect intersection
+  const rectCollisions = rectIntersection(args)
+  if (rectCollisions.length > 0) return rectCollisions
+  // Final fallback
+  return closestCenter(args)
 }
 
 export function TasksKanban({
@@ -79,7 +102,7 @@ export function TasksKanban({
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: { distance: 5 },
+      activationConstraint: { distance: 8 },
     })
   )
 
@@ -95,19 +118,19 @@ export function TasksKanban({
       if (!over) return
 
       const taskId = active.id as string
-      const overId = over.id as string
+      const overId = String(over.id)
 
-      // Check if dropped over a column
-      const isColumn = TASK_STATUSES.some((s) => s.value === overId)
-      if (isColumn) {
+      // Dropped over a column droppable (column-backlog, column-todo, etc.)
+      if (overId.startsWith("column-")) {
+        const newStatus = overId.replace("column-", "") as TaskStatus
         const task = tasks.find((t) => t.id === taskId)
-        if (task && task.status !== overId) {
-          onStatusChange(taskId, overId as TaskStatus)
+        if (task && task.status !== newStatus) {
+          onStatusChange(taskId, newStatus)
         }
         return
       }
 
-      // Dropped over another card — find its column
+      // Dropped over another card — use that card's status
       const overTask = tasks.find((t) => t.id === overId)
       if (overTask) {
         const task = tasks.find((t) => t.id === taskId)
@@ -119,32 +142,12 @@ export function TasksKanban({
     [tasks, onStatusChange]
   )
 
-  const handleDragOver = useCallback(
-    (event: DragOverEvent) => {
-      const { active, over } = event
-      if (!over) return
-
-      const taskId = active.id as string
-      const overId = over.id as string
-
-      const isColumn = TASK_STATUSES.some((s) => s.value === overId)
-      if (isColumn) {
-        const task = tasks.find((t) => t.id === taskId)
-        if (task && task.status !== overId) {
-          onStatusChange(taskId, overId as TaskStatus)
-        }
-      }
-    },
-    [tasks, onStatusChange]
-  )
-
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCorners}
+      collisionDetection={customCollision}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      onDragOver={handleDragOver}
     >
       <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 min-w-[480px]">

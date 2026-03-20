@@ -3,7 +3,7 @@
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { Badge } from "@/components/ui/badge"
-import { MessageSquareIcon, GripVerticalIcon } from "lucide-react"
+import { MessageSquareIcon } from "lucide-react"
 import type { Task } from "@/lib/data/tasks"
 import { TASK_PRIORITIES, TASK_EFFORTS } from "@/lib/data/tasks"
 
@@ -35,22 +35,15 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
     <div
       ref={overlay ? undefined : setNodeRef}
       style={style}
-      className={`group relative rounded-lg border bg-card text-card-foreground shadow-sm hover:bg-muted/50 transition-colors ${isDragging ? "opacity-40" : ""} ${overlay ? "shadow-lg rotate-2 scale-105 opacity-90" : ""}`}
+      className={`rounded-lg border bg-card text-card-foreground shadow-sm cursor-grab active:cursor-grabbing hover:bg-muted/50 transition-colors touch-none ${isDragging ? "opacity-40" : ""} ${overlay ? "shadow-lg rotate-2 scale-105 opacity-90" : ""}`}
+      {...attributes}
+      {...listeners}
+      onClick={(e) => {
+        // Only open sheet if not dragging (PointerSensor distance=8 handles this)
+        onClick(task)
+      }}
     >
-      {/* Drag handle — left grip */}
-      <div
-        className="absolute left-0 top-0 bottom-0 w-5 flex items-center justify-center cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-40 transition-opacity"
-        {...attributes}
-        {...listeners}
-      >
-        <GripVerticalIcon className="size-3 text-muted-foreground" />
-      </div>
-
-      {/* Card content — clickable */}
-      <div
-        className="px-2.5 pl-5 py-1 cursor-pointer space-y-1"
-        onClick={() => onClick(task)}
-      >
+      <div className="px-2.5 py-2 space-y-1">
         <p className="text-[13px] font-medium leading-snug">{task.title}</p>
 
         {task.description && (
