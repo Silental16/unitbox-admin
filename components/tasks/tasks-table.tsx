@@ -1,0 +1,220 @@
+"use client"
+
+import { ArrowDownIcon, ArrowUpIcon } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import {
+  TooltipProvider,
+} from "@/components/ui/tooltip"
+import type { Task, TaskStatus, TaskPriority } from "@/lib/data/tasks"
+import { TASK_STATUSES, TASK_PRIORITIES, TASK_EFFORTS } from "@/lib/data/tasks"
+import type { SortOption, SortColumn } from "@/lib/data/tasks"
+
+interface TasksTableProps {
+  tasks: Task[]
+  sort: SortOption
+  onSortChange: (sort: SortOption) => void
+  onSelectTask: (task: Task) => void
+  onStatusChange: (taskId: string, status: TaskStatus) => void
+  onPriorityChange: (taskId: string, priority: TaskPriority) => void
+}
+
+function toggleSort(column: SortColumn, current: SortOption, defaultDir: "asc" | "desc" = "asc"): SortOption {
+  if (current.column === column) {
+    return { column, direction: current.direction === "asc" ? "desc" : "asc" }
+  }
+  return { column, direction: defaultDir }
+}
+
+function SortIcon({ column, current }: { column: SortColumn; current: SortOption }) {
+  if (column !== current.column) return null
+  return current.direction === "asc" ? (
+    <ArrowUpIcon className="size-3.5" />
+  ) : (
+    <ArrowDownIcon className="size-3.5" />
+  )
+}
+
+function StatusSelect({ status, onChange }: { status: TaskStatus; onChange: (v: TaskStatus) => void }) {
+  const config = TASK_STATUSES.find((s) => s.value === status) ?? TASK_STATUSES[0]
+  return (
+    <Select value={status} onValueChange={(v) => onChange(v as TaskStatus)}>
+      <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
+        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
+          <span className={`size-1.5 rounded-full shrink-0 ${config.dot}`} />
+          {config.label}
+        </span>
+      </SelectTrigger>
+      <SelectContent align="end">
+        {TASK_STATUSES.map((s) => (
+          <SelectItem key={s.value} value={s.value}>
+            <span className="inline-flex items-center gap-1.5">
+              <span className={`size-1.5 rounded-full ${s.dot}`} />
+              {s.label}
+            </span>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
+function PrioritySelect({ priority, onChange }: { priority: TaskPriority; onChange: (v: TaskPriority) => void }) {
+  const config = TASK_PRIORITIES.find((p) => p.value === priority) ?? TASK_PRIORITIES[2]
+  return (
+    <Select value={priority} onValueChange={(v) => onChange(v as TaskPriority)}>
+      <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
+        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
+          <span className={`size-1.5 rounded-full shrink-0 ${config.dot}`} />
+          {config.label}
+        </span>
+      </SelectTrigger>
+      <SelectContent align="end">
+        {TASK_PRIORITIES.map((p) => (
+          <SelectItem key={p.value} value={p.value}>
+            <span className="inline-flex items-center gap-1.5">
+              <span className={`size-1.5 rounded-full ${p.dot}`} />
+              {p.label}
+            </span>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
+export function TasksTable({
+  tasks,
+  sort,
+  onSortChange,
+  onSelectTask,
+  onStatusChange,
+  onPriorityChange,
+}: TasksTableProps) {
+  return (
+    <TooltipProvider>
+      <div className="rounded-lg border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead
+                className="w-[60px] cursor-pointer select-none"
+                onClick={() => onSortChange(toggleSort("order", sort))}
+              >
+                <span className="inline-flex items-center gap-1">
+                  #
+                  <SortIcon column="order" current={sort} />
+                </span>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer select-none"
+                onClick={() => onSortChange(toggleSort("title", sort))}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Title
+                  <SortIcon column="title" current={sort} />
+                </span>
+              </TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead
+                className="cursor-pointer select-none"
+                onClick={() => onSortChange(toggleSort("priority", sort))}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Priority
+                  <SortIcon column="priority" current={sort} />
+                </span>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer select-none"
+                onClick={() => onSortChange(toggleSort("wave", sort))}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Wave
+                  <SortIcon column="wave" current={sort} />
+                </span>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer select-none"
+                onClick={() => onSortChange(toggleSort("effort", sort))}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Effort
+                  <SortIcon column="effort" current={sort} />
+                </span>
+              </TableHead>
+              <TableHead>Segment</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {tasks.map((task) => (
+              <TableRow
+                key={task.id}
+                className="cursor-pointer hover:bg-muted/50 transition-colors"
+                onClick={() => onSelectTask(task)}
+              >
+                <TableCell className="tabular-nums text-muted-foreground">
+                  {task.order}
+                </TableCell>
+                <TableCell>
+                  <div className="min-w-0">
+                    <span className="font-medium truncate max-w-[300px] block">
+                      {task.title}
+                    </span>
+                    {task.description && (
+                      <p className="text-xs text-muted-foreground truncate max-w-[300px]">
+                        {task.description}
+                      </p>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  <StatusSelect
+                    status={task.status}
+                    onChange={(v) => onStatusChange(task.id, v)}
+                  />
+                </TableCell>
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  <PrioritySelect
+                    priority={task.priority}
+                    onChange={(v) => onPriorityChange(task.id, v)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                    W{task.wave}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                    {TASK_EFFORTS[task.effort]}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  {task.segment && (
+                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0 capitalize">
+                      {task.segment}
+                    </Badge>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </TooltipProvider>
+  )
+}

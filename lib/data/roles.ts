@@ -24,4 +24,4 @@ export function isAdmin(role: UserRole): boolean {
 }
 
 // Pages that require admin role
-export const adminOnlyPages = ["/analytics", "/competitors"]
+export const adminOnlyPages = ["/analytics", "/competitors", "/tasks"]

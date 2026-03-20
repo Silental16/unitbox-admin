@@ -8,6 +8,7 @@ import {
   ShieldIcon,
   EyeIcon,
   TrendingUpIcon,
+  CheckSquareIcon,
   SunIcon,
   MoonIcon,
   LogOutIcon,
@@ -44,6 +45,11 @@ const allNavItems = [
     title: "Competitors",
     href: "/competitors",
     icon: ShieldIcon,
+  },
+  {
+    title: "Tasks",
+    href: "/tasks",
+    icon: CheckSquareIcon,
   },
   {
     title: "Preview",
