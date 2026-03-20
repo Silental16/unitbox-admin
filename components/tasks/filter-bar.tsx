@@ -39,8 +39,8 @@ export function FilterBar({
   onWaveChange,
 }: FilterBarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <div className="relative flex-1 min-w-[200px]">
+    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+      <div className="relative w-full sm:w-auto sm:flex-1 sm:min-w-[180px] sm:max-w-[280px]">
         <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search tasks..."
@@ -49,57 +49,59 @@ export function FilterBar({
           className="pl-9"
         />
       </div>
-      <Select value={statusFilter} onValueChange={(v) => onStatusChange(v as StatusFilter)}>
-        <SelectTrigger className="w-[150px]">
-          <SelectValue placeholder="Status" />
-        </SelectTrigger>
-        <SelectContent position="popper" align="start">
-          <SelectGroup>
-            <SelectItem value="all">All Statuses</SelectItem>
-            {TASK_STATUSES.map((s) => (
-              <SelectItem key={s.value} value={s.value}>
-                <span className="inline-flex items-center gap-1.5">
-                  <span className={`size-1.5 rounded-full ${s.dot}`} />
-                  {s.label}
-                </span>
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-      <Select value={priorityFilter} onValueChange={(v) => onPriorityChange(v as PriorityFilter)}>
-        <SelectTrigger className="w-[150px]">
-          <SelectValue placeholder="Priority" />
-        </SelectTrigger>
-        <SelectContent position="popper" align="start">
-          <SelectGroup>
-            <SelectItem value="all">All Priorities</SelectItem>
-            {TASK_PRIORITIES.map((p) => (
-              <SelectItem key={p.value} value={p.value}>
-                <span className="inline-flex items-center gap-1.5">
-                  <span className={`size-1.5 rounded-full ${p.dot}`} />
-                  {p.label}
-                </span>
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-      <Select value={waveFilter} onValueChange={(v) => onWaveChange(v as WaveFilter)}>
-        <SelectTrigger className="w-[130px]">
-          <SelectValue placeholder="Wave" />
-        </SelectTrigger>
-        <SelectContent position="popper" align="start">
-          <SelectGroup>
-            <SelectItem value="all">All Waves</SelectItem>
-            <SelectItem value="0">Wave 0</SelectItem>
-            <SelectItem value="1">Wave 1</SelectItem>
-            <SelectItem value="2">Wave 2</SelectItem>
-            <SelectItem value="3">Wave 3</SelectItem>
-            <SelectItem value="4">Wave 4</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <div className="flex flex-wrap items-center gap-2">
+        <Select value={statusFilter} onValueChange={(v) => onStatusChange(v as StatusFilter)}>
+          <SelectTrigger className="w-[120px] sm:w-[140px]">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent position="popper" align="start">
+            <SelectGroup>
+              <SelectItem value="all">All Statuses</SelectItem>
+              {TASK_STATUSES.map((s) => (
+                <SelectItem key={s.value} value={s.value}>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className={`size-1.5 rounded-full ${s.dot}`} />
+                    {s.label}
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Select value={priorityFilter} onValueChange={(v) => onPriorityChange(v as PriorityFilter)}>
+          <SelectTrigger className="w-[110px] sm:w-[140px]">
+            <SelectValue placeholder="Priority" />
+          </SelectTrigger>
+          <SelectContent position="popper" align="start">
+            <SelectGroup>
+              <SelectItem value="all">All Priorities</SelectItem>
+              {TASK_PRIORITIES.map((p) => (
+                <SelectItem key={p.value} value={p.value}>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className={`size-1.5 rounded-full ${p.dot}`} />
+                    {p.label}
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Select value={waveFilter} onValueChange={(v) => onWaveChange(v as WaveFilter)}>
+          <SelectTrigger className="w-[100px] sm:w-[120px]">
+            <SelectValue placeholder="Wave" />
+          </SelectTrigger>
+          <SelectContent position="popper" align="start">
+            <SelectGroup>
+              <SelectItem value="all">All Waves</SelectItem>
+              <SelectItem value="0">Wave 0</SelectItem>
+              <SelectItem value="1">Wave 1</SelectItem>
+              <SelectItem value="2">Wave 2</SelectItem>
+              <SelectItem value="3">Wave 3</SelectItem>
+              <SelectItem value="4">Wave 4</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   )
 }

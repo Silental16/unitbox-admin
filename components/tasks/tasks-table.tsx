@@ -106,8 +106,8 @@ export function TasksTable({
 }: TasksTableProps) {
   return (
     <TooltipProvider>
-      <div className="rounded-lg border">
-        <Table>
+      <div className="rounded-lg border overflow-x-auto">
+        <Table className="min-w-[600px]">
           <TableHeader>
             <TableRow>
               <TableHead
@@ -148,7 +148,7 @@ export function TasksTable({
                 </span>
               </TableHead>
               <TableHead
-                className="cursor-pointer select-none"
+                className="hidden md:table-cell cursor-pointer select-none"
                 onClick={() => onSortChange(toggleSort("effort", sort))}
               >
                 <span className="inline-flex items-center gap-1">
@@ -156,7 +156,7 @@ export function TasksTable({
                   <SortIcon column="effort" current={sort} />
                 </span>
               </TableHead>
-              <TableHead>Segment</TableHead>
+              <TableHead className="hidden lg:table-cell">Segment</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -171,11 +171,11 @@ export function TasksTable({
                 </TableCell>
                 <TableCell>
                   <div className="min-w-0">
-                    <span className="font-medium truncate max-w-[300px] block">
+                    <span className="font-medium truncate max-w-[180px] sm:max-w-[250px] md:max-w-[350px] block">
                       {task.title}
                     </span>
                     {task.description && (
-                      <p className="text-xs text-muted-foreground truncate max-w-[300px]">
+                      <p className="text-xs text-muted-foreground truncate max-w-[180px] sm:max-w-[250px] md:max-w-[350px]">
                         {task.description}
                       </p>
                     )}
@@ -198,12 +198,12 @@ export function TasksTable({
                     W{task.wave}
                   </Badge>
                 </TableCell>
-                <TableCell>
+                <TableCell className="hidden md:table-cell">
                   <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
                     {TASK_EFFORTS[task.effort]}
                   </Badge>
                 </TableCell>
-                <TableCell>
+                <TableCell className="hidden lg:table-cell">
                   {task.segment && (
                     <Badge variant="secondary" className="text-[10px] px-1.5 py-0 capitalize">
                       {task.segment}

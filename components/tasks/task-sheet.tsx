@@ -27,7 +27,7 @@ import {
   AJTBD_TIERS,
 } from "@/lib/data/tasks"
 
-const MIN_WIDTH = 400
+const MIN_WIDTH = 320
 const MAX_WIDTH = 900
 const DEFAULT_WIDTH = 500
 
@@ -94,8 +94,8 @@ export function TaskSheet({
     <Sheet open={open} onOpenChange={onOpenChange} modal={false}>
       <SheetContent
         side="right"
-        className={`!max-w-none overflow-hidden p-0 flex flex-col ${dragging ? "select-none" : ""}`}
-        style={{ width }}
+        className={`!max-w-none overflow-hidden p-0 flex flex-col w-full sm:w-auto ${dragging ? "select-none" : ""}`}
+        style={{ width: typeof window !== "undefined" && window.innerWidth < 640 ? "100%" : width }}
       >
         {/* Resize handle */}
         <div
@@ -107,7 +107,7 @@ export function TaskSheet({
 
         <ScrollArea className="flex-1 min-h-0 overscroll-contain">
           {/* Header */}
-          <SheetHeader className="px-6 pt-6 pb-4 pr-12 space-y-3">
+          <SheetHeader className="px-4 pt-4 pb-3 pr-12 sm:px-6 sm:pt-6 sm:pb-4 space-y-3">
             {/* Row 1: Title */}
             <SheetTitle className="text-lg">{task.title}</SheetTitle>
 
@@ -183,7 +183,7 @@ export function TaskSheet({
 
           <Separator />
 
-          <div className="flex flex-col gap-6 p-6">
+          <div className="flex flex-col gap-4 p-4 sm:gap-6 sm:p-6">
             {/* Details */}
             {task.detailedDescription && (
               <div>
@@ -202,7 +202,7 @@ export function TaskSheet({
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {tierConfig && (
-                    <div className="grid grid-cols-[120px_1fr] gap-2">
+                    <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr] gap-2">
                       <span className="text-sm text-muted-foreground">Tier</span>
                       <span>
                         <Badge className={`${tierConfig.bg} ${tierConfig.text}`}>
@@ -211,12 +211,12 @@ export function TaskSheet({
                       </span>
                     </div>
                   )}
-                  <div className="grid grid-cols-[120px_1fr] gap-2">
+                  <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr] gap-2">
                     <span className="text-sm text-muted-foreground">Jobs Served</span>
                     <span className="text-sm">{task.jobsServed}</span>
                   </div>
                   {task.segment && (
-                    <div className="grid grid-cols-[120px_1fr] gap-2">
+                    <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr] gap-2">
                       <span className="text-sm text-muted-foreground">Segment</span>
                       <span>
                         <Badge variant="secondary" className="capitalize">

@@ -25,8 +25,8 @@ export function TasksKanban({
   onSelectTask,
 }: TasksKanbanProps) {
   return (
-    <div className="overflow-x-auto">
-      <div className="min-w-[900px] grid grid-cols-5 gap-4">
+    <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 min-w-[480px]">
         {TASK_STATUSES.map((status) => {
           const columnTasks = tasks
             .filter((t) => t.status === status.value)

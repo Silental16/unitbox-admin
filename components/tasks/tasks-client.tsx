@@ -101,15 +101,29 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Platform Roadmap</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          {tasks.length} features across 5 waves
-        </p>
+    <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight md:text-2xl">Platform Roadmap</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {tasks.length} features across 5 waves
+          </p>
+        </div>
+        <Tabs value={view} onValueChange={(v) => setView(v as "list" | "kanban")}>
+          <TabsList>
+            <TabsTrigger value="list">
+              <ListIcon className="size-4 mr-1.5" />
+              <span className="hidden sm:inline">List</span>
+            </TabsTrigger>
+            <TabsTrigger value="kanban">
+              <LayoutGridIcon className="size-4 mr-1.5" />
+              <span className="hidden sm:inline">Board</span>
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
 
-      <div className="flex items-center justify-between gap-4">
+      <div>
         <FilterBar
           search={search}
           onSearchChange={setSearch}
@@ -120,18 +134,6 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
           waveFilter={waveFilter}
           onWaveChange={setWaveFilter}
         />
-        <Tabs value={view} onValueChange={(v) => setView(v as "list" | "kanban")}>
-          <TabsList>
-            <TabsTrigger value="list">
-              <ListIcon className="size-4 mr-1.5" />
-              List
-            </TabsTrigger>
-            <TabsTrigger value="kanban">
-              <LayoutGridIcon className="size-4 mr-1.5" />
-              Board
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
       </div>
 
       {view === "list" ? (
