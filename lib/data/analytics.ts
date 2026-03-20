@@ -334,11 +334,34 @@ export async function getCollectionAnalytics(period: Period, _devFilter?: string
   const series = result.data.series[0] ?? []
   const xValues = result.data.xValues ?? []
 
-  // TODO: add "viewed" count — requires join with preview_view events
+  // Query preview page views in the same period with weekly interval
+  const previewResult = await amplitudeQuery({
+    event: "[Amplitude] Page Viewed",
+    metric: "totals",
+    period,
+    interval: 7,
+    groupBy: [{ type: "event", value: "[Amplitude] Page Path" }],
+  })
+
+  const previewLabels = previewResult.data.seriesLabels ?? []
+
+  // Sum preview views per week
+  const previewByWeek: Record<string, number> = {}
+  for (let i = 0; i < previewLabels.length; i++) {
+    const path = extractLabel(previewLabels, i)
+    if (path.includes("preview")) {
+      const weekSeries = previewResult.data.series[i] ?? []
+      const weekXValues = previewResult.data.xValues ?? []
+      weekXValues.forEach((week, j) => {
+        previewByWeek[week] = (previewByWeek[week] ?? 0) + (weekSeries[j] ?? 0)
+      })
+    }
+  }
+
   const weeklyCreated = xValues.map((week, i) => ({
     week,
     created: series[i] ?? 0,
-    viewed: 0, // TODO: needs cross-event join
+    viewed: previewByWeek[week] ?? 0,
   }))
 
   // By developer — needs page path grouping
@@ -356,7 +379,7 @@ export async function getCollectionAnalytics(period: Period, _devFilter?: string
 
   for (let i = 0; i < devLabels.length; i++) {
     const code = extractLabel(devLabels, i)
-    if (!code || code === "none") continue
+    if (!code || code === "none" || code === "(none)") continue
     const value = devCollapsed[i]?.[0]?.value ?? 0
     byDeveloper.push({
       code,
@@ -407,10 +430,35 @@ export async function getAgentFunnel(period: Period, _devFilter?: string[]): Pro
 }
 
 export async function getTopAgents(period: Period, _devFilter?: string[]): Promise<TopAgent[]> {
-  // TODO: requires catalog DB integration — agents are stored in the catalog's users table
-  // Amplitude tracks session_start with user_id but agent metadata (name, role, agency) is in catalog DB
-  // For v1, return empty array
-  return []
+  const result = await amplitudeQuery({
+    event: "session_start",
+    metric: "totals",
+    period,
+    groupBy: [{ type: "user", value: "user_id" }],
+    limit: 20,
+  })
+
+  const series = result.data.series
+  const labels = result.data.seriesLabels
+
+  const agents: TopAgent[] = []
+  for (let i = 0; i < labels.length; i++) {
+    const label = labels[i]
+    const userId = Array.isArray(label) ? String(label[1] ?? "") : String(label)
+    if (!userId || userId === "(none)") continue
+    const sessions = sumSeries(series[i] ?? [])
+    agents.push({
+      name: userId,
+      role: "—",
+      agency: "—",
+      hours: Math.round(sessions * 3.5 / 60 * 10) / 10, // rough estimate: avg 3.5 min per session
+      collections: 0, // TODO: needs cross-event query
+      offerViews: 0,
+      lastActive: result.data.xValues?.[result.data.xValues.length - 1] ?? "—",
+    })
+  }
+
+  return agents.sort((a, b) => b.hours - a.hours).slice(0, 15)
 }
 
 export async function getDeveloperHealth(period: Period): Promise<DeveloperHealth[]> {
@@ -440,7 +488,7 @@ export async function getDeveloperHealth(period: Period): Promise<DeveloperHealt
   // Sessions per developer
   for (let i = 0; i < sessLabels.length; i++) {
     const code = extractLabel(sessLabels, i)
-    if (!code || code === "none") continue
+    if (!code || code === "none" || code === "(none)") continue
     const sessions = sessCollapsed[i]?.[0]?.value ?? 0
     devMap[code] = {
       code,
@@ -458,7 +506,7 @@ export async function getDeveloperHealth(period: Period): Promise<DeveloperHealt
   // Collections per developer + weekly trend
   for (let i = 0; i < collLabels.length; i++) {
     const code = extractLabel(collLabels, i)
-    if (!code || code === "none") continue
+    if (!code || code === "none" || code === "(none)") continue
     const weekSeries = collSeries[i] ?? []
     const totalCollections = sumSeries(weekSeries)
 
@@ -504,13 +552,22 @@ export async function getDeveloperHealth(period: Period): Promise<DeveloperHealt
 // ── Investor Tab Functions ───────────────────────────────
 
 export async function getInvestorKpis(period: Period, devFilter?: string[]): Promise<InvestorKpis> {
-  const [previewResult, geoResult] = await Promise.all([
+  const [uniquePreviewResult, totalsPreviewResult, geoResult] = await Promise.all([
+    // Preview page views (unique users) — for uniqueInvestors
     amplitudeQuery({
       event: "[Amplitude] Page Viewed",
       metric: "uniques",
       period,
       groupBy: [{ type: "event", value: "[Amplitude] Page Path" }],
     }),
+    // Preview page views (totals) — for previewViews
+    amplitudeQuery({
+      event: "[Amplitude] Page Viewed",
+      metric: "totals",
+      period,
+      groupBy: [{ type: "event", value: "[Amplitude] Page Path" }],
+    }),
+    // Preview page views grouped by country — for targetMarketPct
     amplitudeQuery({
       event: "[Amplitude] Page Viewed",
       metric: "uniques",
@@ -519,29 +576,36 @@ export async function getInvestorKpis(period: Period, devFilter?: string[]): Pro
     }),
   ])
 
-  // Preview views — count paths containing "preview"
-  const labels = previewResult.data.seriesLabels ?? []
-  const collapsed = previewResult.data.seriesCollapsed ?? []
+  // Unique investors from preview paths (uniques)
+  const uniqueLabels = uniquePreviewResult.data.seriesLabels ?? []
+  const uniqueCollapsed = uniquePreviewResult.data.seriesCollapsed ?? []
   let uniqueInvestors = 0
-  let previewViews = 0
-  for (let i = 0; i < labels.length; i++) {
-    const path = extractLabel(labels, i)
+  for (let i = 0; i < uniqueLabels.length; i++) {
+    const path = extractLabel(uniqueLabels, i)
     if (path.includes("preview") && matchesDevFilter(path, devFilter)) {
-      const val = collapsed[i]?.[0]?.value ?? 0
-      uniqueInvestors += val
-      previewViews += val
+      uniqueInvestors += uniqueCollapsed[i]?.[0]?.value ?? 0
     }
   }
 
-  // Views per collection — approximate (previewViews / collections created)
-  const collResult = await amplitudeQuery({
-    event: "create_collection",
-    metric: "totals",
-    period,
-  })
-  const totalCollections = collResult.data.seriesCollapsed[0]?.[0]?.value ?? 0
-  const viewsPerCollection = totalCollections > 0
-    ? Math.round((previewViews / totalCollections) * 10) / 10
+  // Total preview views (totals)
+  const totalsLabels = totalsPreviewResult.data.seriesLabels ?? []
+  const totalsCollapsed = totalsPreviewResult.data.seriesCollapsed ?? []
+  let previewViews = 0
+  const uniqueCollectionIds = new Set<string>()
+  for (let i = 0; i < totalsLabels.length; i++) {
+    const path = extractLabel(totalsLabels, i)
+    if (path.includes("preview") && matchesDevFilter(path, devFilter)) {
+      previewViews += totalsCollapsed[i]?.[0]?.value ?? 0
+      // Extract collection ID for viewsPerCollection calculation
+      const match = path.match(/\/preview\/(\d+)/)
+      if (match) uniqueCollectionIds.add(match[1])
+    }
+  }
+
+  // Views per collection — previewViews / number of unique collection IDs viewed
+  const numCollections = uniqueCollectionIds.size
+  const viewsPerCollection = numCollections > 0
+    ? Math.round((previewViews / numCollections) * 10) / 10
     : 0
 
   // Target market percentage
@@ -562,7 +626,7 @@ export async function getInvestorKpis(period: Period, devFilter?: string[]): Pro
     : 0
 
   return {
-    uniqueInvestors: { value: uniqueInvestors, delta: 0 }, // TODO: compute from series split
+    uniqueInvestors: { value: uniqueInvestors, delta: 0 },
     previewViews: { value: previewViews, delta: 0 },
     viewsPerCollection: { value: viewsPerCollection, delta: 0 },
     targetMarketPct: { value: targetMarketPct, delta: 0 },
@@ -602,16 +666,62 @@ export async function getInvestorTrafficTrend(period: Period, _devFilter?: strin
 }
 
 export async function getTopOffers(period: Period, _devFilter?: string[]): Promise<TopOffer[]> {
-  // TODO: requires catalog DB — collection IDs, creator info, unit counts
-  // Amplitude can track preview views by collection ID if the event includes it
-  // For v1, return empty array
-  return []
+  const result = await amplitudeQuery({
+    event: "[Amplitude] Page Viewed",
+    metric: "uniques",
+    period,
+    groupBy: [{ type: "event", value: "[Amplitude] Page Path" }],
+    limit: 50,
+  })
+
+  const offers: TopOffer[] = []
+  const series = result.data.series
+  const labels = result.data.seriesLabels
+
+  for (let i = 0; i < labels.length; i++) {
+    const path = extractLabel(labels, i)
+    // Match /preview/{id} pattern
+    const match = path.match(/\/preview\/(\d+)/)
+    if (!match) continue
+    const collectionId = parseInt(match[1], 10)
+    const uniqueViewers = sumSeries(series[i] ?? [])
+    if (uniqueViewers === 0) continue
+    offers.push({
+      collectionId,
+      createdBy: "—", // needs catalog DB
+      developer: "—",
+      units: 0,
+      uniqueViewers,
+      totalViews: 0, // populated below from totals query
+    })
+  }
+
+  // Also get total views
+  const totalsResult = await amplitudeQuery({
+    event: "[Amplitude] Page Viewed",
+    metric: "totals",
+    period,
+    groupBy: [{ type: "event", value: "[Amplitude] Page Path" }],
+    limit: 50,
+  })
+
+  for (let i = 0; i < totalsResult.data.seriesLabels.length; i++) {
+    const path = extractLabel(totalsResult.data.seriesLabels, i)
+    const match = path.match(/\/preview\/(\d+)/)
+    if (!match) continue
+    const collectionId = parseInt(match[1], 10)
+    const totalViews = sumSeries(totalsResult.data.series[i] ?? [])
+    const offer = offers.find(o => o.collectionId === collectionId)
+    if (offer) offer.totalViews = totalViews
+  }
+
+  return offers.sort((a, b) => b.uniqueViewers - a.uniqueViewers).slice(0, 15)
 }
 
-export async function getMostOfferedUnits(period: Period, _devFilter?: string[]): Promise<OfferedUnit[]> {
-  // TODO: requires catalog DB — unit_types added to collections
-  // This data is stored in the catalog DB collections table
-  // For v1, return empty array
+export async function getMostOfferedUnits(_period: Period, _devFilter?: string[]): Promise<OfferedUnit[]> {
+  // Requires catalog DB integration — unit_types added to collections are stored in the catalog DB.
+  // Amplitude does not track which units are in a collection, so this needs a direct DB query.
+  // Returning empty until catalog DB connection is available.
   return []
 }
 
@@ -622,12 +732,14 @@ export async function getInvestorGeography(period: Period, _devFilter?: string[]
       metric: "uniques",
       period,
       groupBy: [{ type: "user", value: "country" }],
+      limit: 30,
     }),
     amplitudeQuery({
       event: "[Amplitude] Page Viewed",
       metric: "uniques",
       period,
       groupBy: [{ type: "user", value: "city" }],
+      limit: 30,
     }),
   ])
 

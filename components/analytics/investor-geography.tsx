@@ -1,6 +1,6 @@
 "use client"
 
-import { Label, Pie, PieChart } from "recharts"
+import { Bar, BarChart, XAxis, YAxis } from "recharts"
 
 import { Badge } from "@/components/ui/badge"
 import {
@@ -11,8 +11,6 @@ import {
 } from "@/components/ui/card"
 import {
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
@@ -27,39 +25,15 @@ import {
 } from "@/components/ui/table"
 import type { GeoData } from "@/lib/data/analytics"
 
-const CHART_COLORS = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
-]
+const chartConfig = {
+  countries: {
+    label: "Views %",
+    color: "var(--chart-1)",
+  },
+} satisfies ChartConfig
 
 export function InvestorGeography({ data }: { data: GeoData }) {
-  const topCountries = data.countries.slice(0, 5)
   const topCities = data.cities.slice(0, 8)
-  const totalCountries = data.countries.length
-
-  const chartConfig: ChartConfig = {
-    visitors: {
-      label: "Visitors",
-    },
-    ...Object.fromEntries(
-      topCountries.map((c, i) => [
-        c.name.toLowerCase().replace(/\s+/g, "_"),
-        {
-          label: c.name,
-          color: CHART_COLORS[i % CHART_COLORS.length],
-        },
-      ])
-    ),
-  }
-
-  const pieData = topCountries.map((c, i) => ({
-    country: c.name.toLowerCase().replace(/\s+/g, "_"),
-    visitors: c.value,
-    fill: CHART_COLORS[i % CHART_COLORS.length],
-  }))
 
   return (
     <div className="grid grid-cols-2 gap-4">
@@ -67,58 +41,36 @@ export function InvestorGeography({ data }: { data: GeoData }) {
         <CardHeader className="pb-0">
           <CardTitle>Investors by Country</CardTitle>
         </CardHeader>
-        <CardContent className="pt-0">
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square max-h-[190px]"
-          >
-            <PieChart>
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
+        <CardContent>
+          <ChartContainer config={chartConfig} className="w-full" style={{ height: Math.max(180, data.countries.length * 32) }}>
+            <BarChart
+              accessibilityLayer
+              data={data.countries}
+              layout="vertical"
+              margin={{ left: 80 }}
+            >
+              <XAxis
+                type="number"
+                tickFormatter={(v) => `${v}%`}
+                className="text-xs"
+                tickLine={false}
+                axisLine={false}
               />
-              <Pie
-                data={pieData}
-                dataKey="visitors"
-                nameKey="country"
-                innerRadius={50}
-                strokeWidth={5}
-              >
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
-                        <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                        >
-                          <tspan
-                            x={viewBox.cx}
-                            y={viewBox.cy}
-                            className="fill-foreground text-2xl font-bold tabular-nums"
-                          >
-                            {totalCountries.toLocaleString()}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) + 20}
-                            className="fill-muted-foreground text-xs"
-                          >
-                            Countries
-                          </tspan>
-                        </text>
-                      )
-                    }
-                  }}
-                />
-              </Pie>
-              <ChartLegend
-                content={<ChartLegendContent nameKey="country" />}
-                className="translate-y-2"
+              <YAxis
+                type="category"
+                dataKey="name"
+                tickLine={false}
+                axisLine={false}
+                className="text-xs"
+                width={80}
               />
-            </PieChart>
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <Bar
+                dataKey="percentage"
+                fill="var(--color-countries)"
+                radius={[0, 4, 4, 0]}
+              />
+            </BarChart>
           </ChartContainer>
           {data.targetMarketPct > 0 && (
             <div className="mt-2 flex justify-center">

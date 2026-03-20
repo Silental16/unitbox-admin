@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
   Card,
   CardContent,
@@ -16,7 +17,19 @@ import {
 } from "@/components/ui/table"
 import type { TopAgent } from "@/lib/data/analytics"
 
+type SortColumn = "name" | "hours" | "collections" | "offerViews"
+interface SortOption { column: SortColumn; direction: "asc" | "desc" }
+
+function toggleSort(column: SortColumn, current: SortOption): SortOption {
+  if (current.column === column) {
+    return { column, direction: current.direction === "asc" ? "desc" : "asc" }
+  }
+  return { column, direction: "desc" }
+}
+
 export function TopAgentsTable({ data }: { data: TopAgent[] }) {
+  const [sort, setSort] = useState<SortOption>({ column: "hours", direction: "desc" })
+
   if (data.length === 0) {
     return (
       <Card>
@@ -32,7 +45,16 @@ export function TopAgentsTable({ data }: { data: TopAgent[] }) {
     )
   }
 
-  const sorted = [...data].sort((a, b) => b.hours - a.hours)
+  function SortIcon({ column }: { column: SortColumn }) {
+    if (sort.column !== column) return <span className="text-muted-foreground/30 ml-1">↕</span>
+    return <span className="ml-1">{sort.direction === "asc" ? "↑" : "↓"}</span>
+  }
+
+  const sorted = [...data].sort((a, b) => {
+    const dir = sort.direction === "asc" ? 1 : -1
+    if (sort.column === "name") return dir * a.name.localeCompare(b.name)
+    return dir * ((a[sort.column] ?? 0) - (b[sort.column] ?? 0))
+  })
 
   return (
     <Card>
@@ -43,12 +65,44 @@ export function TopAgentsTable({ data }: { data: TopAgent[] }) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Agent</TableHead>
+              <TableHead
+                className="cursor-pointer select-none"
+                onClick={() => setSort(toggleSort("name", sort))}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Agent
+                  <SortIcon column="name" />
+                </span>
+              </TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Agency</TableHead>
-              <TableHead className="text-right">Hours</TableHead>
-              <TableHead className="text-right">Collections</TableHead>
-              <TableHead className="text-right">Offer Views</TableHead>
+              <TableHead
+                className="text-right cursor-pointer select-none"
+                onClick={() => setSort(toggleSort("hours", sort))}
+              >
+                <span className="inline-flex items-center justify-end gap-1 w-full">
+                  Hours
+                  <SortIcon column="hours" />
+                </span>
+              </TableHead>
+              <TableHead
+                className="text-right cursor-pointer select-none"
+                onClick={() => setSort(toggleSort("collections", sort))}
+              >
+                <span className="inline-flex items-center justify-end gap-1 w-full">
+                  Collections
+                  <SortIcon column="collections" />
+                </span>
+              </TableHead>
+              <TableHead
+                className="text-right cursor-pointer select-none"
+                onClick={() => setSort(toggleSort("offerViews", sort))}
+              >
+                <span className="inline-flex items-center justify-end gap-1 w-full">
+                  Offer Views
+                  <SortIcon column="offerViews" />
+                </span>
+              </TableHead>
               <TableHead className="text-right">Last Active</TableHead>
             </TableRow>
           </TableHeader>

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
   Card,
   CardContent,
@@ -16,7 +17,29 @@ import {
 } from "@/components/ui/table"
 import type { TopOffer } from "@/lib/data/analytics"
 
+type SortColumn = "collectionId" | "uniqueViewers" | "totalViews"
+interface SortOption { column: SortColumn; direction: "asc" | "desc" }
+
+function toggleSort(column: SortColumn, current: SortOption): SortOption {
+  if (current.column === column) {
+    return { column, direction: current.direction === "asc" ? "desc" : "asc" }
+  }
+  return { column, direction: "desc" }
+}
+
 export function TopOffersTable({ data }: { data: TopOffer[] }) {
+  const [sort, setSort] = useState<SortOption>({ column: "uniqueViewers", direction: "desc" })
+
+  function SortIcon({ column }: { column: SortColumn }) {
+    if (sort.column !== column) return <span className="text-muted-foreground/30 ml-1">↕</span>
+    return <span className="ml-1">{sort.direction === "asc" ? "↑" : "↓"}</span>
+  }
+
+  const sorted = [...data].sort((a, b) => {
+    const dir = sort.direction === "asc" ? 1 : -1
+    return dir * ((a[sort.column] ?? 0) - (b[sort.column] ?? 0))
+  })
+
   return (
     <Card>
       <CardHeader>
@@ -31,16 +54,40 @@ export function TopOffersTable({ data }: { data: TopOffer[] }) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Collection #</TableHead>
+                <TableHead
+                  className="cursor-pointer select-none"
+                  onClick={() => setSort(toggleSort("collectionId", sort))}
+                >
+                  <span className="inline-flex items-center gap-1">
+                    Collection #
+                    <SortIcon column="collectionId" />
+                  </span>
+                </TableHead>
                 <TableHead>Created By</TableHead>
                 <TableHead>Developer</TableHead>
                 <TableHead className="text-right">Units</TableHead>
-                <TableHead className="text-right">Unique Viewers</TableHead>
-                <TableHead className="text-right">Total Views</TableHead>
+                <TableHead
+                  className="text-right cursor-pointer select-none"
+                  onClick={() => setSort(toggleSort("uniqueViewers", sort))}
+                >
+                  <span className="inline-flex items-center justify-end gap-1 w-full">
+                    Unique Viewers
+                    <SortIcon column="uniqueViewers" />
+                  </span>
+                </TableHead>
+                <TableHead
+                  className="text-right cursor-pointer select-none"
+                  onClick={() => setSort(toggleSort("totalViews", sort))}
+                >
+                  <span className="inline-flex items-center justify-end gap-1 w-full">
+                    Total Views
+                    <SortIcon column="totalViews" />
+                  </span>
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((offer) => (
+              {sorted.map((offer) => (
                 <TableRow key={offer.collectionId}>
                   <TableCell className="text-muted-foreground tabular-nums">
                     #{offer.collectionId}

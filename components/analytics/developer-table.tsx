@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -12,6 +13,16 @@ import {
 } from "@/components/ui/table"
 import type { DeveloperHealth } from "@/lib/data/analytics"
 import { DeveloperHealthBadge } from "./developer-health"
+
+type SortColumn = "name" | "healthScore" | "sessions" | "activeAgents" | "collections" | "offerViews"
+interface SortOption { column: SortColumn; direction: "asc" | "desc" }
+
+function toggleSort(column: SortColumn, current: SortOption): SortOption {
+  if (current.column === column) {
+    return { column, direction: current.direction === "asc" ? "desc" : "asc" }
+  }
+  return { column, direction: "desc" }
+}
 
 function Sparkline({ data }: { data: number[] }) {
   if (!data.length) return null
@@ -35,7 +46,18 @@ function Sparkline({ data }: { data: number[] }) {
 }
 
 export function DeveloperTable({ data }: { data: DeveloperHealth[] }) {
-  const sorted = [...data].sort((a, b) => a.healthScore - b.healthScore)
+  const [sort, setSort] = useState<SortOption>({ column: "healthScore", direction: "asc" })
+
+  function SortIcon({ column }: { column: SortColumn }) {
+    if (sort.column !== column) return <span className="text-muted-foreground/30 ml-1">↕</span>
+    return <span className="ml-1">{sort.direction === "asc" ? "↑" : "↓"}</span>
+  }
+
+  const sorted = [...data].sort((a, b) => {
+    const dir = sort.direction === "asc" ? 1 : -1
+    if (sort.column === "name") return dir * a.name.localeCompare(b.name)
+    return dir * ((a[sort.column] ?? 0) - (b[sort.column] ?? 0))
+  })
 
   return (
     <Card>
@@ -46,12 +68,60 @@ export function DeveloperTable({ data }: { data: DeveloperHealth[] }) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Developer</TableHead>
-              <TableHead>Health</TableHead>
-              <TableHead className="text-right">Sessions</TableHead>
-              <TableHead className="text-right">Active Agents</TableHead>
-              <TableHead className="text-right">Collections</TableHead>
-              <TableHead className="text-right">Offer Views</TableHead>
+              <TableHead
+                className="cursor-pointer select-none"
+                onClick={() => setSort(toggleSort("name", sort))}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Developer
+                  <SortIcon column="name" />
+                </span>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer select-none"
+                onClick={() => setSort(toggleSort("healthScore", sort))}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Health
+                  <SortIcon column="healthScore" />
+                </span>
+              </TableHead>
+              <TableHead
+                className="text-right cursor-pointer select-none"
+                onClick={() => setSort(toggleSort("sessions", sort))}
+              >
+                <span className="inline-flex items-center justify-end gap-1 w-full">
+                  Sessions
+                  <SortIcon column="sessions" />
+                </span>
+              </TableHead>
+              <TableHead
+                className="text-right cursor-pointer select-none"
+                onClick={() => setSort(toggleSort("activeAgents", sort))}
+              >
+                <span className="inline-flex items-center justify-end gap-1 w-full">
+                  Active Agents
+                  <SortIcon column="activeAgents" />
+                </span>
+              </TableHead>
+              <TableHead
+                className="text-right cursor-pointer select-none"
+                onClick={() => setSort(toggleSort("collections", sort))}
+              >
+                <span className="inline-flex items-center justify-end gap-1 w-full">
+                  Collections
+                  <SortIcon column="collections" />
+                </span>
+              </TableHead>
+              <TableHead
+                className="text-right cursor-pointer select-none"
+                onClick={() => setSort(toggleSort("offerViews", sort))}
+              >
+                <span className="inline-flex items-center justify-end gap-1 w-full">
+                  Offer Views
+                  <SortIcon column="offerViews" />
+                </span>
+              </TableHead>
               <TableHead>Trend</TableHead>
               <TableHead>Risk</TableHead>
             </TableRow>

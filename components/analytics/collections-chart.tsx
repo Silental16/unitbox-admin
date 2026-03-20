@@ -1,6 +1,6 @@
 "use client"
 
-import { Bar, BarChart, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -13,6 +13,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
   type ChartConfig,
 } from "@/components/ui/chart"
 import type { CollectionAnalytics } from "@/lib/data/analytics"
@@ -37,25 +39,31 @@ export function CollectionsChart({ data }: { data: CollectionAnalytics }) {
           Weekly created vs viewed
         </CardDescription>
       </CardHeader>
-      <CardContent className="px-0">
+      <CardContent className="px-2">
         <ChartContainer config={chartConfig} className="h-48 w-full">
           <BarChart
             accessibilityLayer
             data={data.weeklyCreated}
-            margin={{ left: 0, right: 0, top: 6, bottom: 0 }}
+            margin={{ left: 0, right: 0 }}
           >
+            <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
             <XAxis
               dataKey="week"
               tickLine={false}
-              hide
               axisLine={false}
-              tickMargin={6}
-              tickFormatter={(value) => String(value).slice(5)}
+              tickFormatter={(v) =>
+                new Date(v).toLocaleDateString("en", { month: "short", day: "numeric" })
+              }
+              className="text-xs"
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent />}
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              className="text-xs"
+              width={35}
             />
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <ChartLegend content={<ChartLegendContent />} />
             <Bar
               dataKey="created"
               fill="var(--color-created)"

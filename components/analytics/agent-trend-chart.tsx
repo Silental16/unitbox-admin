@@ -1,6 +1,6 @@
 "use client"
 
-import { Area, AreaChart, XAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -33,20 +33,31 @@ export function AgentTrendChart({ data }: { data: TrafficPoint[] }) {
           Last {data.length} days
         </CardDescription>
       </CardHeader>
-      <CardContent className="px-0">
+      <CardContent className="px-2">
         <ChartContainer config={chartConfig} className="h-48 w-full">
           <AreaChart
             accessibilityLayer
             data={data}
             margin={{ left: 0, right: 0, top: 6, bottom: 0 }}
           >
+            <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
             <XAxis
               dataKey="date"
               tickLine={false}
-              hide
               axisLine={false}
-              tickMargin={6}
-              tickFormatter={(value) => String(value).slice(5)}
+              tickMargin={8}
+              tickFormatter={(value) => {
+                const d = new Date(value)
+                return d.toLocaleDateString("en", { month: "short", day: "numeric" })
+              }}
+              className="text-xs"
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              className="text-xs"
+              width={40}
             />
             <ChartTooltip
               cursor={false}
