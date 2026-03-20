@@ -108,6 +108,28 @@ const PROJECT_DEVELOPER_MAP: Record<string, string> = {
 
 const TARGET_MARKET_COUNTRIES = ["Russia", "Indonesia", "United Arab Emirates", "Germany"]
 
+// ── Supabase Client (for pre-processed analytics) ────────
+import { createClient as createSupabaseClient } from "@supabase/supabase-js"
+
+function getSupabase() {
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+}
+
+interface AnalyticsRow {
+  date: string
+  user_id: string | null
+  developer_code: string | null
+  session_duration: number
+  collection_count: number
+  preview_views: number
+  page_views: number
+  country: string | null
+  city: string | null
+}
+
 // ── Amplitude API Client ─────────────────────────────────
 
 const API_KEY = process.env.AMPLITUDE_API_KEY ?? ""
@@ -223,9 +245,131 @@ function halfDelta(series: number[], days: number): { current: number; delta: nu
   return { current: recent, delta: calcDelta(recent, prev) }
 }
 
+// ── Supabase Data Source ─────────────────────────────────
+
+export async function getAnalyticsFromSupabase(period: Period, devFilter?: string[]) {
+  const supabase = getSupabase()
+  const days = periodToDays(period)
+  const startDate = new Date()
+  startDate.setDate(startDate.getDate() - days)
+  const startStr = startDate.toISOString().slice(0, 10)
+
+  let query = supabase
+    .from("analytics_daily")
+    .select("*")
+    .gte("date", startStr)
+    .order("date", { ascending: true })
+
+  if (devFilter && devFilter.length > 0) {
+    query = query.in("developer_code", devFilter)
+  }
+
+  const { data, error } = await query
+  if (error || !data) {
+    console.error("Supabase analytics query failed:", error?.message)
+    return null // Fallback to Amplitude
+  }
+
+  return data as AnalyticsRow[]
+}
+
+function aggregateSupabaseData(rows: AnalyticsRow[], days: number) {
+  const half = Math.floor(days / 2)
+  const now = new Date()
+  const midDate = new Date()
+  midDate.setDate(now.getDate() - half)
+  const midStr = midDate.toISOString().slice(0, 10)
+
+  const recent = rows.filter(r => r.date >= midStr)
+  const previous = rows.filter(r => r.date < midStr)
+
+  // Unique active users (recent vs previous)
+  const recentUsers = new Set(recent.map(r => r.user_id).filter(Boolean))
+  const prevUsers = new Set(previous.map(r => r.user_id).filter(Boolean))
+
+  // Total session duration
+  const recentDuration = recent.reduce((s, r) => s + r.session_duration, 0)
+  const prevDuration = previous.reduce((s, r) => s + r.session_duration, 0)
+
+  // Collections
+  const recentCollections = recent.reduce((s, r) => s + r.collection_count, 0)
+  const prevCollections = previous.reduce((s, r) => s + r.collection_count, 0)
+
+  // Preview views
+  const recentPreviews = recent.reduce((s, r) => s + r.preview_views, 0)
+  const prevPreviews = previous.reduce((s, r) => s + r.preview_views, 0)
+
+  // Daily active users trend
+  const dailyMap: Record<string, Set<string>> = {}
+  for (const row of rows) {
+    if (!dailyMap[row.date]) dailyMap[row.date] = new Set()
+    if (row.user_id) dailyMap[row.date].add(row.user_id)
+  }
+  const dauTrend = Object.entries(dailyMap)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([date, users]) => ({ date, value: users.size }))
+
+  // By developer
+  const devMap: Record<string, { sessions: number; collections: number; previews: number; users: Set<string> }> = {}
+  for (const row of rows) {
+    const code = row.developer_code || "(none)"
+    if (code === "(none)") continue
+    if (!devMap[code]) devMap[code] = { sessions: 0, collections: 0, previews: 0, users: new Set() }
+    devMap[code].sessions += row.session_duration
+    devMap[code].collections += row.collection_count
+    devMap[code].previews += row.preview_views
+    if (row.user_id) devMap[code].users.add(row.user_id)
+  }
+
+  // Geography
+  const countryMap: Record<string, number> = {}
+  for (const row of rows) {
+    if (row.country) countryMap[row.country] = (countryMap[row.country] ?? 0) + row.page_views
+  }
+
+  return {
+    activeAgents: { recent: recentUsers.size, previous: prevUsers.size },
+    duration: { recent: recentDuration, previous: prevDuration },
+    collections: { recent: recentCollections, previous: prevCollections },
+    previews: { recent: recentPreviews, previous: prevPreviews },
+    dauTrend,
+    developers: devMap,
+    countries: countryMap,
+  }
+}
+
 // ── Agent Tab Functions ──────────────────────────────────
 
 export async function getAgentKpis(period: Period, devFilter?: string[]): Promise<AgentKpis> {
+  // Try Supabase first (pre-processed data with accurate session duration)
+  const supabaseData = await getAnalyticsFromSupabase(period, devFilter)
+  if (supabaseData && supabaseData.length > 0) {
+    const days = periodToDays(period)
+    const agg = aggregateSupabaseData(supabaseData, days)
+    return {
+      activeAgents: {
+        value: agg.activeAgents.recent,
+        delta: calcDelta(agg.activeAgents.recent, agg.activeAgents.previous),
+      },
+      dau: {
+        value: agg.dauTrend.length > 0
+          ? Math.round(agg.dauTrend.slice(-7).reduce((s, d) => s + d.value, 0) / Math.min(7, agg.dauTrend.length))
+          : 0,
+        delta: 0, // TODO
+      },
+      war: {
+        value: agg.activeAgents.recent,
+        delta: calcDelta(agg.activeAgents.recent, agg.activeAgents.previous),
+      },
+      collections: {
+        value: agg.collections.recent,
+        delta: calcDelta(agg.collections.recent, agg.collections.previous),
+      },
+      effectiveCollections: { value: 0, delta: 0 },
+      activationRate: { value: 0, delta: 0 },
+    }
+  }
+  // ... Amplitude fallback
   const days = periodToDays(period)
 
   const [dauResult, collectionsResult, previewResult] = await Promise.all([
@@ -307,6 +451,13 @@ export async function getAgentKpis(period: Period, devFilter?: string[]): Promis
 }
 
 export async function getAgentTrafficTrend(period: Period, _devFilter?: string[]): Promise<TrafficPoint[]> {
+  // Try Supabase first
+  const supabaseData = await getAnalyticsFromSupabase(period, _devFilter)
+  if (supabaseData && supabaseData.length > 0) {
+    const agg = aggregateSupabaseData(supabaseData, periodToDays(period))
+    return agg.dauTrend
+  }
+  // ... Amplitude fallback
   const result = await amplitudeQuery({
     event: "session_start",
     metric: "uniques",
