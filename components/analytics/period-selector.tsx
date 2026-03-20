@@ -11,6 +11,7 @@ const periods: { value: Period; label: string }[] = [
   { value: "7d", label: "7д" },
   { value: "30d", label: "30д" },
   { value: "90d", label: "90д" },
+  { value: "6m", label: "6м" },
   { value: "all", label: "Всё" },
 ]
 
