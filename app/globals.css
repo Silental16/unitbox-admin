@@ -157,8 +157,8 @@
 
 [data-slot="card"] {
   box-shadow: var(--shadow-card);
-  transition: box-shadow 0.2s ease;
 }
-[data-slot="card"]:hover {
+[data-slot="card"][data-interactive]:hover {
   box-shadow: var(--shadow-card-hover);
+  transition: box-shadow 0.2s ease;
 }

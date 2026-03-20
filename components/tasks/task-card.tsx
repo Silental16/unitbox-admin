@@ -36,7 +36,8 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
       ref={overlay ? undefined : setNodeRef}
       style={style}
       data-slot="card"
-      className={`rounded-lg border bg-card text-card-foreground shadow-sm cursor-grab active:cursor-grabbing hover:bg-muted/50 transition-colors touch-none ${isDragging ? "opacity-40" : ""} ${overlay ? "shadow-lg rotate-2 scale-105 opacity-90" : ""}`}
+      data-interactive
+      className={`rounded-lg bg-card text-card-foreground cursor-grab active:cursor-grabbing hover:bg-muted/50 transition-all touch-none ${isDragging ? "opacity-40" : ""} ${overlay ? "shadow-lg rotate-2 scale-105 opacity-90" : ""}`}
       {...attributes}
       {...listeners}
       onClick={(e) => {
