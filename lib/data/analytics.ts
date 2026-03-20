@@ -342,43 +342,7 @@ function aggregateSupabaseData(rows: AnalyticsRow[], days: number) {
 // ── Agent Tab Functions ──────────────────────────────────
 
 export async function getAgentKpis(period: Period, devFilter?: string[]): Promise<AgentKpis> {
-  // Try Supabase first (pre-processed data with accurate session duration)
-  const supabaseData = await getAnalyticsFromSupabase(period, devFilter)
-  if (supabaseData && supabaseData.length > 0) {
-    const days = periodToDays(period)
-    const agg = aggregateSupabaseData(supabaseData, days)
-
-    // Use total unique users for the period (not just "recent half")
-    const allUsers = new Set(supabaseData.map(r => r.user_id).filter(Boolean))
-    const totalCollections = supabaseData.reduce((s, r) => s + (r.collection_count ?? 0), 0)
-    const avgDau = agg.dauTrend.length > 0
-      ? Math.round(agg.dauTrend.reduce((s, d) => s + d.value, 0) / agg.dauTrend.length)
-      : 0
-
-    console.log(`[Supabase KPIs] rows=${supabaseData.length} users=${allUsers.size} collections=${totalCollections} dauPoints=${agg.dauTrend.length} avgDau=${avgDau}`)
-
-    return {
-      activeAgents: {
-        value: allUsers.size,
-        delta: calcDelta(agg.activeAgents.recent, agg.activeAgents.previous),
-      },
-      dau: {
-        value: avgDau,
-        delta: 0,
-      },
-      war: {
-        value: allUsers.size > 0 ? Math.round((allUsers.size / Math.max(allUsers.size * 1.5, 100)) * 100) : 0,
-        delta: 0,
-      },
-      collections: {
-        value: totalCollections,
-        delta: calcDelta(agg.collections.recent, agg.collections.previous),
-      },
-      effectiveCollections: { value: 0, delta: 0 },
-      activationRate: { value: 0, delta: 0 },
-    }
-  }
-  // ... Amplitude fallback
+  // Use Amplitude directly — Supabase sync is still stabilizing
   const days = periodToDays(period)
 
   const [dauResult, collectionsResult, previewResult] = await Promise.all([
@@ -460,13 +424,7 @@ export async function getAgentKpis(period: Period, devFilter?: string[]): Promis
 }
 
 export async function getAgentTrafficTrend(period: Period, _devFilter?: string[]): Promise<TrafficPoint[]> {
-  // Try Supabase first
-  const supabaseData = await getAnalyticsFromSupabase(period, _devFilter)
-  if (supabaseData && supabaseData.length > 0) {
-    const agg = aggregateSupabaseData(supabaseData, periodToDays(period))
-    return agg.dauTrend
-  }
-  // ... Amplitude fallback
+  // Use Amplitude directly for consistent data
   const result = await amplitudeQuery({
     event: "session_start",
     metric: "uniques",
