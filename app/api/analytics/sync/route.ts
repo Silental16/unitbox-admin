@@ -45,7 +45,14 @@ function extractLabel(
   position: number
 ): string {
   const label = labels[index]
-  if (Array.isArray(label)) return String(label[position] ?? "")
+  if (Array.isArray(label)) {
+    // Amplitude multi-group labels come as [0, "userId; devCode"]
+    // Split by "; " to get individual values
+    const combined = String(label[1] ?? "")
+    const parts = combined.split("; ")
+    // position 1 = first group (user_id), position 2 = second group (devCode)
+    return parts[position - 1] ?? ""
+  }
   return String(label)
 }
 
