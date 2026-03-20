@@ -71,24 +71,35 @@ function DroppableColumn({
   )
 }
 
-// Custom collision: prefer cards (for reorder), then columns (for cross-column + empty)
+// Custom collision: cards for reorder, columns for empty column drops
 const customCollision: CollisionDetection = (args) => {
-  // 1. Try closest center — finds cards for reordering
-  const centerCollisions = closestCenter(args)
-  const cardHits = centerCollisions.filter((c) => !String(c.id).startsWith("column-"))
-  if (cardHits.length > 0) return cardHits
-
-  // 2. No cards found — find which column the pointer is over
-  //    Use rectIntersection (more reliable than pointerWithin for large areas)
-  const allCollisions = rectIntersection(args)
-  const columnHits = allCollisions.filter((c) => String(c.id).startsWith("column-"))
-  if (columnHits.length > 0) return [columnHits[0]]
-
-  // 3. Last resort — pointerWithin
+  // First: what is the pointer actually inside of?
   const pointerHits = pointerWithin(args)
-  if (pointerHits.length > 0) return pointerHits
+  const columnUnderPointer = pointerHits.find((c) => String(c.id).startsWith("column-"))
 
-  return centerCollisions
+  // Find closest card
+  const centerCollisions = closestCenter(args)
+  const closestCard = centerCollisions.find((c) => !String(c.id).startsWith("column-"))
+
+  // If pointer is inside a column...
+  if (columnUnderPointer) {
+    // Check if closest card is also within this same column
+    // by checking if the card is also in pointerHits
+    const cardInSameColumn = pointerHits.find((c) => !String(c.id).startsWith("column-"))
+    if (cardInSameColumn) {
+      // There are cards under the pointer — use closest for reorder
+      return closestCard ? [closestCard] : [columnUnderPointer]
+    }
+    // No cards under pointer — empty area of column → drop into column
+    return [columnUnderPointer]
+  }
+
+  // Pointer not cleanly inside a column — use closest card if available
+  if (closestCard) return [closestCard]
+
+  // Fallback to rect intersection
+  const rectHits = rectIntersection(args)
+  return rectHits.length > 0 ? rectHits : centerCollisions
 }
 
 function findColumnForTask(taskId: string, tasks: Task[]): TaskStatus | null {
