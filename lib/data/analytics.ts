@@ -174,11 +174,14 @@ async function amplitudeQuery(params: {
   })
 
   if (!res.ok) {
-    console.error(`Amplitude API error: ${res.status} ${res.statusText}`)
+    console.error(`Amplitude API error: ${res.status} ${res.statusText} for event=${params.event}`)
     return { data: { series: [[]], seriesCollapsed: [[]], seriesLabels: [0], xValues: [] } }
   }
 
-  return res.json()
+  const json = await res.json()
+  // Debug: log response shape on server
+  console.log(`[Amplitude] event=${params.event} metric=${params.metric ?? "uniques"} series_len=${json?.data?.series?.[0]?.length ?? 0} collapsed_val=${json?.data?.seriesCollapsed?.[0]?.[0]?.value ?? "N/A"}`)
+  return json
 }
 
 // ── Internal Helpers ─────────────────────────────────────
