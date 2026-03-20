@@ -91,7 +91,7 @@ function icpBadgeClass(tier: string) {
 
 function KVRow({ label, value, href }: { label: string; value: string; href?: string }) {
   return (
-    <div className="grid grid-cols-[120px_1fr] gap-2 py-2 border-b border-border/50 last:border-b-0">
+    <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr] gap-2 py-2 border-b border-border/50 last:border-b-0">
       <span className="text-sm text-muted-foreground">{label}</span>
       {href ? (
         <a
@@ -276,7 +276,7 @@ export function DeveloperSheet({
               ICP {score}
             </Badge>
             {developer.origin && (
-              <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
+              <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                 {developer.origin}
               </span>
             )}
@@ -360,13 +360,13 @@ export function DeveloperSheet({
                             {/* Tags */}
                             <div className="flex flex-wrap items-center gap-1">
                               {project.completion && (
-                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-xs text-muted-foreground">
                                   <CalendarIcon className="size-2.5 shrink-0" />
                                   {project.completion}
                                 </span>
                               )}
                               {project.units && (
-                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-xs text-muted-foreground">
                                   <LayersIcon className="size-2.5 shrink-0" />
                                   {project.units}
                                 </span>
@@ -376,26 +376,26 @@ export function DeveloperSheet({
                                   href={project.mapUrl || `https://www.google.com/maps/search/${encodeURIComponent(project.location + ", Bali")}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-primary hover:bg-muted/80 transition-colors"
+                                  className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-xs text-primary hover:bg-muted/80 transition-colors"
                                 >
                                   <MapPinIcon className="size-2.5 shrink-0" />
                                   {project.location}
                                 </a>
                               )}
                               {project.type && (
-                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-xs text-muted-foreground">
                                   <HomeIcon className="size-2.5 shrink-0" />
                                   {project.type}
                                 </span>
                               )}
                               {project.price && (
-                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-xs text-muted-foreground">
                                   <DollarSignIcon className="size-2.5 shrink-0" />
                                   {project.price}
                                 </span>
                               )}
                               {project.roi && (
-                                <span className="inline-flex items-center gap-1 rounded bg-emerald-50 px-1.5 py-px text-[11px] text-emerald-700">
+                                <span className="inline-flex items-center gap-1 rounded bg-emerald-50 px-1.5 py-px text-xs text-emerald-700">
                                   <TrendingUpIcon className="size-2.5 shrink-0" />
                                   {project.roi}
                                 </span>
@@ -404,7 +404,7 @@ export function DeveloperSheet({
 
                             {/* Description / Notes */}
                             {(project.description || project.notes) && (
-                              <p className="text-[11px] text-muted-foreground/70 leading-relaxed line-clamp-3">
+                              <p className="text-xs text-muted-foreground/70 leading-relaxed line-clamp-3">
                                 {project.description || project.notes}
                               </p>
                             )}
@@ -451,19 +451,19 @@ export function DeveloperSheet({
                             </div>
                             <div className="flex flex-wrap items-center gap-1">
                               {project.location && (
-                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-xs text-muted-foreground">
                                   <MapPinIcon className="size-2.5 shrink-0" />
                                   {project.location}
                                 </span>
                               )}
                               {project.units && (
-                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-xs text-muted-foreground">
                                   <LayersIcon className="size-2.5 shrink-0" />
                                   {project.units}
                                 </span>
                               )}
                               {project.type && (
-                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-[11px] text-muted-foreground">
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-xs text-muted-foreground">
                                   <HomeIcon className="size-2.5 shrink-0" />
                                   {project.type}
                                 </span>

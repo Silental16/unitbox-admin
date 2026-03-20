@@ -166,17 +166,17 @@ export function TaskSheet({
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+              <Badge variant="outline" className="text-[11px] px-1.5 py-0">
                 W{task.wave}
               </Badge>
-              <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+              <Badge variant="secondary" className="text-[11px] px-1.5 py-0">
                 {TASK_EFFORTS[task.effort]}
               </Badge>
-              <Badge variant="secondary" className="text-[10px] px-1.5 py-0 capitalize">
+              <Badge variant="secondary" className="text-[11px] px-1.5 py-0 capitalize">
                 {TASK_SOURCES[task.source]}
               </Badge>
               {task.segment && (
-                <Badge variant="secondary" className="text-[10px] px-1.5 py-0 capitalize">
+                <Badge variant="secondary" className="text-[11px] px-1.5 py-0 capitalize">
                   {task.segment}
                 </Badge>
               )}

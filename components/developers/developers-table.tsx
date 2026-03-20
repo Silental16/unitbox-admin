@@ -235,7 +235,7 @@ export function DevelopersTable({
                           {dev.name}
                         </span>
                         <span
-                          className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${originBadgeVariant(dev.originTag)}`}
+                          className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[11px] font-semibold ${originBadgeVariant(dev.originTag)}`}
                         >
                           {originLabel(dev.originTag)}
                         </span>
@@ -253,7 +253,7 @@ export function DevelopersTable({
                     <span className="text-muted-foreground/50">/</span>
                     <span className="text-muted-foreground">{totalProj}</span>
                   </TableCell>
-                  <TableCell className="text-sm">{dev.priceRange}</TableCell>
+                  <TableCell className="text-sm tabular-nums">{dev.priceRange}</TableCell>
                   <TableCell className="">
                     <div className="flex items-center gap-2">
                       <span className={`text-sm font-semibold tabular-nums ${getScoreColor(score)}`}>
@@ -283,7 +283,7 @@ export function DevelopersTable({
                 {dev.comment && (
                   <tr className="group-hover:bg-muted/50 transition-colors">
                     <td colSpan={7} className="px-4 pt-0 pb-3">
-                      <span className="inline-flex items-start gap-1.5 text-[11px] text-muted-foreground bg-muted/80 rounded-md px-2.5 py-1 leading-snug">
+                      <span className="inline-flex items-start gap-1.5 text-xs text-muted-foreground bg-muted/80 rounded-md px-2.5 py-1 leading-snug">
                         <MessageSquareIcon className="size-3 shrink-0 mt-px" />
                         {dev.comment}
                       </span>

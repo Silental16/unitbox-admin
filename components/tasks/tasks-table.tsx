@@ -194,18 +194,18 @@ export function TasksTable({
                   />
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                  <Badge variant="outline" className="text-[11px] px-1.5 py-0 tabular-nums">
                     W{task.wave}
                   </Badge>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                  <Badge variant="secondary" className="text-[11px] px-1.5 py-0">
                     {TASK_EFFORTS[task.effort]}
                   </Badge>
                 </TableCell>
                 <TableCell className="hidden lg:table-cell">
                   {task.segment && (
-                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0 capitalize">
+                    <Badge variant="secondary" className="text-[11px] px-1.5 py-0 capitalize">
                       {task.segment}
                     </Badge>
                   )}

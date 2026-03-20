@@ -53,7 +53,7 @@ function DroppableColumn({
       <div className="flex items-center gap-2 px-1 py-1 mb-1">
         <span className={`size-2 rounded-full ${status.dot}`} />
         <span className="text-xs font-medium">{status.label}</span>
-        <Badge variant="secondary" className="ml-auto text-[10px] px-1.5 py-0 tabular-nums">
+        <Badge variant="secondary" className="ml-auto text-[11px] px-1.5 py-0 tabular-nums">
           {tasks.length}
         </Badge>
       </div>

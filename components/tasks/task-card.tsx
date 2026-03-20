@@ -35,6 +35,7 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
     <div
       ref={overlay ? undefined : setNodeRef}
       style={style}
+      data-slot="card"
       className={`rounded-lg border bg-card text-card-foreground shadow-sm cursor-grab active:cursor-grabbing hover:bg-muted/50 transition-colors touch-none ${isDragging ? "opacity-40" : ""} ${overlay ? "shadow-lg rotate-2 scale-105 opacity-90" : ""}`}
       {...attributes}
       {...listeners}
@@ -44,7 +45,7 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
       }}
     >
       <div className="px-2.5 py-2 space-y-1">
-        <p className="text-[13px] font-medium leading-snug">{task.title}</p>
+        <p className="text-sm font-medium leading-snug">{task.title}</p>
 
         {task.description && (
           <p className="text-[11px] text-muted-foreground line-clamp-2 leading-tight">{task.description}</p>
@@ -53,32 +54,32 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
         <div className="flex flex-wrap items-center gap-1">
           {priority && (
             <span
-              className={`inline-flex items-center gap-1 rounded-md px-1.5 py-0 text-[10px] font-medium ${priority.bg} ${priority.text}`}
+              className={`inline-flex items-center gap-1 rounded-md px-1.5 py-0 text-[11px] font-medium ${priority.bg} ${priority.text}`}
             >
               <span className={`size-1.5 rounded-full ${priority.dot}`} />
               {priority.label}
             </span>
           )}
-          <Badge variant="outline" className="text-[10px] px-1 py-0">
+          <Badge variant="outline" className="text-[11px] px-1 py-0 tabular-nums">
             W{task.wave}
           </Badge>
-          <Badge variant="secondary" className="text-[10px] px-1 py-0">
+          <Badge variant="secondary" className="text-[11px] px-1 py-0">
             {TASK_EFFORTS[task.effort]}
           </Badge>
           {task.segment && (
-            <Badge variant="secondary" className="text-[10px] px-1 py-0 capitalize">
+            <Badge variant="secondary" className="text-[11px] px-1 py-0 capitalize">
               {task.segment}
             </Badge>
           )}
           {task.comment && (
-            <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground ml-auto">
+            <span className="inline-flex items-center gap-0.5 text-[11px] text-muted-foreground ml-auto">
               <MessageSquareIcon className="size-3" />
             </span>
           )}
         </div>
 
         {task.comment && (
-          <p className="text-[10px] text-muted-foreground/70 line-clamp-1 italic leading-tight">{task.comment}</p>
+          <p className="text-[11px] text-muted-foreground/70 line-clamp-1 italic leading-tight">{task.comment}</p>
         )}
       </div>
     </div>
