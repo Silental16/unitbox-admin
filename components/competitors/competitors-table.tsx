@@ -169,11 +169,12 @@ export function CompetitorsTable({
                 <TableCell className="text-sm">{comp.geo}</TableCell>
                 <TableCell className="text-sm max-w-[160px] truncate">{comp.businessModel}</TableCell>
                 <TableCell>
-                  <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-semibold ${threat.bg} ${threat.text}`}>
+                  <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${threat.bg} ${threat.text}`}>
                     {threat.label}
                   </span>
                 </TableCell>
-                <TableCell className="text-sm">{comp.sizeSignal}</TableCell>
+                <TableCell className="text-sm tabular-nums">{comp.sizeSignal}</TableCell>
+
                 <TableCell onClick={(e) => e.stopPropagation()}>
                   <ResearchStatusSelect
                     status={comp.researchStatus}
@@ -184,7 +185,7 @@ export function CompetitorsTable({
               {comp.notes && (
                 <tr className="group-hover:bg-muted/50 transition-colors">
                   <td colSpan={7} className="px-4 pt-0 pb-3">
-                    <span className="inline-flex items-start gap-1.5 text-[11px] text-muted-foreground bg-muted/80 rounded-md px-2.5 py-1 leading-snug">
+                    <span className="inline-flex items-start gap-1.5 text-xs text-muted-foreground bg-muted/80 rounded-md px-2.5 py-1 leading-snug">
                       <MessageSquareIcon className="size-3 shrink-0 mt-px" />
                       {comp.notes}
                     </span>

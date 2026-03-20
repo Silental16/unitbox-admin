@@ -57,7 +57,7 @@ interface CompetitorSheetProps {
 
 function KVRow({ label, value, href }: { label: string; value: string; href?: string }) {
   return (
-    <div className="grid grid-cols-[130px_1fr] gap-2 py-2 border-b border-border/50 last:border-b-0">
+    <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr] gap-2 py-2 border-b border-border/50 last:border-b-0">
       <span className="text-sm text-muted-foreground">{label}</span>
       {href ? (
         <a
@@ -234,7 +234,7 @@ export function CompetitorSheet({
                             onClick={() => onThreatLevelChange(competitor.id, level)}
                             className="gap-2"
                           >
-                            <span className={`inline-flex items-center rounded-md px-1.5 py-px text-[10px] font-semibold ${cfg.bg} ${cfg.text}`}>
+                            <span className={`inline-flex items-center rounded-md px-1.5 py-px text-[11px] font-semibold ${cfg.bg} ${cfg.text}`}>
                               {cfg.label}
                             </span>
                           </DropdownMenuItem>
