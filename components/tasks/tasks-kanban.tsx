@@ -12,11 +12,13 @@ import {
   useSensors,
   type DragStartEvent,
   type DragEndEvent,
+  type DragOverEvent,
   type CollisionDetection,
 } from "@dnd-kit/core"
 import {
   SortableContext,
   verticalListSortingStrategy,
+  arrayMove,
 } from "@dnd-kit/sortable"
 import { useDroppable } from "@dnd-kit/core"
 import { Badge } from "@/components/ui/badge"
@@ -29,14 +31,7 @@ interface TasksKanbanProps {
   onSelectTask: (task: Task) => void
   onStatusChange: (taskId: string, status: TaskStatus) => void
   onPriorityChange: (taskId: string, priority: TaskPriority) => void
-}
-
-function sortByPriorityThenOrder(a: Task, b: Task): number {
-  const priorityOrder = TASK_PRIORITIES.map((p) => p.value)
-  const ai = priorityOrder.indexOf(a.priority)
-  const bi = priorityOrder.indexOf(b.priority)
-  if (ai !== bi) return ai - bi
-  return a.order - b.order
+  onReorder: (tasks: Task[]) => void
 }
 
 function DroppableColumn({
@@ -53,7 +48,7 @@ function DroppableColumn({
   return (
     <div
       ref={setNodeRef}
-      className={`flex flex-col gap-1 rounded-lg p-2 min-h-[300px] transition-all duration-200 ${isOver ? "bg-primary/8 ring-2 ring-primary/30 ring-inset" : "bg-muted/30"}`}
+      className={`flex flex-col gap-1 rounded-lg p-2 min-h-[300px] transition-colors duration-150 ${isOver ? "bg-muted/60" : "bg-muted/30"}`}
     >
       <div className="flex items-center gap-2 px-1 py-1 mb-1">
         <span className={`size-2 rounded-full ${status.dot}`} />
@@ -68,7 +63,7 @@ function DroppableColumn({
         ))}
       </SortableContext>
       {tasks.length === 0 && (
-        <div className="flex-1 flex items-center justify-center text-xs text-muted-foreground/50 py-8">
+        <div className="flex-1 flex items-center justify-center text-xs text-muted-foreground/40 py-8">
           Drop here
         </div>
       )}
@@ -76,27 +71,36 @@ function DroppableColumn({
   )
 }
 
-// Custom collision detection: prefer droppable columns, fall back to closest center
+// Custom collision: prefer sortable items (cards) first, then columns
 const customCollision: CollisionDetection = (args) => {
-  // First try pointer-within for columns
-  const pointerCollisions = pointerWithin(args)
-  if (pointerCollisions.length > 0) {
-    // Prefer column droppables
-    const columnHit = pointerCollisions.find((c) => String(c.id).startsWith("column-"))
-    if (columnHit) return [columnHit]
-    return pointerCollisions
+  // Try closest center first — this finds cards for reordering
+  const centerCollisions = closestCenter(args)
+  // If we found a card, use it
+  if (centerCollisions.length > 0) {
+    const hasCard = centerCollisions.some((c) => !String(c.id).startsWith("column-"))
+    if (hasCard) {
+      return centerCollisions.filter((c) => !String(c.id).startsWith("column-"))
+    }
   }
-  // Fallback to rect intersection
+  // No card found — try pointer within columns (for empty columns)
+  const pointerCollisions = pointerWithin(args)
+  const columnHit = pointerCollisions.find((c) => String(c.id).startsWith("column-"))
+  if (columnHit) return [columnHit]
+  // Fallback
   const rectCollisions = rectIntersection(args)
-  if (rectCollisions.length > 0) return rectCollisions
-  // Final fallback
-  return closestCenter(args)
+  return rectCollisions.length > 0 ? rectCollisions : centerCollisions
+}
+
+function findColumnForTask(taskId: string, tasks: Task[]): TaskStatus | null {
+  const task = tasks.find((t) => t.id === taskId)
+  return task?.status ?? null
 }
 
 export function TasksKanban({
   tasks,
   onSelectTask,
   onStatusChange,
+  onReorder,
 }: TasksKanbanProps) {
   const [activeTask, setActiveTask] = useState<Task | null>(null)
 
@@ -111,35 +115,71 @@ export function TasksKanban({
     if (task) setActiveTask(task)
   }, [])
 
+  const handleDragOver = useCallback(
+    (event: DragOverEvent) => {
+      const { active, over } = event
+      if (!over) return
+
+      const activeId = active.id as string
+      const overId = String(over.id)
+
+      // If over a column droppable, change status
+      if (overId.startsWith("column-")) {
+        const newStatus = overId.replace("column-", "") as TaskStatus
+        const task = tasks.find((t) => t.id === activeId)
+        if (task && task.status !== newStatus) {
+          onStatusChange(activeId, newStatus)
+        }
+        return
+      }
+
+      // If over another card in a different column, move to that column
+      const overTask = tasks.find((t) => t.id === overId)
+      const activeTaskObj = tasks.find((t) => t.id === activeId)
+      if (overTask && activeTaskObj && activeTaskObj.status !== overTask.status) {
+        onStatusChange(activeId, overTask.status)
+      }
+    },
+    [tasks, onStatusChange]
+  )
+
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       setActiveTask(null)
       const { active, over } = event
       if (!over) return
 
-      const taskId = active.id as string
+      const activeId = active.id as string
       const overId = String(over.id)
 
-      // Dropped over a column droppable (column-backlog, column-todo, etc.)
-      if (overId.startsWith("column-")) {
-        const newStatus = overId.replace("column-", "") as TaskStatus
-        const task = tasks.find((t) => t.id === taskId)
-        if (task && task.status !== newStatus) {
-          onStatusChange(taskId, newStatus)
-        }
-        return
-      }
+      // If dropped over a column, status already handled in dragOver
+      if (overId.startsWith("column-")) return
 
-      // Dropped over another card — use that card's status
-      const overTask = tasks.find((t) => t.id === overId)
-      if (overTask) {
-        const task = tasks.find((t) => t.id === taskId)
-        if (task && task.status !== overTask.status) {
-          onStatusChange(taskId, overTask.status)
-        }
-      }
+      // Reorder within same column
+      const activeTaskObj = tasks.find((t) => t.id === activeId)
+      const overTaskObj = tasks.find((t) => t.id === overId)
+      if (!activeTaskObj || !overTaskObj) return
+      if (activeTaskObj.status !== overTaskObj.status) return
+
+      // Same column — reorder
+      const columnTasks = tasks
+        .filter((t) => t.status === activeTaskObj.status)
+        .sort((a, b) => a.order - b.order)
+
+      const oldIndex = columnTasks.findIndex((t) => t.id === activeId)
+      const newIndex = columnTasks.findIndex((t) => t.id === overId)
+      if (oldIndex === newIndex) return
+
+      const reordered = arrayMove(columnTasks, oldIndex, newIndex)
+      // Update order values
+      const updatedTasks = tasks.map((t) => {
+        const idx = reordered.findIndex((r) => r.id === t.id)
+        if (idx !== -1) return { ...t, order: idx }
+        return t
+      })
+      onReorder(updatedTasks)
     },
-    [tasks, onStatusChange]
+    [tasks, onReorder]
   )
 
   return (
@@ -147,6 +187,7 @@ export function TasksKanban({
       sensors={sensors}
       collisionDetection={customCollision}
       onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
       <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
@@ -154,7 +195,7 @@ export function TasksKanban({
           {TASK_STATUSES.map((status) => {
             const columnTasks = tasks
               .filter((t) => t.status === status.value)
-              .sort(sortByPriorityThenOrder)
+              .sort((a, b) => a.order - b.order)
             return (
               <DroppableColumn
                 key={status.value}

@@ -57,6 +57,19 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
     await supabase.from("tasks").update({ comment: newComment }).eq("id", taskId)
   }, [])
 
+  const handleReorder = useCallback(async (updatedTasks: Task[]) => {
+    setTasks(updatedTasks)
+    const supabase = createClient()
+    // Batch update order values for reordered tasks
+    const changed = updatedTasks.filter((t) => {
+      const original = tasks.find((o) => o.id === t.id)
+      return original && original.order !== t.order
+    })
+    for (const t of changed) {
+      await supabase.from("tasks").update({ order: t.order }).eq("id", t.id)
+    }
+  }, [tasks])
+
   const filteredTasks = useMemo(() => {
     let result = [...tasks]
 
@@ -159,6 +172,7 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
           tasks={filteredTasks}
           onSelectTask={handleSelectTask}
           onStatusChange={handleStatusChange}
+          onReorder={handleReorder}
           onPriorityChange={handlePriorityChange}
         />
       )}
