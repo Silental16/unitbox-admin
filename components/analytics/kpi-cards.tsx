@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import type { KpiMetrics } from "@/lib/data/analytics"
-import { formatDelta, formatDuration } from "@/lib/data/analytics"
+import { formatDelta } from "@/lib/data/analytics"
 
 interface KpiCardProps {
   title: string
@@ -49,9 +49,9 @@ export function KpiCards({ data }: { data: KpiMetrics }) {
         delta={data.mau.delta}
       />
       <KpiCard
-        title="Avg Session"
-        value={formatDuration(data.avgSession.value)}
-        delta={data.avgSession.delta}
+        title="Page Views"
+        value={data.pageViews.value.toLocaleString()}
+        delta={data.pageViews.delta}
       />
       <KpiCard
         title="Collections"

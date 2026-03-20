@@ -26,6 +26,8 @@ function retentionBg(value: number): string {
 }
 
 export function RetentionTable({ data }: { data: RetentionData }) {
+  const hasData = data.cohorts.length > 0 || data.d1 > 0
+
   const maxWeeks = data.cohorts.length > 0
     ? Math.max(...data.cohorts.map((c) => c.rates.length))
     : 0
@@ -36,6 +38,17 @@ export function RetentionTable({ data }: { data: RetentionData }) {
         <CardTitle>Retention</CardTitle>
       </CardHeader>
       <CardContent>
+        {!hasData ? (
+          <div className="flex flex-col items-center justify-center py-8 text-center">
+            <p className="text-sm text-muted-foreground">
+              Retention data not available yet.
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Requires Amplitude Behavioral Cohorts API.
+            </p>
+          </div>
+        ) : (
+          <>
         <div className="grid grid-cols-3 gap-4">
           <div className="rounded-lg bg-muted p-3 text-center">
             <p className="text-2xl font-semibold text-chart-1 tabular-nums">
@@ -90,6 +103,8 @@ export function RetentionTable({ data }: { data: RetentionData }) {
             ))}
           </TableBody>
         </Table>
+        </>
+        )}
       </CardContent>
     </Card>
   )
