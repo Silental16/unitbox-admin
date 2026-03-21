@@ -252,7 +252,7 @@ export function TaskSheet({
                   }, 800)
                 }}
                 placeholder="Добавить заметку..."
-                className="min-h-[80px] text-sm resize-y"
+                className="min-h-[80px] text-sm resize-y break-all"
               />
             </div>
           </div>
