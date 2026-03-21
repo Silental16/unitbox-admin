@@ -72,15 +72,13 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
               {task.segment}
             </Badge>
           )}
-          {task.comment && (
-            <span className="inline-flex items-center gap-0.5 text-[11px] text-muted-foreground ml-auto">
-              <MessageSquareIcon className="size-3" />
-            </span>
-          )}
         </div>
 
         {task.comment && (
-          <p className="text-[11px] text-muted-foreground/70 line-clamp-1 italic leading-tight">{task.comment}</p>
+          <span className="inline-flex items-start gap-1.5 text-xs text-muted-foreground bg-muted/80 rounded-md px-2.5 py-1 leading-snug">
+            <MessageSquareIcon className="size-3 shrink-0 mt-px" />
+            {task.comment}
+          </span>
         )}
       </div>
     </div>
