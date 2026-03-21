@@ -37,7 +37,7 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
       style={style}
       data-slot="card"
       data-interactive
-      className={`rounded-lg bg-card text-card-foreground cursor-grab active:cursor-grabbing hover:bg-muted/50 transition-all touch-none ${isDragging ? "opacity-40" : ""} ${overlay ? "shadow-lg rotate-2 scale-105 opacity-90" : ""}`}
+      className={`rounded-lg bg-card text-card-foreground overflow-hidden cursor-grab active:cursor-grabbing hover:bg-muted/50 transition-all touch-none ${isDragging ? "opacity-40" : ""} ${overlay ? "shadow-lg rotate-2 scale-105 opacity-90" : ""}`}
       {...attributes}
       {...listeners}
       onClick={(e) => {
@@ -75,9 +75,9 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
         </div>
 
         {task.comment && (
-          <span className="inline-flex items-start gap-1.5 text-xs text-muted-foreground bg-muted/80 rounded-md px-2.5 py-1 leading-snug">
+          <span className="inline-flex items-start gap-1.5 text-xs text-muted-foreground bg-muted/80 rounded-md px-2.5 py-1 leading-snug break-all overflow-hidden max-w-full">
             <MessageSquareIcon className="size-3 shrink-0 mt-px" />
-            {task.comment}
+            <span className="break-words overflow-wrap-anywhere min-w-0">{task.comment}</span>
           </span>
         )}
       </div>

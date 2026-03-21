@@ -197,7 +197,7 @@ export function TaskSheet({
             {task.detailedDescription && (
               <div>
                 <p className="text-xs font-medium text-muted-foreground mb-1.5">Details</p>
-                <div className="text-sm whitespace-pre-wrap leading-relaxed">
+                <div className="text-sm whitespace-pre-wrap leading-relaxed break-words overflow-hidden">
                   {task.detailedDescription}
                 </div>
               </div>
