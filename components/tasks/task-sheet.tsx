@@ -21,14 +21,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
-import { CalendarIcon, XIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { DatePicker } from "@/components/ui/calendar"
+import { XIcon } from "lucide-react"
 import type { Task, TaskStatus, TaskPriority, TaskStage, TaskUser } from "@/lib/data/tasks"
 import {
   TASK_STATUSES,
@@ -243,32 +237,17 @@ export function TaskSheet({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <p className="text-xs font-medium text-muted-foreground mb-1.5">Дедлайн</p>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" size="sm" className={cn("justify-start text-left font-normal", !task.deadline && "text-muted-foreground")}>
-                      <CalendarIcon className="mr-2 size-4" />
-                      {task.deadline ? formatDate(task.deadline) : "Выбрать дату"}
+                <div className="flex items-center gap-2">
+                  <DatePicker
+                    value={task.deadline}
+                    onChange={(date) => onDeadlineChange(task.id, date)}
+                  />
+                  {task.deadline && (
+                    <Button variant="ghost" size="icon-xs" onClick={() => onDeadlineChange(task.id, null)}>
+                      <XIcon className="size-3" />
                     </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={task.deadline ? new Date(task.deadline) : undefined}
-                      onSelect={(date) => {
-                        if (date) {
-                          onDeadlineChange(task.id, date.toISOString().split("T")[0])
-                        }
-                      }}
-                    />
-                    {task.deadline && (
-                      <div className="p-2 border-t">
-                        <Button variant="ghost" size="sm" className="w-full" onClick={() => onDeadlineChange(task.id, null)}>
-                          Очистить
-                        </Button>
-                      </div>
-                    )}
-                  </PopoverContent>
-                </Popover>
+                  )}
+                </div>
               </div>
 
               <div>
