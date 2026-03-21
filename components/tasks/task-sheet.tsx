@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/sheet"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
@@ -20,14 +21,28 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import type { Task, TaskStatus, TaskPriority } from "@/lib/data/tasks"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { CalendarIcon, XIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
+import type { Task, TaskStatus, TaskPriority, TaskStage, TaskUser } from "@/lib/data/tasks"
 import {
   TASK_STATUSES,
   TASK_PRIORITIES,
   TASK_EFFORTS,
   TASK_SOURCES,
   AJTBD_TIERS,
+  TASK_STAGES,
 } from "@/lib/data/tasks"
+
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr)
+  return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short", year: "numeric" })
+}
 
 const MIN_WIDTH = 320
 const MAX_WIDTH = 900
@@ -40,6 +55,10 @@ interface TaskSheetProps {
   onStatusChange: (taskId: string, status: TaskStatus) => void
   onPriorityChange: (taskId: string, priority: TaskPriority) => void
   onCommentChange: (taskId: string, comment: string) => void
+  onDeadlineChange: (taskId: string, deadline: string | null) => void
+  onAssigneeChange: (taskId: string, user: { id: string; email: string; name: string } | null) => void
+  onStageChange: (taskId: string, stage: TaskStage) => void
+  currentUser: TaskUser | null
 }
 
 export function TaskSheet({
@@ -49,6 +68,10 @@ export function TaskSheet({
   onStatusChange,
   onPriorityChange,
   onCommentChange,
+  onDeadlineChange,
+  onAssigneeChange,
+  onStageChange,
+  currentUser,
 }: TaskSheetProps) {
   const [comment, setComment] = useState("")
   const commentTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -97,6 +120,7 @@ export function TaskSheet({
 
   const statusConfig = TASK_STATUSES.find((s) => s.value === task.status) ?? TASK_STATUSES[0]
   const priorityConfig = TASK_PRIORITIES.find((p) => p.value === task.priority) ?? TASK_PRIORITIES[2]
+  const stageConfig = TASK_STAGES.find((s) => s.value === task.stage) ?? TASK_STAGES[0]
   const tierConfig = task.ajtbdTier ? AJTBD_TIERS.find((t) => t.value === task.ajtbdTier) : null
 
   return (
@@ -166,6 +190,28 @@ export function TaskSheet({
                 </DropdownMenuContent>
               </DropdownMenu>
 
+              {/* Stage Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${stageConfig.bg} ${stageConfig.text}`}>
+                    <span className={`size-1.5 rounded-full shrink-0 ${stageConfig.dot}`} />
+                    {stageConfig.label}
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  {TASK_STAGES.map((s) => (
+                    <DropdownMenuItem
+                      key={s.value}
+                      onClick={() => onStageChange(task.id, s.value)}
+                      className="gap-2"
+                    >
+                      <span className={`size-1.5 rounded-full ${s.dot}`} />
+                      {s.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               <Badge variant="outline" className="text-[11px] px-1.5 py-0">
                 W{task.wave}
               </Badge>
@@ -193,6 +239,58 @@ export function TaskSheet({
           <Separator />
 
           <div className="flex flex-col gap-4 p-4 sm:gap-6 sm:p-6">
+            {/* Deadline & Assignee */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-1.5">Дедлайн</p>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" size="sm" className={cn("justify-start text-left font-normal", !task.deadline && "text-muted-foreground")}>
+                      <CalendarIcon className="mr-2 size-4" />
+                      {task.deadline ? formatDate(task.deadline) : "Выбрать дату"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={task.deadline ? new Date(task.deadline) : undefined}
+                      onSelect={(date) => {
+                        if (date) {
+                          onDeadlineChange(task.id, date.toISOString().split("T")[0])
+                        }
+                      }}
+                    />
+                    {task.deadline && (
+                      <div className="p-2 border-t">
+                        <Button variant="ghost" size="sm" className="w-full" onClick={() => onDeadlineChange(task.id, null)}>
+                          Очистить
+                        </Button>
+                      </div>
+                    )}
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-1.5">Ответственный</p>
+                {task.assigneeName ? (
+                  <div className="flex items-center gap-2">
+                    <div className="flex size-6 items-center justify-center rounded-full bg-muted text-xs font-medium">
+                      {task.assigneeName.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-sm">{task.assigneeName}</span>
+                    <Button variant="ghost" size="icon-xs" onClick={() => onAssigneeChange(task.id, null)}>
+                      <XIcon className="size-3" />
+                    </Button>
+                  </div>
+                ) : (
+                  <Button variant="outline" size="sm" onClick={() => currentUser && onAssigneeChange(task.id, currentUser)}>
+                    Назначить на меня
+                  </Button>
+                )}
+              </div>
+            </div>
+
             {/* Details */}
             {task.detailedDescription && (
               <div>

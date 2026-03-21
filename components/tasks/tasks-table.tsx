@@ -19,9 +19,14 @@ import {
 import {
   TooltipProvider,
 } from "@/components/ui/tooltip"
-import type { Task, TaskStatus, TaskPriority } from "@/lib/data/tasks"
-import { TASK_STATUSES, TASK_PRIORITIES, TASK_EFFORTS } from "@/lib/data/tasks"
+import type { Task, TaskStatus, TaskPriority, TaskStage } from "@/lib/data/tasks"
+import { TASK_STATUSES, TASK_PRIORITIES, TASK_EFFORTS, TASK_STAGES } from "@/lib/data/tasks"
 import type { SortOption, SortColumn } from "@/lib/data/tasks"
+
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr)
+  return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short", year: "numeric" })
+}
 
 interface TasksTableProps {
   tasks: Task[]
@@ -30,6 +35,7 @@ interface TasksTableProps {
   onSelectTask: (task: Task) => void
   onStatusChange: (taskId: string, status: TaskStatus) => void
   onPriorityChange: (taskId: string, priority: TaskPriority) => void
+  onStageChange: (taskId: string, stage: TaskStage) => void
 }
 
 function toggleSort(column: SortColumn, current: SortOption, defaultDir: "asc" | "desc" = "asc"): SortOption {
@@ -96,6 +102,30 @@ function PrioritySelect({ priority, onChange }: { priority: TaskPriority; onChan
   )
 }
 
+function StageSelect({ stage, onChange }: { stage: TaskStage; onChange: (v: TaskStage) => void }) {
+  const config = TASK_STAGES.find((s) => s.value === stage) ?? TASK_STAGES[0]
+  return (
+    <Select value={stage} onValueChange={(v) => onChange(v as TaskStage)}>
+      <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
+        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
+          <span className={`size-1.5 rounded-full shrink-0 ${config.dot}`} />
+          {config.label}
+        </span>
+      </SelectTrigger>
+      <SelectContent align="end">
+        {TASK_STAGES.map((s) => (
+          <SelectItem key={s.value} value={s.value}>
+            <span className="inline-flex items-center gap-1.5">
+              <span className={`size-1.5 rounded-full ${s.dot}`} />
+              {s.label}
+            </span>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
 export function TasksTable({
   tasks,
   sort,
@@ -103,6 +133,7 @@ export function TasksTable({
   onSelectTask,
   onStatusChange,
   onPriorityChange,
+  onStageChange,
 }: TasksTableProps) {
   return (
     <TooltipProvider>
@@ -138,6 +169,8 @@ export function TasksTable({
                   <SortIcon column="priority" current={sort} />
                 </span>
               </TableHead>
+              <TableHead>Stage</TableHead>
+              <TableHead>Deadline</TableHead>
               <TableHead
                 className="cursor-pointer select-none"
                 onClick={() => onSortChange(toggleSort("wave", sort))}
@@ -160,58 +193,76 @@ export function TasksTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {tasks.map((task) => (
-              <TableRow
-                key={task.id}
-                className="cursor-pointer hover:bg-muted/50 transition-colors"
-                onClick={() => onSelectTask(task)}
-              >
-                <TableCell className="tabular-nums text-muted-foreground">
-                  {task.order}
-                </TableCell>
-                <TableCell>
-                  <div className="min-w-0">
-                    <span className="font-medium truncate max-w-[180px] sm:max-w-[250px] md:max-w-[350px] block">
-                      {task.title}
-                    </span>
-                    {task.description && (
-                      <p className="text-xs text-muted-foreground truncate max-w-[180px] sm:max-w-[250px] md:max-w-[350px]">
-                        {task.description}
-                      </p>
+            {tasks.map((task) => {
+              const isOverdue = task.deadline && new Date(task.deadline) < new Date()
+              return (
+                <TableRow
+                  key={task.id}
+                  className="cursor-pointer hover:bg-muted/50 transition-colors"
+                  onClick={() => onSelectTask(task)}
+                >
+                  <TableCell className="tabular-nums text-muted-foreground">
+                    {task.order}
+                  </TableCell>
+                  <TableCell>
+                    <div className="min-w-0">
+                      <span className="font-medium truncate max-w-[180px] sm:max-w-[250px] md:max-w-[350px] block">
+                        {task.title}
+                      </span>
+                      {task.description && (
+                        <p className="text-xs text-muted-foreground truncate max-w-[180px] sm:max-w-[250px] md:max-w-[350px]">
+                          {task.description}
+                        </p>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <StatusSelect
+                      status={task.status}
+                      onChange={(v) => onStatusChange(task.id, v)}
+                    />
+                  </TableCell>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <PrioritySelect
+                      priority={task.priority}
+                      onChange={(v) => onPriorityChange(task.id, v)}
+                    />
+                  </TableCell>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <StageSelect
+                      stage={task.stage}
+                      onChange={(v) => onStageChange(task.id, v)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    {task.deadline ? (
+                      <span className={`text-xs tabular-nums whitespace-nowrap ${isOverdue ? "text-red-500 font-medium" : "text-muted-foreground"}`}>
+                        {formatDate(task.deadline)}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-muted-foreground/50">-</span>
                     )}
-                  </div>
-                </TableCell>
-                <TableCell onClick={(e) => e.stopPropagation()}>
-                  <StatusSelect
-                    status={task.status}
-                    onChange={(v) => onStatusChange(task.id, v)}
-                  />
-                </TableCell>
-                <TableCell onClick={(e) => e.stopPropagation()}>
-                  <PrioritySelect
-                    priority={task.priority}
-                    onChange={(v) => onPriorityChange(task.id, v)}
-                  />
-                </TableCell>
-                <TableCell>
-                  <Badge variant="outline" className="text-[11px] px-1.5 py-0 tabular-nums">
-                    W{task.wave}
-                  </Badge>
-                </TableCell>
-                <TableCell className="hidden md:table-cell">
-                  <Badge variant="secondary" className="text-[11px] px-1.5 py-0">
-                    {TASK_EFFORTS[task.effort]}
-                  </Badge>
-                </TableCell>
-                <TableCell className="hidden lg:table-cell">
-                  {task.segment && (
-                    <Badge variant="secondary" className="text-[11px] px-1.5 py-0 capitalize">
-                      {task.segment}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="text-[11px] px-1.5 py-0 tabular-nums">
+                      W{task.wave}
                     </Badge>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    <Badge variant="secondary" className="text-[11px] px-1.5 py-0">
+                      {TASK_EFFORTS[task.effort]}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden lg:table-cell">
+                    {task.segment && (
+                      <Badge variant="secondary" className="text-[11px] px-1.5 py-0 capitalize">
+                        {task.segment}
+                      </Badge>
+                    )}
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </div>

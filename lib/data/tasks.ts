@@ -4,6 +4,7 @@ export type TaskEffort = "xs" | "s" | "m" | "l" | "xl"
 export type TaskSource = "audit" | "backlog" | "strategy"
 export type AjtbdTier = "s" | "a" | "b" | "c"
 export type TaskSegment = "agent" | "developer" | "investor" | "agency"
+export type TaskStage = "concept" | "design" | "development"
 
 export const TASK_STATUSES: { value: TaskStatus; label: string; dot: string; bg: string; text: string }[] = [
   { value: "backlog", label: "Backlog", dot: "bg-slate-400", bg: "bg-muted", text: "text-muted-foreground" },
@@ -56,6 +57,12 @@ export const SEGMENT_LABELS: Record<TaskSegment, string> = {
   agency: "Agency",
 }
 
+export const TASK_STAGES: { value: TaskStage; label: string; dot: string; bg: string; text: string }[] = [
+  { value: "concept", label: "Концепт", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
+  { value: "design", label: "Дизайн", dot: "bg-purple-500", bg: "bg-purple-100 dark:bg-purple-900/30", text: "text-purple-700 dark:text-purple-400" },
+  { value: "development", label: "Разработка", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
+]
+
 export interface Task {
   id: string
   title: string
@@ -69,10 +76,21 @@ export interface Task {
   jobsServed: string
   ajtbdTier: AjtbdTier | null
   segment: TaskSegment | null
+  deadline: string | null
+  assigneeId: string | null
+  assigneeEmail: string | null
+  assigneeName: string | null
+  stage: TaskStage
   order: number
   comment: string
   createdAt: string
   updatedAt: string
+}
+
+export interface TaskUser {
+  id: string
+  email: string
+  name: string
 }
 
 export type SortColumn = "title" | "priority" | "wave" | "effort" | "order"
@@ -93,6 +111,11 @@ export function mapRowToTask(row: Record<string, any>): Task {
     jobsServed: (row.jobs_served ?? "") as string,
     ajtbdTier: (row.ajtbd_tier ?? null) as AjtbdTier | null,
     segment: (row.segment ?? null) as TaskSegment | null,
+    deadline: (row.deadline ?? null) as string | null,
+    assigneeId: (row.assignee_id ?? null) as string | null,
+    assigneeEmail: (row.assignee_email ?? null) as string | null,
+    assigneeName: (row.assignee_name ?? null) as string | null,
+    stage: (row.stage ?? "concept") as TaskStage,
     order: (row.order ?? 0) as number,
     comment: (row.comment ?? "") as string,
     createdAt: (row.created_at ?? "") as string,

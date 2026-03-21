@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react"
 import { ListIcon, LayoutGridIcon } from "lucide-react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { createClient } from "@/lib/supabase/client"
-import type { Task, TaskStatus, TaskPriority } from "@/lib/data/tasks"
+import type { Task, TaskStatus, TaskPriority, TaskStage, TaskUser } from "@/lib/data/tasks"
 import { TASK_PRIORITIES } from "@/lib/data/tasks"
 import type { SortOption } from "@/lib/data/tasks"
 import {
@@ -12,6 +12,7 @@ import {
   type StatusFilter,
   type PriorityFilter,
   type WaveFilter,
+  type StageFilter,
 } from "@/components/tasks/filter-bar"
 import { TasksTable } from "@/components/tasks/tasks-table"
 import { TasksKanban } from "@/components/tasks/tasks-kanban"
@@ -19,12 +20,13 @@ import { TaskSheet } from "@/components/tasks/task-sheet"
 
 const EFFORT_ORDER: Record<string, number> = { xs: 0, s: 1, m: 2, l: 3, xl: 4 }
 
-export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
+export function TasksClient({ tasks: initialTasks, currentUser }: { tasks: Task[]; currentUser: TaskUser | null }) {
   const [tasks, setTasks] = useState(initialTasks)
   const [search, setSearch] = useState("")
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all")
   const [priorityFilter, setPriorityFilter] = useState<PriorityFilter>("all")
   const [waveFilter, setWaveFilter] = useState<WaveFilter>("all")
+  const [stageFilter, setStageFilter] = useState<StageFilter>("all")
   const [sort, setSort] = useState<SortOption>({ column: "order", direction: "asc" })
   const [view, setView] = useState<"list" | "kanban">("list")
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
@@ -70,6 +72,31 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
     }
   }, [tasks])
 
+  const handleDeadlineChange = useCallback(async (taskId: string, deadline: string | null) => {
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, deadline } : t)))
+    setSelectedTask((prev) => (prev?.id === taskId ? { ...prev, deadline } : prev))
+    const supabase = createClient()
+    await supabase.from("tasks").update({ deadline }).eq("id", taskId)
+  }, [])
+
+  const handleAssigneeChange = useCallback(async (taskId: string, user: { id: string; email: string; name: string } | null) => {
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, assigneeId: user?.id ?? null, assigneeEmail: user?.email ?? null, assigneeName: user?.name ?? null } : t)))
+    setSelectedTask((prev) => (prev?.id === taskId ? { ...prev, assigneeId: user?.id ?? null, assigneeEmail: user?.email ?? null, assigneeName: user?.name ?? null } : prev))
+    const supabase = createClient()
+    await supabase.from("tasks").update({
+      assignee_id: user?.id ?? null,
+      assignee_email: user?.email ?? null,
+      assignee_name: user?.name ?? null,
+    }).eq("id", taskId)
+  }, [])
+
+  const handleStageChange = useCallback(async (taskId: string, newStage: TaskStage) => {
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, stage: newStage } : t)))
+    setSelectedTask((prev) => (prev?.id === taskId ? { ...prev, stage: newStage } : prev))
+    const supabase = createClient()
+    await supabase.from("tasks").update({ stage: newStage }).eq("id", taskId)
+  }, [])
+
   const filteredTasks = useMemo(() => {
     let result = [...tasks]
 
@@ -94,6 +121,10 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
       result = result.filter((t) => t.wave === Number(waveFilter))
     }
 
+    if (stageFilter !== "all") {
+      result = result.filter((t) => t.stage === stageFilter)
+    }
+
     result.sort((a, b) => {
       const dir = sort.direction === "asc" ? 1 : -1
       switch (sort.column) {
@@ -115,7 +146,7 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
     })
 
     return result
-  }, [tasks, search, statusFilter, priorityFilter, waveFilter, sort])
+  }, [tasks, search, statusFilter, priorityFilter, waveFilter, stageFilter, sort])
 
   function handleSelectTask(task: Task) {
     setSelectedTask(task)
@@ -155,6 +186,8 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
           onPriorityChange={setPriorityFilter}
           waveFilter={waveFilter}
           onWaveChange={setWaveFilter}
+          stageFilter={stageFilter}
+          onStageChange={setStageFilter}
         />
       </div>
 
@@ -166,6 +199,7 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
           onSelectTask={handleSelectTask}
           onStatusChange={handleStatusChange}
           onPriorityChange={handlePriorityChange}
+          onStageChange={handleStageChange}
         />
       ) : (
         <TasksKanban
@@ -184,6 +218,10 @@ export function TasksClient({ tasks: initialTasks }: { tasks: Task[] }) {
         onStatusChange={handleStatusChange}
         onPriorityChange={handlePriorityChange}
         onCommentChange={handleCommentChange}
+        onDeadlineChange={handleDeadlineChange}
+        onAssigneeChange={handleAssigneeChange}
+        onStageChange={handleStageChange}
+        currentUser={currentUser}
       />
     </div>
   )
