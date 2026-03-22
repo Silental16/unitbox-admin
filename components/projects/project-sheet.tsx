@@ -334,10 +334,11 @@ export function ProjectSheet({
                     icon={TableIcon}
                     value={project.sheetsUrl}
                     placeholder="Add chess board link (Google Sheets)"
-                    onSave={(url) => {
+                    onSave={async (url) => {
                       onProjectUpdate({ ...project, sheetsUrl: url })
                       const supabase = createClient()
-                      supabase.from("catalog_projects").update({ sheets_url: url }).eq("id", project.id)
+                      const { error } = await supabase.from("catalog_projects").update({ sheets_url: url }).eq("id", project.id)
+                      if (error) console.error("Failed to save sheets_url:", error)
                     }}
                   />
 
