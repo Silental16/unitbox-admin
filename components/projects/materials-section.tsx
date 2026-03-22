@@ -50,6 +50,25 @@ export function MaterialsSection({
   materials,
   onMaterialsChange,
 }: MaterialsSectionProps) {
+  return (
+    <div className="space-y-3">
+      <p className="text-xs text-muted-foreground">
+        Источники данных для AI — Drive, сайты, PDF, ROI. При заполнении проекта AI использует эти ссылки.
+      </p>
+      <MaterialsList
+        projectId={projectId}
+        materials={materials}
+        onMaterialsChange={onMaterialsChange}
+      />
+    </div>
+  )
+}
+
+function MaterialsList({
+  projectId,
+  materials,
+  onMaterialsChange,
+}: MaterialsSectionProps) {
   const [adding, setAdding] = useState(false)
   const [title, setTitle] = useState("")
   const [url, setUrl] = useState("")

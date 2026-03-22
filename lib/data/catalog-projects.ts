@@ -47,7 +47,6 @@ export interface CatalogProject {
   rulesAdded: string[]
   queueScore: number | null
   notes: string
-  driveFolderUrl: string
   sheetsUrl: string
   lastSyncAt: string | null
   createdAt: string
@@ -105,7 +104,6 @@ export function mapRowToCatalogProject(row: Record<string, any>): CatalogProject
     rulesAdded: (row.rules_added ?? []) as string[],
     queueScore: (row.queue_score ?? null) as number | null,
     notes: (row.notes ?? "") as string,
-    driveFolderUrl: (row.drive_folder_url ?? "") as string,
     sheetsUrl: (row.sheets_url ?? "") as string,
     lastSyncAt: (row.last_sync_at ?? null) as string | null,
     createdAt: row.created_at as string,

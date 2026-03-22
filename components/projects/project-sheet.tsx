@@ -9,8 +9,10 @@ import {
   HashIcon,
   WrenchIcon,
   AlertCircleIcon,
-  FolderIcon,
   TableIcon,
+  PencilIcon,
+  CheckIcon,
+  XIcon,
 } from "lucide-react"
 import {
   Sheet,
@@ -23,6 +25,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { createClient } from "@/lib/supabase/client"
 import type { CatalogProject, ProjectFillStatus, ProjectMaterial, ProjectChessSource, ProjectChangeEntry } from "@/lib/data/catalog-projects"
@@ -68,6 +71,90 @@ function KVRow({ label, value, href, icon: Icon }: { label: string; value: strin
         </a>
       ) : (
         <span className="text-sm font-medium break-words">{value}</span>
+      )}
+    </div>
+  )
+}
+
+function EditableUrlField({
+  label,
+  icon: Icon,
+  value,
+  placeholder,
+  onSave,
+}: {
+  label: string
+  icon: React.ElementType
+  value: string
+  placeholder: string
+  onSave: (url: string) => void
+}) {
+  const [editing, setEditing] = useState(false)
+  const [draft, setDraft] = useState(value)
+
+  useEffect(() => { setDraft(value) }, [value])
+
+  function handleSave() {
+    onSave(draft.trim())
+    setEditing(false)
+  }
+
+  function handleCancel() {
+    setDraft(value)
+    setEditing(false)
+  }
+
+  return (
+    <div className="space-y-1">
+      <p className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+        <Icon className="size-3" />
+        {label}
+      </p>
+      {editing ? (
+        <div className="flex items-center gap-1.5">
+          <Input
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            placeholder={placeholder}
+            className="h-8 text-sm"
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSave()
+              if (e.key === "Escape") handleCancel()
+            }}
+          />
+          <button onClick={handleSave} className="shrink-0 p-1 rounded hover:bg-muted">
+            <CheckIcon className="size-3.5 text-emerald-600" />
+          </button>
+          <button onClick={handleCancel} className="shrink-0 p-1 rounded hover:bg-muted">
+            <XIcon className="size-3.5 text-muted-foreground" />
+          </button>
+        </div>
+      ) : value ? (
+        <div className="flex items-center gap-1.5 group">
+          <a
+            href={value}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-primary hover:underline truncate"
+          >
+            {value.replace(/^https?:\/\//, "").slice(0, 60)}...
+            <ExternalLinkIcon className="size-3 inline ml-1" />
+          </a>
+          <button
+            onClick={() => setEditing(true)}
+            className="shrink-0 p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-muted transition-opacity"
+          >
+            <PencilIcon className="size-3 text-muted-foreground" />
+          </button>
+        </div>
+      ) : (
+        <button
+          onClick={() => setEditing(true)}
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          {placeholder}
+        </button>
       )}
     </div>
   )
@@ -239,13 +326,20 @@ export function ProjectSheet({
                     <KVRow label="Filled" value={formatDate(project.fillDate)} icon={CalendarIcon} />
                     <KVRow label="Iterations" value={String(project.fillIterations)} icon={WrenchIcon} />
                     <KVRow label="Corrections" value={String(project.fillCorrections)} icon={AlertCircleIcon} />
-                    {project.driveFolderUrl && (
-                      <KVRow label="Drive" value="Open Folder" href={project.driveFolderUrl} icon={FolderIcon} />
-                    )}
-                    {project.sheetsUrl && (
-                      <KVRow label="Sheets" value="Open Sheets" href={project.sheetsUrl} icon={TableIcon} />
-                    )}
                   </div>
+
+                  {/* Chess Board (Sheets) — inline editable */}
+                  <EditableUrlField
+                    label="Chess Board"
+                    icon={TableIcon}
+                    value={project.sheetsUrl}
+                    placeholder="Add chess board link (Google Sheets)"
+                    onSave={(url) => {
+                      onProjectUpdate({ ...project, sheetsUrl: url })
+                      const supabase = createClient()
+                      supabase.from("catalog_projects").update({ sheets_url: url }).eq("id", project.id)
+                    }}
+                  />
 
                   {/* Rules added */}
                   {project.rulesAdded.length > 0 && (
