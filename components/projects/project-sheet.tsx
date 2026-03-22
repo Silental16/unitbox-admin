@@ -337,8 +337,14 @@ export function ProjectSheet({
                     onSave={async (url) => {
                       onProjectUpdate({ ...project, sheetsUrl: url })
                       const supabase = createClient()
-                      const { error } = await supabase.from("catalog_projects").update({ sheets_url: url }).eq("id", project.id)
-                      if (error) console.error("Failed to save sheets_url:", error)
+                      console.log("Saving sheets_url:", { id: project.id, url })
+                      const { data, error, count } = await supabase
+                        .from("catalog_projects")
+                        .update({ sheets_url: url })
+                        .eq("id", project.id)
+                        .select()
+                      console.log("Save result:", { data, error, count })
+                      if (error) alert(`Failed to save: ${error.message}`)
                     }}
                   />
 
