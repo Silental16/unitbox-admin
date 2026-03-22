@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation"
 import {
   BarChart3Icon,
   Building2Icon,
+  FolderOpenIcon,
   ShieldIcon,
   EyeIcon,
   TrendingUpIcon,
@@ -37,6 +38,7 @@ const navGroups = [
     items: [
       { title: "Analytics", href: "/analytics", icon: BarChart3Icon },
       { title: "Developers", href: "/developers", icon: Building2Icon },
+      { title: "Projects", href: "/projects", icon: FolderOpenIcon },
       { title: "Competitors", href: "/competitors", icon: ShieldIcon },
       { title: "Tasks", href: "/tasks", icon: CheckSquareIcon },
     ],
