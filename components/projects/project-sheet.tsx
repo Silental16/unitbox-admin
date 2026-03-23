@@ -39,7 +39,7 @@ import {
   mapRowToChangeEntry,
 } from "@/lib/data/catalog-projects"
 
-const MIN_WIDTH = 400
+const MIN_WIDTH = 360
 const MAX_WIDTH = 900
 const DEFAULT_WIDTH = 520
 
@@ -54,7 +54,7 @@ function formatDate(dateStr: string | null): string {
 
 function KVRow({ label, value, href, icon: Icon }: { label: string; value: string; href?: string; icon?: React.ElementType }) {
   return (
-    <div className="grid grid-cols-[100px_1fr] gap-2 py-1.5 border-b border-border/50 last:border-b-0">
+    <div className="grid grid-cols-[90px_1fr] gap-2 py-1.5 border-b border-border/50 last:border-b-0">
       <span className="text-xs text-muted-foreground flex items-center gap-1">
         {Icon && <Icon className="size-3 shrink-0" />}
         {label}
@@ -259,7 +259,7 @@ export function ProjectSheet({
       <SheetContent
         side="right"
         className={`!max-w-none overflow-hidden p-0 flex flex-col ${dragging ? "select-none" : ""}`}
-        style={{ width }}
+        style={{ width: `min(${width}px, calc(100vw - 2rem))` }}
       >
         {/* Resize handle */}
         <div
@@ -271,7 +271,7 @@ export function ProjectSheet({
 
         <ScrollArea className="flex-1 min-h-0 overscroll-contain">
           {/* Header */}
-          <SheetHeader className="px-6 pt-6 pb-4 pr-12 space-y-3">
+          <SheetHeader className="px-4 sm:px-6 pt-6 pb-4 pr-12 space-y-3">
             <SheetTitle className="text-lg">{project.name}</SheetTitle>
             <div className="flex flex-wrap items-center gap-1.5">
               <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${statusConfig.bg} ${statusConfig.text}`}>
@@ -293,9 +293,9 @@ export function ProjectSheet({
           <Separator />
 
           {/* Tabs */}
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             <Tabs defaultValue="overview">
-              <TabsList className="mb-4">
+              <TabsList className="mb-4 w-full flex-wrap h-auto gap-1">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="materials">
                   Materials

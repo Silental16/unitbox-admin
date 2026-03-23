@@ -106,22 +106,19 @@ function MaterialsList({
         const typeConfig = MATERIAL_TYPES.find((t) => t.value === m.type)
         const Icon = ICON_MAP[typeConfig?.icon ?? "paperclip"] ?? PaperclipIcon
         return (
-          <div key={m.id} className="flex items-center gap-3 rounded-lg border px-3 py-2.5 group">
-            <Icon className="size-4 text-muted-foreground shrink-0" />
+          <div key={m.id} className="flex items-start gap-3 rounded-lg border px-3 py-2.5 group">
+            <Icon className="size-4 text-muted-foreground shrink-0 mt-0.5" />
             <div className="flex-1 min-w-0">
               <a
                 href={m.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium text-primary hover:underline truncate block"
+                className="text-sm font-medium text-primary hover:underline break-all line-clamp-2"
               >
                 {m.title}
               </a>
-              <p className="text-xs text-muted-foreground truncate">{m.url}</p>
+              <p className="text-xs text-muted-foreground truncate mt-0.5">{m.url}</p>
             </div>
-            <Badge variant="outline" className="text-[11px] shrink-0">
-              {typeConfig?.label ?? m.type}
-            </Badge>
             <Button
               variant="ghost"
               size="icon"
