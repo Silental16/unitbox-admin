@@ -54,7 +54,7 @@ function formatDate(dateStr: string | null): string {
 
 function KVRow({ label, value, href, icon: Icon }: { label: string; value: string; href?: string; icon?: React.ElementType }) {
   return (
-    <div className="grid grid-cols-[90px_1fr] gap-2 py-1.5 border-b border-border/50 last:border-b-0">
+    <div className="grid grid-cols-[90px_minmax(0,1fr)] gap-2 py-1.5 border-b border-border/50 last:border-b-0">
       <span className="text-xs text-muted-foreground flex items-center gap-1">
         {Icon && <Icon className="size-3 shrink-0" />}
         {label}
@@ -131,12 +131,12 @@ function EditableUrlField({
           </button>
         </div>
       ) : value ? (
-        <div className="flex items-center gap-1.5 group">
+        <div className="flex items-center gap-1.5 group min-w-0">
           <a
             href={value}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-primary hover:underline truncate"
+            className="text-sm text-primary hover:underline truncate min-w-0"
           >
             {value.replace(/^https?:\/\//, "").slice(0, 60)}...
             <ExternalLinkIcon className="size-3 inline ml-1" />
