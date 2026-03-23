@@ -39,7 +39,7 @@ import {
   mapRowToChangeEntry,
 } from "@/lib/data/catalog-projects"
 
-const MIN_WIDTH = 360
+const MIN_WIDTH = 400
 const MAX_WIDTH = 900
 const DEFAULT_WIDTH = 520
 
@@ -258,8 +258,8 @@ export function ProjectSheet({
     <Sheet open={open} onOpenChange={onOpenChange} modal={false}>
       <SheetContent
         side="right"
-        className={`!max-w-none !w-auto p-0 ${dragging ? "select-none" : ""}`}
-        style={{ width: `min(${width}px, calc(100vw - 2rem))`, overflow: "hidden" }}
+        className={`!max-w-none overflow-hidden p-0 flex flex-col ${dragging ? "select-none" : ""}`}
+        style={{ width }}
       >
         {/* Resize handle */}
         <div
@@ -269,9 +269,9 @@ export function ProjectSheet({
           <div className={`absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 transition-colors ${dragging ? "bg-primary" : "bg-transparent group-hover:bg-primary/40"}`} />
         </div>
 
-        <ScrollArea className="flex-1 min-h-0 overscroll-contain [&>div]:!overflow-x-hidden">
+        <ScrollArea className="flex-1 min-h-0 overscroll-contain">
           {/* Header */}
-          <SheetHeader className="px-4 sm:px-6 pt-6 pb-4 pr-12 space-y-3">
+          <SheetHeader className="px-6 pt-6 pb-4 pr-12 space-y-3">
             <SheetTitle className="text-lg">{project.name}</SheetTitle>
             <div className="flex flex-wrap items-center gap-1.5">
               <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${statusConfig.bg} ${statusConfig.text}`}>
@@ -293,9 +293,9 @@ export function ProjectSheet({
           <Separator />
 
           {/* Tabs */}
-          <div className="p-4 sm:p-6 overflow-hidden max-w-full">
-            <Tabs defaultValue="overview" className="w-full overflow-hidden">
-              <TabsList className="mb-4 w-full h-auto flex-wrap gap-0.5 p-1">
+          <div className="p-6 min-w-0">
+            <Tabs defaultValue="overview" className="min-w-0">
+              <TabsList className="mb-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="materials">
                   Materials
