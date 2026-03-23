@@ -293,9 +293,9 @@ export function ProjectSheet({
           <Separator />
 
           {/* Tabs */}
-          <div className="p-4 sm:p-6">
+          <div className="p-4 sm:p-6 overflow-hidden">
             <Tabs defaultValue="overview">
-              <TabsList className="mb-4 w-full flex-wrap h-auto gap-1">
+              <TabsList className="mb-4 w-full h-auto flex-wrap gap-0.5 p-1">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="materials">
                   Materials
