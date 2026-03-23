@@ -293,8 +293,8 @@ export function ProjectSheet({
           <Separator />
 
           {/* Tabs */}
-          <div className="p-6 min-w-0">
-            <Tabs defaultValue="overview" className="min-w-0">
+          <div className="p-6 overflow-hidden">
+            <Tabs defaultValue="overview" className="overflow-hidden">
               <TabsList className="mb-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="materials">

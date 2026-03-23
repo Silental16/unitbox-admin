@@ -51,7 +51,7 @@ export function MaterialsSection({
   onMaterialsChange,
 }: MaterialsSectionProps) {
   return (
-    <div className="space-y-3 min-w-0">
+    <div className="space-y-3 w-full overflow-hidden">
       <p className="text-xs text-muted-foreground">
         Источники данных для AI — Drive, сайты, PDF, ROI. При заполнении проекта AI использует эти ссылки.
       </p>
@@ -101,14 +101,14 @@ function MaterialsList({
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 w-full overflow-hidden">
       {materials.map((m) => {
         const typeConfig = MATERIAL_TYPES.find((t) => t.value === m.type)
         const Icon = ICON_MAP[typeConfig?.icon ?? "paperclip"] ?? PaperclipIcon
         return (
-          <div key={m.id} className="flex items-start gap-3 rounded-lg border px-3 py-2.5 group min-w-0">
+          <div key={m.id} className="flex items-start gap-3 rounded-lg border px-3 py-2.5 group w-full overflow-hidden">
             <Icon className="size-4 text-muted-foreground shrink-0 mt-0.5" />
-            <div className="flex-1 min-w-0">
+            <div className="min-w-0 flex-1 overflow-hidden">
               <a
                 href={m.url}
                 target="_blank"
