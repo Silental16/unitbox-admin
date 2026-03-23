@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback } from "react"
 import type { CatalogProject } from "@/lib/data/catalog-projects"
+import type { Developer } from "@/lib/data/developers"
 import { StatsBar } from "./stats-bar"
 import { FilterBar, type StatusFilter, type SortOption } from "./filter-bar"
 import { ProjectsTable } from "./projects-table"
@@ -9,8 +10,10 @@ import { ProjectSheet } from "./project-sheet"
 
 export function ProjectsClient({
   projects: initialProjects,
+  developers,
 }: {
   projects: CatalogProject[]
+  developers: Developer[]
 }) {
   const [projects, setProjects] = useState(initialProjects)
   const [search, setSearch] = useState("")
@@ -105,6 +108,7 @@ export function ProjectsClient({
         open={sheetOpen}
         onOpenChange={setSheetOpen}
         onProjectUpdate={handleProjectUpdate}
+        developers={developers}
       />
     </div>
   )

@@ -30,6 +30,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { createClient } from "@/lib/supabase/client"
 import type { CatalogProject, ProjectFillStatus, ProjectMaterial, ProjectChessSource, ProjectChangeEntry } from "@/lib/data/catalog-projects"
 import { FILL_STATUSES } from "@/lib/data/catalog-projects"
+import type { Developer } from "@/lib/data/developers"
+import { DeveloperCombobox } from "./developer-combobox"
 import { MaterialsSection } from "./materials-section"
 import { ChessSection } from "./chess-section"
 import { ChangeLogSection } from "./change-log-section"
@@ -165,6 +167,7 @@ interface ProjectSheetProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onProjectUpdate: (project: CatalogProject) => void
+  developers: Developer[]
 }
 
 export function ProjectSheet({
@@ -172,6 +175,7 @@ export function ProjectSheet({
   open,
   onOpenChange,
   onProjectUpdate,
+  developers,
 }: ProjectSheetProps) {
   const [width, setWidth] = useState(DEFAULT_WIDTH)
   const [dragging, setDragging] = useState(false)
@@ -327,6 +331,21 @@ export function ProjectSheet({
                     <KVRow label="Iterations" value={String(project.fillIterations)} icon={WrenchIcon} />
                     <KVRow label="Corrections" value={String(project.fillCorrections)} icon={AlertCircleIcon} />
                   </div>
+
+                  {/* Developer selector */}
+                  <DeveloperCombobox
+                    developers={developers}
+                    value={project.developerId}
+                    onChange={async (developerId, developerName) => {
+                      onProjectUpdate({ ...project, developerId, developerName })
+                      const supabase = createClient()
+                      const { error } = await supabase
+                        .from("catalog_projects")
+                        .update({ developer_id: developerId, developer_name: developerName })
+                        .eq("id", project.id)
+                      if (error) console.error("Failed to save developer:", error)
+                    }}
+                  />
 
                   {/* Chess Board (Sheets) — inline editable */}
                   <EditableUrlField

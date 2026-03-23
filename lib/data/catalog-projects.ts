@@ -42,6 +42,7 @@ export interface CatalogProject {
   unitTypesCount: number
   availableUnits: number
   totalUnits: number
+  developerId: string | null
   developerName: string
   fillDate: string | null
   fillIterations: number
@@ -102,6 +103,7 @@ export function mapRowToCatalogProject(row: Record<string, any>): CatalogProject
     unitTypesCount: (row.unit_types_count ?? 0) as number,
     availableUnits: (row.available_units ?? 0) as number,
     totalUnits: (row.total_units ?? 0) as number,
+    developerId: (row.developer_id ?? null) as string | null,
     developerName: (row.developer_name ?? "") as string,
     fillDate: (row.fill_date ?? null) as string | null,
     fillIterations: (row.fill_iterations ?? 0) as number,
