@@ -13,6 +13,7 @@ import {
   PencilIcon,
   CheckIcon,
   XIcon,
+  Trash2Icon,
 } from "lucide-react"
 import {
   Sheet,
@@ -27,6 +28,18 @@ import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
 import type { CatalogProject, ProjectFillStatus, ProjectMaterial, ProjectChessSource, ProjectChangeEntry } from "@/lib/data/catalog-projects"
 import { FILL_STATUSES } from "@/lib/data/catalog-projects"
@@ -167,6 +180,7 @@ interface ProjectSheetProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onProjectUpdate: (project: CatalogProject) => void
+  onProjectDelete: (projectId: string) => void
   developers: Developer[]
 }
 
@@ -175,6 +189,7 @@ export function ProjectSheet({
   open,
   onOpenChange,
   onProjectUpdate,
+  onProjectDelete,
   developers,
 }: ProjectSheetProps) {
   const [width, setWidth] = useState(DEFAULT_WIDTH)
@@ -413,6 +428,49 @@ export function ProjectSheet({
                 <ChangeLogSection changeLog={changeLog} />
               </TabsContent>
             </Tabs>
+
+            {/* Delete project */}
+            <Separator className="my-4" />
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10 w-full justify-start">
+                  <Trash2Icon className="size-3.5 mr-2" />
+                  Delete project
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete {project.name}?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will permanently delete this project and all its materials, chess board configs, and change history. This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    onClick={async () => {
+                      const supabase = createClient()
+                      // Delete related records first
+                      await Promise.all([
+                        supabase.from("project_materials").delete().eq("project_id", project.id),
+                        supabase.from("project_chess_sources").delete().eq("project_id", project.id),
+                        supabase.from("project_change_log").delete().eq("project_id", project.id),
+                      ])
+                      const { error } = await supabase.from("catalog_projects").delete().eq("id", project.id)
+                      if (error) {
+                        console.error("Failed to delete project:", error)
+                        return
+                      }
+                      onOpenChange(false)
+                      onProjectDelete(project.id)
+                    }}
+                  >
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </ScrollArea>
       </SheetContent>

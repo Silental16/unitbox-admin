@@ -27,6 +27,11 @@ export function ProjectsClient({
     setSelectedProject((prev) => (prev?.id === updated.id ? updated : prev))
   }, [])
 
+  const handleProjectDelete = useCallback((projectId: string) => {
+    setProjects((prev) => prev.filter((p) => p.id !== projectId))
+    setSelectedProject(null)
+  }, [])
+
   const filteredProjects = useMemo(() => {
     let result = [...projects]
 
@@ -108,6 +113,7 @@ export function ProjectsClient({
         open={sheetOpen}
         onOpenChange={setSheetOpen}
         onProjectUpdate={handleProjectUpdate}
+        onProjectDelete={handleProjectDelete}
         developers={developers}
       />
     </div>
