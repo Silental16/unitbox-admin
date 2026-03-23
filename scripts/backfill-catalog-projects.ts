@@ -43,6 +43,11 @@ const queueProjects = [
   { queueNum: 23, name: "RAMADA Encore", score: 7, iterations: 2, date: "2026-03-18", driveUrl: "https://drive.google.com/drive/folders/1Ugbi3iaJqUuBMjKZDIZIPdwtgUq9sUUN", sheetsUrl: null, prodId: null },
 ]
 
+// Deleted/error projects
+const errorProjects = [
+  { queueNum: 10, name: "Sunny Berawa", score: 11, driveUrl: "https://drive.google.com/drive/folders/1sdC19Y_O5_H-LtdwfiQQ_yunQFinUxUb", notes: "Deleted — buggy fill, removed" },
+]
+
 // Pending projects from queue (for tracking)
 const pendingProjects = [
   { queueNum: 12, name: "LOYO Pandawa Dream", score: 10, sheetsUrl: "https://docs.google.com/spreadsheets/d/1qVnrTG-3_UHIexFcZ8sYRDYtFin_He7tDu5g9NE9pwg/edit?gid=1454365306", notes: "Awaiting data" },
@@ -50,6 +55,27 @@ const pendingProjects = [
   { queueNum: 18, name: "BREIG Edem II", score: 8, driveUrl: "https://drive.google.com/drive/u/0/folders/1viTxF_krxHDaaDXQchS12MCrpDr9zfaG", notes: "Pending redo" },
   { queueNum: 19, name: "BALI BAZA KEDUNGU", score: 8, notes: "No Drive (Pak Agent)" },
   { queueNum: 20, name: "Sunny Family Ubud", score: 8, driveUrl: "https://drive.google.com/drive/folders/1VwrJWeWod3txoidOIMspK3UX2ZBB7ldP", notes: "Awaiting data" },
+  { queueNum: 21, name: "Evdekimi ready", score: 8, notes: "Reference: EVDEkimi - Investment Proposals" },
+  { queueNum: 22, name: "BRIDGE Surfside", score: 7, notes: "Pending redo, no Drive in master table" },
+  { queueNum: 24, name: "TAMORA Axis", score: 7, notes: "Reference: Tamora Axis - Sneak Peak.pdf" },
+  { queueNum: 25, name: "YOLLA Nunggalan", score: 7, notes: "No Drive" },
+  { queueNum: 26, name: "VIBE Nai 1&2", score: 6, notes: "Reference: 04 - Presentations" },
+  { queueNum: 27, name: "VIBE Cassandra 4", score: 4, driveUrl: "https://drive.google.com/drive/folders/1NXXkD4n54GYwaoQVXoro4YfDVyApfkLi", notes: "" },
+  { queueNum: 28, name: "Azuma (Zumaia)", score: 3, notes: "Website: https://azumadevelopments.com/about-us/" },
+  { queueNum: 29, name: "Axora Developments", score: 3, notes: "Website: https://www.axora-developments.com/uluwatu" },
+]
+
+// Echelon 2: Waiting for data (score 0)
+const echelon2Projects = [
+  { queueNum: 30, name: "OCTA SUN", notes: "All fields empty in master table" },
+  { queueNum: 31, name: "Big Bali group (Manta Livin)", notes: "All fields empty" },
+  { queueNum: 32, name: "LOYO Green Village Villas", notes: "Appears to be sub-entry of GV Apartments" },
+  { queueNum: 33, name: "OXO Bingin", notes: "Only name + Nusa Dua" },
+  { queueNum: 34, name: "Kiss Group", notes: "No data" },
+  { queueNum: 35, name: "Ley Lines", notes: "No data" },
+  { queueNum: 36, name: "Rimba Ventures", notes: "No data" },
+  { queueNum: 37, name: "Zenergy Bali", notes: "No data" },
+  { queueNum: 38, name: "Bali Estate Group", notes: "No data" },
 ]
 
 async function backfill() {
@@ -145,9 +171,50 @@ async function backfill() {
     }
   }
 
+  // 3. Insert error/deleted projects
+  for (const p of errorProjects) {
+    const catalogId = localIdCounter--
+    const { error } = await supabase.from("catalog_projects").upsert({
+      catalog_id: catalogId,
+      name: p.name,
+      status: "error",
+      queue_score: p.score,
+      notes: p.notes ?? "",
+      drive_folder_url: (p as any).driveUrl ?? "",
+    }, { onConflict: "catalog_id" })
+
+    if (error) {
+      console.error(`  FAIL (error): ${p.name} — ${error.message}`)
+    } else {
+      console.log(`  OK (error): ${p.name}`)
+    }
+  }
+
+  // 4. Insert Echelon 2 projects (waiting for data, score 0)
+  for (const p of echelon2Projects) {
+    const catalogId = localIdCounter--
+    const { error } = await supabase.from("catalog_projects").upsert({
+      catalog_id: catalogId,
+      name: p.name,
+      status: "pending",
+      queue_score: 0,
+      notes: p.notes ?? "",
+    }, { onConflict: "catalog_id" })
+
+    if (error) {
+      console.error(`  FAIL (echelon2): ${p.name} — ${error.message}`)
+    } else {
+      console.log(`  OK (echelon2): ${p.name}`)
+    }
+  }
+
+  const total = queueProjects.length + pendingProjects.length + errorProjects.length + echelon2Projects.length
   console.log("\nBackfill complete!")
   console.log(`  Done: ${queueProjects.length} projects`)
   console.log(`  Pending: ${pendingProjects.length} projects`)
+  console.log(`  Error: ${errorProjects.length} projects`)
+  console.log(`  Echelon 2: ${echelon2Projects.length} projects`)
+  console.log(`  Total: ${total}`)
 }
 
 backfill().catch(console.error)

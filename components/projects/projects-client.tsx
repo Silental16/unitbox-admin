@@ -56,6 +56,10 @@ export function ProjectsClient({
         }
         case "catalogId":
           return (a.catalogId - b.catalogId) * dir
+        case "status": {
+          const statusOrder: Record<string, number> = { filled: 0, filling: 1, syncing: 2, pending: 3, error: 4 }
+          return ((statusOrder[a.status] ?? 5) - (statusOrder[b.status] ?? 5)) * dir
+        }
         default:
           return 0
       }

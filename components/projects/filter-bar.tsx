@@ -13,7 +13,7 @@ import {
 import type { ProjectFillStatus } from "@/lib/data/catalog-projects"
 
 export type StatusFilter = "all" | ProjectFillStatus
-export type SortColumn = "name" | "unitsCount" | "fillDate" | "catalogId"
+export type SortColumn = "name" | "unitsCount" | "fillDate" | "catalogId" | "status"
 export type SortOption = { column: SortColumn; direction: "asc" | "desc" }
 
 interface FilterBarProps {

@@ -77,13 +77,21 @@ export function ProjectsTable({
               </span>
             </TableHead>
             <TableHead>Location</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead
+              className="cursor-pointer select-none"
+              onClick={() => onSortChange(toggleSort("status", sort, "asc"))}
+            >
+              <span className="inline-flex items-center gap-1">
+                Status
+                <SortIcon column="status" current={sort} />
+              </span>
+            </TableHead>
             <TableHead
               className="text-right cursor-pointer select-none"
               onClick={() => onSortChange(toggleSort("unitsCount", sort))}
             >
               <span className="inline-flex items-center justify-end gap-1 w-full">
-                Units
+                Avail / Total
                 <SortIcon column="unitsCount" current={sort} />
               </span>
             </TableHead>
@@ -128,7 +136,12 @@ export function ProjectsTable({
                 <StatusBadge status={project.status} />
               </TableCell>
               <TableCell className="text-right tabular-nums font-medium">
-                {project.unitsCount || "—"}
+                {project.totalUnits > 0 ? (
+                  <span>
+                    <span className="text-emerald-600 dark:text-emerald-400">{project.availableUnits}</span>
+                    <span className="text-muted-foreground font-normal">/{project.totalUnits}</span>
+                  </span>
+                ) : "—"}
               </TableCell>
               <TableCell className="text-sm tabular-nums">
                 {formatDate(project.fillDate)}

@@ -40,6 +40,8 @@ export interface CatalogProject {
   status: ProjectFillStatus
   unitsCount: number
   unitTypesCount: number
+  availableUnits: number
+  totalUnits: number
   developerName: string
   fillDate: string | null
   fillIterations: number
@@ -48,6 +50,7 @@ export interface CatalogProject {
   queueScore: number | null
   notes: string
   sheetsUrl: string
+  driveFolderUrl: string
   lastSyncAt: string | null
   createdAt: string
   updatedAt: string
@@ -97,6 +100,8 @@ export function mapRowToCatalogProject(row: Record<string, any>): CatalogProject
     status: (row.status ?? "pending") as ProjectFillStatus,
     unitsCount: (row.units_count ?? 0) as number,
     unitTypesCount: (row.unit_types_count ?? 0) as number,
+    availableUnits: (row.available_units ?? 0) as number,
+    totalUnits: (row.total_units ?? 0) as number,
     developerName: (row.developer_name ?? "") as string,
     fillDate: (row.fill_date ?? null) as string | null,
     fillIterations: (row.fill_iterations ?? 0) as number,
@@ -105,6 +110,7 @@ export function mapRowToCatalogProject(row: Record<string, any>): CatalogProject
     queueScore: (row.queue_score ?? null) as number | null,
     notes: (row.notes ?? "") as string,
     sheetsUrl: (row.sheets_url ?? "") as string,
+    driveFolderUrl: (row.drive_folder_url ?? "") as string,
     lastSyncAt: (row.last_sync_at ?? null) as string | null,
     createdAt: row.created_at as string,
     updatedAt: row.updated_at as string,
