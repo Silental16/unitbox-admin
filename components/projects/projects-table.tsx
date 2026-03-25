@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowDownIcon, ArrowUpIcon, ExternalLinkIcon } from "lucide-react"
+import { ArrowDownIcon, ArrowUpIcon, ExternalLinkIcon, CheckIcon, MinusIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import {
   Table,
@@ -104,6 +104,15 @@ export function ProjectsTable({
                 <SortIcon column="fillDate" current={sort} />
               </span>
             </TableHead>
+            <TableHead
+              className="cursor-pointer select-none text-center"
+              onClick={() => onSortChange(toggleSort("hasChess", sort))}
+            >
+              <span className="inline-flex items-center justify-center gap-1">
+                Chess
+                <SortIcon column="hasChess" current={sort} />
+              </span>
+            </TableHead>
             <TableHead>Last Sync</TableHead>
           </TableRow>
         </TableHeader>
@@ -146,6 +155,13 @@ export function ProjectsTable({
               <TableCell className="text-sm tabular-nums">
                 {formatDate(project.fillDate)}
               </TableCell>
+              <TableCell className="text-center">
+                {project.sheetsUrl ? (
+                  <CheckIcon className="size-4 text-emerald-500 mx-auto" />
+                ) : (
+                  <MinusIcon className="size-4 text-muted-foreground/30 mx-auto" />
+                )}
+              </TableCell>
               <TableCell className="text-sm tabular-nums">
                 {formatDate(project.lastSyncAt)}
               </TableCell>
@@ -153,7 +169,7 @@ export function ProjectsTable({
           ))}
           {projects.length === 0 && (
             <TableRow>
-              <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+              <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
                 No projects found.
               </TableCell>
             </TableRow>

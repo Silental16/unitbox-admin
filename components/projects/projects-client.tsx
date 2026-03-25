@@ -68,6 +68,11 @@ export function ProjectsClient({
           const statusOrder: Record<string, number> = { filled: 0, filling: 1, syncing: 2, pending: 3, error: 4 }
           return ((statusOrder[a.status] ?? 5) - (statusOrder[b.status] ?? 5)) * dir
         }
+        case "hasChess": {
+          const aHas = a.sheetsUrl ? 1 : 0
+          const bHas = b.sheetsUrl ? 1 : 0
+          return (aHas - bHas) * dir
+        }
         default:
           return 0
       }

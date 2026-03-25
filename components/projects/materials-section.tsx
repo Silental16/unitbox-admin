@@ -85,7 +85,7 @@ function MaterialsList({
 
     if (!error && data) {
       onMaterialsChange([
-        { id: data.id, projectId, type, title: title.trim(), url: url.trim(), notes: "", createdAt: data.created_at },
+        { id: data.id, projectId, type, title: title.trim(), url: url.trim(), notes: "", createdAt: data.created_at, category: "general", subLabel: null },
         ...materials,
       ])
     }

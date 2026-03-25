@@ -13,7 +13,7 @@ import {
 import type { ProjectFillStatus } from "@/lib/data/catalog-projects"
 
 export type StatusFilter = "all" | ProjectFillStatus
-export type SortColumn = "name" | "unitsCount" | "fillDate" | "catalogId" | "status"
+export type SortColumn = "name" | "unitsCount" | "fillDate" | "catalogId" | "status" | "hasChess"
 export type SortOption = { column: SortColumn; direction: "asc" | "desc" }
 
 interface FilterBarProps {
@@ -30,18 +30,18 @@ export function FilterBar({
   onStatusFilterChange,
 }: FilterBarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <div className="relative flex-1 min-w-[200px]">
+    <div className="flex items-center justify-between">
+      <div className="relative w-[300px]">
         <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search projects..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-9"
+          className="pl-9 rounded-[26px] bg-neutral-200/30 border-neutral-200"
         />
       </div>
       <Select value={statusFilter} onValueChange={(v) => onStatusFilterChange(v as StatusFilter)}>
-        <SelectTrigger className="w-[140px]">
+        <SelectTrigger className="w-[140px] rounded-[26px] bg-neutral-200/30 border-neutral-200">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
         <SelectContent position="popper" align="start">
