@@ -4,6 +4,8 @@ export type ProjectFillStatus = "pending" | "filling" | "filled" | "syncing" | "
 
 export type MaterialType = "drive_folder" | "document" | "presentation" | "spreadsheet" | "pdf" | "image" | "website" | "other"
 
+export type MaterialCategory = "general" | "chess" | "financial_model" | "document_source"
+
 export type ChangeSource = "ai_fill" | "sync" | "manual" | "cron"
 
 export const FILL_STATUSES: { value: ProjectFillStatus; label: string; dot: string; bg: string; text: string }[] = [
@@ -64,6 +66,8 @@ export interface ProjectMaterial {
   title: string
   url: string
   notes: string
+  category: MaterialCategory
+  subLabel: string | null
   createdAt: string
 }
 
@@ -128,6 +132,8 @@ export function mapRowToMaterial(row: Record<string, any>): ProjectMaterial {
     title: (row.title ?? "") as string,
     url: (row.url ?? "") as string,
     notes: (row.notes ?? "") as string,
+    category: (row.category ?? "general") as MaterialCategory,
+    subLabel: (row.sub_label ?? null) as string | null,
     createdAt: row.created_at as string,
   }
 }
