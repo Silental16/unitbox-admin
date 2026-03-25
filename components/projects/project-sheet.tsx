@@ -14,6 +14,7 @@ import {
   CheckIcon,
   XIcon,
   Trash2Icon,
+  ChevronDownIcon,
 } from "lucide-react"
 import {
   Sheet,
@@ -45,9 +46,10 @@ import type { CatalogProject, ProjectFillStatus, ProjectMaterial, ProjectChessSo
 import { FILL_STATUSES } from "@/lib/data/catalog-projects"
 import type { Developer } from "@/lib/data/developers"
 import { DeveloperCombobox } from "./developer-combobox"
-import { MaterialsSection } from "./materials-section"
+import { CategorizedMaterialsSection } from "./categorized-materials-section"
 import { ChessSection } from "./chess-section"
 import { ChangeLogSection } from "./change-log-section"
+import { SalesEnablementSection, mapRowToSalesEnablement, type SalesEnablementData } from "./sales-enablement-section"
 import {
   mapRowToMaterial,
   mapRowToChessSource,
@@ -87,6 +89,29 @@ function KVRow({ label, value, href, icon: Icon }: { label: string; value: strin
       ) : (
         <span className="text-sm font-medium break-words">{value}</span>
       )}
+    </div>
+  )
+}
+
+function MaterialBlock({ title, count, children }: { title: string; count: number; children: React.ReactNode }) {
+  const [open, setOpen] = useState(true)
+  return (
+    <div className="rounded-lg border">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center justify-between w-full px-3 py-2 text-left hover:bg-muted/50 rounded-t-lg transition-colors"
+      >
+        <span className="text-sm font-medium">{title}</span>
+        <div className="flex items-center gap-2">
+          {count > 0 && (
+            <Badge variant="secondary" className="tabular-nums text-[10px] px-1.5 py-0">
+              {count}
+            </Badge>
+          )}
+          <ChevronDownIcon className={`size-4 text-muted-foreground transition-transform ${open ? "" : "-rotate-90"}`} />
+        </div>
+      </button>
+      {open && <div className="px-3 pb-3">{children}</div>}
     </div>
   )
 }
@@ -201,6 +226,7 @@ export function ProjectSheet({
   const [materials, setMaterials] = useState<ProjectMaterial[]>([])
   const [chessSources, setChessSources] = useState<ProjectChessSource[]>([])
   const [changeLog, setChangeLog] = useState<ProjectChangeEntry[]>([])
+  const [salesEnablement, setSalesEnablement] = useState<SalesEnablementData | null>(null)
   const [detailsLoaded, setDetailsLoaded] = useState(false)
 
   useEffect(() => {
@@ -212,14 +238,16 @@ export function ProjectSheet({
     if (!open || !project || detailsLoaded) return
     async function loadDetails() {
       const supabase = createClient()
-      const [materialsRes, chessRes, logRes] = await Promise.all([
+      const [materialsRes, chessRes, logRes, salesRes] = await Promise.all([
         supabase.from("project_materials").select("*").eq("project_id", project!.id).order("created_at", { ascending: false }),
         supabase.from("project_chess_sources").select("*").eq("project_id", project!.id).order("created_at", { ascending: false }),
         supabase.from("project_change_log").select("*").eq("project_id", project!.id).order("created_at", { ascending: false }).limit(50),
+        supabase.from("project_sales_enablement").select("*").eq("project_id", project!.id).maybeSingle(),
       ])
       setMaterials((materialsRes.data ?? []).map(mapRowToMaterial))
       setChessSources((chessRes.data ?? []).map(mapRowToChessSource))
       setChangeLog((logRes.data ?? []).map(mapRowToChangeEntry))
+      setSalesEnablement(salesRes.data ? mapRowToSalesEnablement(salesRes.data) : null)
       setDetailsLoaded(true)
     }
     loadDetails()
@@ -231,6 +259,7 @@ export function ProjectSheet({
     setMaterials([])
     setChessSources([])
     setChangeLog([])
+    setSalesEnablement(null)
   }, [project?.id])
 
   // Resize logic
@@ -314,7 +343,7 @@ export function ProjectSheet({
           {/* Tabs */}
           <div className="p-6 overflow-hidden">
             <Tabs defaultValue="overview" className="overflow-hidden">
-              <TabsList className="mb-4">
+              <TabsList className="mb-4 flex-wrap h-auto gap-1">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="materials">
                   Materials
@@ -324,7 +353,14 @@ export function ProjectSheet({
                     </Badge>
                   )}
                 </TabsTrigger>
-                <TabsTrigger value="chess">Chess Board</TabsTrigger>
+                <TabsTrigger value="sales">
+                  Sales
+                  {salesEnablement && (
+                    <Badge variant="secondary" className="ml-1.5 tabular-nums text-[10px] px-1.5 py-0 bg-amber-100 text-amber-700">
+                      ✦
+                    </Badge>
+                  )}
+                </TabsTrigger>
                 <TabsTrigger value="history">
                   History
                   {changeLog.length > 0 && (
@@ -406,21 +442,72 @@ export function ProjectSheet({
                 </div>
               </TabsContent>
 
-              {/* Materials Tab */}
+              {/* Materials Tab — all categories as collapsible blocks */}
               <TabsContent value="materials">
-                <MaterialsSection
-                  projectId={project.id}
-                  materials={materials}
-                  onMaterialsChange={setMaterials}
-                />
+                <div className="space-y-5">
+                  <MaterialBlock title="Sources" count={materials.filter((m) => m.category === "general").length}>
+                    <CategorizedMaterialsSection
+                      projectId={project.id}
+                      materials={materials}
+                      onMaterialsChange={setMaterials}
+                      category="general"
+                      description="Drive папки, сайты, PDF, общие файлы."
+                      addButtonLabel="Add Material"
+                    />
+                  </MaterialBlock>
+
+                  <MaterialBlock title="Chess Boards" count={materials.filter((m) => m.category === "chess").length}>
+                    <CategorizedMaterialsSection
+                      projectId={project.id}
+                      materials={materials}
+                      onMaterialsChange={setMaterials}
+                      category="chess"
+                      description="Шахматки — файлы с юнитами по блокам."
+                      addButtonLabel="Add Chess Board"
+                      showSubLabel
+                      subLabelPlaceholder="Block name (e.g. Apartments, Villas Block B)"
+                    />
+                    {chessSources.length > 0 && (
+                      <>
+                        <Separator className="my-3" />
+                        <p className="text-xs text-muted-foreground mb-2">Parsing Config</p>
+                        <ChessSection
+                          chessSources={chessSources}
+                          onChessSourcesChange={setChessSources}
+                        />
+                      </>
+                    )}
+                  </MaterialBlock>
+
+                  <MaterialBlock title="Financial Models" count={materials.filter((m) => m.category === "financial_model").length}>
+                    <CategorizedMaterialsSection
+                      projectId={project.id}
+                      materials={materials}
+                      onMaterialsChange={setMaterials}
+                      category="financial_model"
+                      description="ROI документы по типам юнитов или общие."
+                      addButtonLabel="Add Financial Model"
+                      showSubLabel
+                      subLabelPlaceholder="Unit type (e.g. Studio 1BR, General)"
+                    />
+                  </MaterialBlock>
+
+                  <MaterialBlock title="Documents" count={materials.filter((m) => m.category === "document_source").length}>
+                    <CategorizedMaterialsSection
+                      projectId={project.id}
+                      materials={materials}
+                      onMaterialsChange={setMaterials}
+                      category="document_source"
+                      description="Презентации, пермиты, юридические документы."
+                      addButtonLabel="Add Document"
+                    />
+                  </MaterialBlock>
+                </div>
               </TabsContent>
 
-              {/* Chess Board Tab */}
-              <TabsContent value="chess">
-                <ChessSection
-                  chessSources={chessSources}
-                  onChessSourcesChange={setChessSources}
-                />
+              {/* Sales Enablement Tab */}
+              <TabsContent value="sales">
+                <SalesEnablementSection data={salesEnablement} />
               </TabsContent>
 
               {/* History Tab */}
@@ -456,6 +543,7 @@ export function ProjectSheet({
                         supabase.from("project_materials").delete().eq("project_id", project.id),
                         supabase.from("project_chess_sources").delete().eq("project_id", project.id),
                         supabase.from("project_change_log").delete().eq("project_id", project.id),
+                        supabase.from("project_sales_enablement").delete().eq("project_id", project.id),
                       ])
                       const { error } = await supabase.from("catalog_projects").delete().eq("id", project.id)
                       if (error) {
