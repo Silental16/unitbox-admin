@@ -1,6 +1,6 @@
 // Types, interfaces, and mappers for Catalog Projects Tracker
 
-export type ProjectFillStatus = "pending" | "filling" | "filled" | "syncing" | "error"
+export type ProjectFillStatus = "pending" | "filling" | "filled" | "published" | "syncing" | "error" | "archived"
 
 export type MaterialType = "drive_folder" | "document" | "presentation" | "spreadsheet" | "pdf" | "image" | "website" | "other"
 
@@ -12,8 +12,10 @@ export const FILL_STATUSES: { value: ProjectFillStatus; label: string; dot: stri
   { value: "pending", label: "Pending", dot: "bg-slate-300 dark:bg-slate-600", bg: "bg-muted", text: "text-muted-foreground" },
   { value: "filling", label: "Filling", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
   { value: "filled", label: "Filled", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
+  { value: "published", label: "Published", dot: "bg-violet-500", bg: "bg-violet-100 dark:bg-violet-900/30", text: "text-violet-700 dark:text-violet-400" },
   { value: "syncing", label: "Syncing", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
   { value: "error", label: "Error", dot: "bg-red-500", bg: "bg-red-100 dark:bg-red-900/30", text: "text-red-700 dark:text-red-400" },
+  { value: "archived", label: "Archived", dot: "bg-gray-400 dark:bg-gray-600", bg: "bg-gray-100 dark:bg-gray-900/30", text: "text-gray-600 dark:text-gray-400" },
 ]
 
 export const MATERIAL_TYPES: { value: MaterialType; label: string; icon: string }[] = [

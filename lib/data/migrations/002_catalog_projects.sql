@@ -10,7 +10,7 @@ CREATE TABLE catalog_projects (
   name TEXT NOT NULL,
   location TEXT,
   status TEXT NOT NULL DEFAULT 'pending'
-    CHECK (status IN ('pending','filling','filled','syncing','error')),
+    CHECK (status IN ('pending','filling','filled','published','syncing','error','archived')),
   units_count INTEGER DEFAULT 0,
   unit_types_count INTEGER DEFAULT 0,
   developer_name TEXT,
