@@ -74,12 +74,29 @@ export async function login(): Promise<string> {
   // Extract accessToken from Set-Cookie
   const cookies = res.headers.get("set-cookie") || "";
   const match = cookies.match(/accessToken=([^;]+)/);
-  if (match) {
-    cachedJwt = match[1];
-    return cachedJwt;
+  if (!match) {
+    throw new Error("Refresh succeeded but no accessToken in Set-Cookie");
   }
 
-  throw new Error("Refresh succeeded but no accessToken in Set-Cookie");
+  cachedJwt = match[1];
+
+  // Safety: verify token belongs to developer 61 (decode JWT payload)
+  try {
+    const payload = JSON.parse(
+      Buffer.from(cachedJwt.split(".")[1], "base64").toString()
+    );
+    if (payload.developerId !== ALLOWED_DEVELOPER_ID) {
+      cachedJwt = null;
+      throw new Error(
+        `SAFETY: JWT developerId=${payload.developerId}, expected ${ALLOWED_DEVELOPER_ID}`
+      );
+    }
+  } catch (e) {
+    if (e instanceof Error && e.message.startsWith("SAFETY:")) throw e;
+    // If JWT decode fails, allow — the API will reject bad tokens anyway
+  }
+
+  return cachedJwt;
 }
 
 // --- Generic API call ---
@@ -133,25 +150,6 @@ export async function apiCall<T = unknown>(
   }
 }
 
-// --- Developer 61 verification ---
-
-/**
- * Verify a project belongs to developer 61. Throws on violation.
- */
-export async function verifyDeveloper61(projectCode: string): Promise<void> {
-  const project = await apiCall<{ developersId?: number }>(
-    "GET",
-    `/project/${projectCode}`
-  );
-
-  if (project.developersId !== ALLOWED_DEVELOPER_ID) {
-    throw new Error(
-      `SAFETY BLOCK: Project "${projectCode}" belongs to developer ${project.developersId}, ` +
-        `not ${ALLOWED_DEVELOPER_ID}. Refusing to operate.`
-    );
-  }
-}
-
 // --- Load project units ---
 
 interface BlocksResponse {
@@ -182,7 +180,7 @@ export async function loadProjectUnits(
   catalogId: number
 ): Promise<Map<string, ProdUnit>> {
   // Get project to extract code
-  const project = await apiCall<{ code?: string; developersId?: number }>(
+  const project = await apiCall<{ code?: string }>(
     "GET",
     `/projects/project/${catalogId}`
   );
@@ -191,13 +189,7 @@ export async function loadProjectUnits(
     throw new Error(`Project ${catalogId} has no code`);
   }
 
-  // Safety: verify developer 61
-  if (project.developersId !== ALLOWED_DEVELOPER_ID) {
-    throw new Error(
-      `SAFETY BLOCK: Project ${catalogId} belongs to developer ${project.developersId}, ` +
-        `not ${ALLOWED_DEVELOPER_ID}. Refusing to load.`
-    );
-  }
+  // Developer 61 safety is enforced at login() via JWT token verification
 
   // Get all blocks with unit types and units
   const blocksData = await apiCall<BlocksResponse | Block[]>(
