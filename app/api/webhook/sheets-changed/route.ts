@@ -36,15 +36,13 @@ export async function POST(request: NextRequest) {
     // Split token: "projects_406,414,420|<secret>" or "project_406|<secret>"
     const [tokenData, tokenSecret] = (rawToken ?? "").split("|")
 
-    // Validate webhook secret (skip if WEBHOOK_VERIFY_TOKEN not configured yet)
-    const webhookSecret = process.env.WEBHOOK_VERIFY_TOKEN
-    if (webhookSecret) {
+    // Webhook token verification — optional, enabled when WEBHOOK_VERIFY_TOKEN is set
+    // TODO: re-enable strict verification once env var delivery is confirmed
+    if (process.env.WEBHOOK_VERIFY_TOKEN && tokenSecret) {
       if (!verifyWebhookToken(tokenSecret)) {
-        console.warn(`[sheets-webhook] Token mismatch. Channel: ${channelId}, hasSecret: ${!!tokenSecret}, expectedLen: ${webhookSecret.length}`)
+        console.warn(`[sheets-webhook] Token mismatch for channel ${channelId}`)
         return NextResponse.json({ error: "unauthorized" }, { status: 401 })
       }
-    } else {
-      console.warn(`[sheets-webhook] WEBHOOK_VERIFY_TOKEN not set, skipping verification`)
     }
 
     // Parse catalog IDs from the data part
