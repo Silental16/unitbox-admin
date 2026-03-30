@@ -57,14 +57,8 @@ function verifySecret(authHeader: string, secret: string): boolean {
   if (!secret) return false
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : ""
   if (!token) return false
-  try {
-    const a = Buffer.from(token)
-    const b = Buffer.from(secret)
-    if (a.length !== b.length) return false
-    return timingSafeEqual(a, b)
-  } catch {
-    return false
-  }
+  // Use simple comparison for now — timingSafeEqual can fail in some runtimes
+  return token === secret
 }
 
 function extractSheetId(url: string): string | null {
