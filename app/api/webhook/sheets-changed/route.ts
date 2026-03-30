@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 
-const TELEGRAM_BOT_TOKEN = "8508445422:AAE-3cWz3FQ8PECvU09Ie8cFS-LRgZRhDJ0"
-const TELEGRAM_CHAT_ID = "325846422"
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_SYNC_BOT_TOKEN!
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_SYNC_CHAT_ID!
 
 function getSupabase() {
   return createClient(
