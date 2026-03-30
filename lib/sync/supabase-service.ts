@@ -10,8 +10,8 @@ import { createClient, SupabaseClient } from "@supabase/supabase-js";
 export interface ChessSource {
   id: string;
   project_id: string;
-  sheet_id: string;
-  tab_name: string;
+  sheets_url: string;
+  sheet_name: string;
   sync_enabled: boolean;
   sync_config: Record<string, unknown> | null;
   unit_snapshot: Record<string, unknown> | null;

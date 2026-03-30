@@ -140,14 +140,14 @@ async function syncProjectInner(
     throw new Error("sync_config missing unit_name_col or price_col")
   }
 
-  // ChessSource.sheet_id may be a full URL or a bare sheet ID
-  const sheetId = extractSheetId(source.sheet_id) ?? source.sheet_id
+  // ChessSource.sheets_url may be a full URL or a bare sheet ID
+  const sheetId = extractSheetId(source.sheets_url) ?? source.sheets_url
   if (!sheetId) {
-    throw new Error(`Cannot extract sheet ID from: ${source.sheet_id}`)
+    throw new Error(`Cannot extract sheet ID from: ${source.sheets_url}`)
   }
 
   // Build range
-  const sheetName = source.tab_name || ""
+  const sheetName = source.sheet_name || ""
   const endColNum =
     Math.max(
       colLetterToIndex(syncConfig.unit_name_col),
