@@ -21,9 +21,11 @@ import { computeColumnsHash, colLetterToIndex, indexToColLetter } from "@/lib/sy
 import { sendTelegram } from "@/lib/sync/telegram"
 import { loadProjectUnits, applyChanges } from "@/lib/sync/prod-client"
 
-// --- Env ---
+// --- Env (read at runtime, not module level) ---
 
-const SYNC_SECRET = process.env.SYNC_SECRET ?? ""
+function getSyncSecret(): string {
+  return process.env.SYNC_SECRET ?? ""
+}
 
 // --- Types ---
 
@@ -464,10 +466,10 @@ async function handleSync(opts: {
 // --- Route Handlers ---
 
 export async function GET(request: NextRequest) {
-  // Auth guard — supports both CRON_SECRET (Vercel cron) and SYNC_SECRET
+  // Auth guard — supports both CRON_SECRET (Vercel cron) and getSyncSecret()
   const authHeader = request.headers.get("authorization") ?? ""
   const cronSecret = process.env.CRON_SECRET ?? ""
-  if (!verifySecret(authHeader, cronSecret) && !verifySecret(authHeader, SYNC_SECRET)) {
+  if (!verifySecret(authHeader, cronSecret) && !verifySecret(authHeader, getSyncSecret())) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 })
   }
   return handleSync({ dryRun: false })
@@ -475,7 +477,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   // Auth guard — FIRST check
-  if (!verifySecret(request.headers.get("authorization") ?? "", SYNC_SECRET)) {
+  if (!verifySecret(request.headers.get("authorization") ?? "", getSyncSecret())) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 })
   }
 
