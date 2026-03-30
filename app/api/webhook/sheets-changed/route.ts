@@ -1,5 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createClient } from "@/lib/supabase/server"
+import { createClient } from "@supabase/supabase-js"
+
+// Direct Supabase client for webhook (no cookies/auth context)
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+}
 
 /**
  * Google Drive Watch webhook — receives notifications when chess board spreadsheets change.
@@ -35,50 +43,62 @@ export async function POST(request: NextRequest) {
 
     // Log the event to Supabase
     try {
-      const supabase = await createClient()
+      const supabase = getSupabase()
 
       // Find the project
-      const { data: project } = await supabase
+      const { data: project, error: projectError } = await supabase
         .from("catalog_projects")
         .select("id, name")
         .eq("catalog_id", parseInt(catalogId))
         .single()
 
-      if (project) {
-        // Log webhook event
-        await supabase.from("project_change_log").insert({
-          project_id: project.id,
-          source: "cron",
-          action: "webhook_sheet_changed",
-          summary: `Google Sheets content changed for ${project.name}. Sync pending.`,
-          diff: {
-            channel_id: channelId,
-            resource_state: state,
-            changed,
-            received_at: new Date().toISOString(),
+      if (projectError || !project) {
+        console.error(`[sheets-webhook] Project #${catalogId} not found:`, projectError?.message)
+        return NextResponse.json({ ok: true, type: "project_not_found", catalogId })
+      }
+
+      // Log webhook event
+      const { error: logError } = await supabase.from("project_change_log").insert({
+        project_id: project.id,
+        source: "cron",
+        action: "webhook_sheet_changed",
+        summary: `Chess board changed for ${project.name}. Sync pending.`,
+        diff: {
+          channel_id: channelId,
+          resource_state: state,
+          changed,
+          received_at: new Date().toISOString(),
+        },
+      })
+
+      if (logError) {
+        console.error(`[sheets-webhook] Failed to log:`, logError.message)
+      }
+
+      // Mark chess source as needing sync
+      const { error: updateError } = await supabase
+        .from("project_chess_sources")
+        .update({
+          last_anomaly: {
+            type: "webhook_content_changed",
+            detected_at: new Date().toISOString(),
+            details: `Content changed notification from Google Drive Watch API`,
+            resolved: false,
           },
         })
+        .eq("project_id", project.id)
 
-        // Mark chess source as needing sync
-        await supabase
-          .from("project_chess_sources")
-          .update({
-            last_anomaly: {
-              type: "webhook_content_changed",
-              detected_at: new Date().toISOString(),
-              details: `Content changed notification from Google Drive Watch API`,
-              resolved: false,
-            },
-          })
-          .eq("project_id", project.id)
-
-        console.log(`[sheets-webhook] Logged change for ${project.name} (#${catalogId})`)
+      if (updateError) {
+        console.error(`[sheets-webhook] Failed to update chess source:`, updateError.message)
       }
-    } catch (error) {
-      console.error(`[sheets-webhook] Error logging:`, error)
-    }
 
-    return NextResponse.json({ ok: true, type: "content_changed", catalogId })
+      console.log(`[sheets-webhook] Logged change for ${project.name} (#${catalogId})`)
+
+      return NextResponse.json({ ok: true, type: "content_changed", catalogId, project: project.name })
+    } catch (error) {
+      console.error(`[sheets-webhook] Error:`, error)
+      return NextResponse.json({ ok: false, error: "internal_error" }, { status: 500 })
+    }
   }
 
   // Other state changes (permissions, properties, etc) — acknowledge but ignore
