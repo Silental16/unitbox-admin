@@ -2,7 +2,7 @@
  * Catalog Prod API Client — serverless-friendly, direct fetch().
  *
  * Safety: ONLY operates on projects belonging to developer 61.
- * Auth: email/password login → JWT cached in memory per invocation.
+ * Auth: refresh token → JWT cached in memory per invocation.
  */
 
 import { normalizeName, type DiffChange } from "./diff-engine"
@@ -52,25 +52,26 @@ function getApiBase(): string {
 // --- Auth ---
 
 /**
- * Login via email/password, cache JWT in memory.
+ * Authenticate via refresh token (matches local prod-api.js pattern).
+ * GET /auth/refresh with refreshToken cookie → new accessToken + refreshToken.
  */
 export async function login(): Promise<string> {
   const base = getApiBase();
-  const res = await fetch(`${base}/auth/sign-in`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email: getEnv("CATALOG_API_EMAIL"),
-      password: getEnv("CATALOG_API_PASSWORD"),
-    }),
+  const refreshToken = getEnv("CATALOG_API_REFRESH_TOKEN");
+
+  const res = await fetch(`${base}/auth/refresh`, {
+    method: "GET",
+    headers: {
+      Cookie: `refreshToken=${refreshToken}`,
+    },
   });
 
   if (!res.ok) {
     const body = await res.text();
-    throw new Error(`Login failed (${res.status}): ${body}`);
+    throw new Error(`Token refresh failed (${res.status}): ${body.slice(0, 200)}`);
   }
 
-  // JWT may come in response body or Set-Cookie
+  // Extract accessToken from Set-Cookie
   const cookies = res.headers.get("set-cookie") || "";
   const match = cookies.match(/accessToken=([^;]+)/);
   if (match) {
@@ -78,15 +79,7 @@ export async function login(): Promise<string> {
     return cachedJwt;
   }
 
-  // Try response body
-  const data = await res.json();
-  const token = data.accessToken || data.token || data.access_token;
-  if (token) {
-    cachedJwt = token;
-    return cachedJwt;
-  }
-
-  throw new Error("Login succeeded but no JWT found in response or cookies");
+  throw new Error("Refresh succeeded but no accessToken in Set-Cookie");
 }
 
 // --- Generic API call ---
