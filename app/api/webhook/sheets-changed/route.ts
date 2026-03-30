@@ -42,64 +42,81 @@ export async function POST(request: NextRequest) {
   }
 
   if (state === "update" && changed?.includes("content")) {
-    const catalogId = token?.replace("project_", "")
+    // Parse catalog IDs from token
+    // New format: "projects_406,414,420" (one watch per file, multiple projects)
+    // Legacy format: "project_406" (one watch per project)
+    let catalogIds: number[] = []
+    if (token?.startsWith("projects_")) {
+      catalogIds = token.replace("projects_", "").split(",").map(Number).filter(Boolean)
+    } else if (token?.startsWith("project_")) {
+      const id = Number(token.replace("project_", ""))
+      if (id) catalogIds = [id]
+    }
 
-    if (!catalogId) {
+    if (catalogIds.length === 0) {
       return NextResponse.json({ ok: true, type: "ignored" })
     }
 
-    console.log(`[sheets-webhook] Content changed for project #${catalogId}`)
+    console.log(`[sheets-webhook] Content changed for projects: ${catalogIds.join(", ")}`)
 
     try {
       const supabase = getSupabase()
 
-      const { data: project, error: projectError } = await supabase
+      const { data: projects, error: projectError } = await supabase
         .from("catalog_projects")
-        .select("id, name")
-        .eq("catalog_id", parseInt(catalogId))
-        .single()
+        .select("id, name, catalog_id")
+        .in("catalog_id", catalogIds)
 
-      if (projectError || !project) {
-        console.error(`[sheets-webhook] Project #${catalogId} not found`)
-        return NextResponse.json({ ok: true, type: "project_not_found", catalogId })
+      if (projectError || !projects?.length) {
+        console.error(`[sheets-webhook] Projects not found: ${catalogIds}`)
+        return NextResponse.json({ ok: true, type: "project_not_found", catalogIds })
       }
 
-      // Log to Supabase
-      await supabase.from("project_change_log").insert({
-        project_id: project.id,
-        source: "cron",
-        action: "webhook_sheet_changed",
-        summary: `Chess board changed for ${project.name}. Sync pending.`,
-        diff: {
-          channel_id: channelId,
-          resource_state: state,
-          changed,
-          received_at: new Date().toISOString(),
-        },
-      })
-
-      // Mark chess source for sync
-      await supabase
-        .from("project_chess_sources")
-        .update({
-          last_anomaly: {
-            type: "webhook_content_changed",
-            detected_at: new Date().toISOString(),
-            details: "Content changed notification from Google Drive Watch API",
-            resolved: false,
+      // Log and mark each project
+      for (const project of projects) {
+        await supabase.from("project_change_log").insert({
+          project_id: project.id,
+          source: "cron",
+          action: "webhook_sheet_changed",
+          summary: `Chess board changed for ${project.name}. Sync pending.`,
+          diff: {
+            channel_id: channelId,
+            resource_state: state,
+            changed,
+            received_at: new Date().toISOString(),
           },
         })
-        .eq("project_id", project.id)
 
-      // Send Telegram notification
+        await supabase
+          .from("project_chess_sources")
+          .update({
+            last_anomaly: {
+              type: "webhook_content_changed",
+              detected_at: new Date().toISOString(),
+              details: "Content changed notification from Google Drive Watch API",
+              resolved: false,
+            },
+          })
+          .eq("project_id", project.id)
+      }
+
+      // Send ONE Telegram notification for all projects on this file
+      const projectList = projects
+        .map((p) => `• ${p.name} (#${p.catalog_id})`)
+        .join("\n")
+
       await sendTelegram(
         `🔔 <b>Шахматка изменилась</b>\n\n` +
-        `Проект: <b>${project.name}</b> (#${catalogId})\n` +
+        `${projectList}\n\n` +
         `Время: ${new Date().toLocaleString("ru-RU", { timeZone: "Asia/Makassar" })}\n\n` +
         `Зайди в Claude и скажи: <code>сверь шахматки</code>`
       )
 
-      return NextResponse.json({ ok: true, type: "content_changed", catalogId, project: project.name })
+      return NextResponse.json({
+        ok: true,
+        type: "content_changed",
+        projects: projects.map((p) => ({ catalogId: p.catalog_id, name: p.name })),
+      })
     } catch (error) {
       console.error(`[sheets-webhook] Error:`, error)
       return NextResponse.json({ ok: false, error: "internal_error" }, { status: 500 })
