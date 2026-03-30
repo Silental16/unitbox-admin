@@ -3,6 +3,10 @@
     {
       "path": "/api/analytics/sync",
       "schedule": "0 1 * * *"
+    },
+    {
+      "path": "/api/chess/sync",
+      "schedule": "17 */6 * * *"
     }
   ]
 }
