@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/chess/sync",
-      "schedule": "17 */6 * * *"
+      "schedule": "17 2 * * *"
     }
   ]
 }
