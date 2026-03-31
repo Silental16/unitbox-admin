@@ -264,19 +264,25 @@ async function syncProjectInner(
     }
   }
 
+  // Log non-blocking anomalies (new_units) even if no price/status changes
+  const newUnitsAnomaly = diffResult.anomalies.find((a) => a.type === "new_units")
+  if (newUnitsAnomaly && !dryRun) {
+    await logSyncEvent(source.project_uuid, "sync_anomaly_new_units", newUnitsAnomaly.details, {
+      anomaly: newUnitsAnomaly,
+      stats: diffResult.stats,
+    })
+    await updateChessSource(source.id, {
+      last_anomaly: {
+        type: "new_units",
+        detected_at: new Date().toISOString(),
+        details: newUnitsAnomaly.details,
+        resolved: false,
+      } as unknown as Record<string, unknown>,
+    })
+  }
+
   // No price/status changes
   if (diffResult.changes.length === 0) {
-    // Notify about new units (added in sheet but not on prod)
-    const newUnitLines: string[] = []
-    if (diffResult.stats.added > 0) {
-      newUnitLines.push(
-        `🆕 <b>${source.project_name}</b> (#${source.catalog_id}): ${diffResult.stats.added} new unit(s) in sheet — not on prod yet. Manual fill needed.`
-      )
-    }
-    if (newUnitLines.length > 0 && !dryRun) {
-      await sendTelegram(newUnitLines.join("\n"))
-    }
-
     if (!dryRun) {
       await updateChessSource(source.id, {
         last_successful_sync: true,
@@ -284,14 +290,14 @@ async function syncProjectInner(
           string,
           unknown
         >,
-        last_anomaly: null,
         sync_error_count: 0,
       })
     }
     return {
       project: source.project_name,
       catalogId: source.catalog_id,
-      status: "no_changes",
+      status: newUnitsAnomaly ? "anomaly" : "no_changes",
+      anomalyType: newUnitsAnomaly ? "new_units" : undefined,
     }
   }
 
@@ -459,9 +465,15 @@ async function handleSync(opts: {
             }
           }
         } else if (d.status === "anomaly") {
-          lines.push(
-            `⚠️ <b>${d.project}</b> (#${d.catalogId}): аномалия (${d.anomalyType})`
-          )
+          if (d.anomalyType === "new_units") {
+            lines.push(
+              `🆕 <b>${d.project}</b> (#${d.catalogId}): новые юниты в шахматке — нужен Claude для добавления на прод`
+            )
+          } else {
+            lines.push(
+              `⚠️ <b>${d.project}</b> (#${d.catalogId}): аномалия (${d.anomalyType})`
+            )
+          }
         } else if (d.status === "error") {
           lines.push(
             `❌ <b>${d.project}</b> (#${d.catalogId}): ошибка`

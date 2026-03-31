@@ -193,12 +193,18 @@ export function diff(oldSnapshot: SnapshotUnit[], newUnits: ParsedUnit[]): DiffR
     })
   }
 
-  // Added units (in new but not in old)
+  // Added units (in new but not in old) — structural change, needs manual fill
   const addedUnits: string[] = []
-  for (const [normName] of newMap) {
+  for (const [normName, newUnit] of newMap) {
     if (!oldMap.has(normName)) {
-      addedUnits.push(normName)
+      addedUnits.push(newUnit.name)
     }
+  }
+  if (addedUnits.length > 0) {
+    anomalies.push({
+      type: "new_units",
+      details: `${addedUnits.length} new unit(s) in sheet: ${addedUnits.join(", ")}`,
+    })
   }
 
   // Mass status change anomaly
