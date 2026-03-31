@@ -37,6 +37,7 @@ interface SyncDetail {
   anomalyType?: string
   error?: string
   dryRun?: boolean
+  changeLines?: string[]
 }
 
 interface SyncSummary {
@@ -64,6 +65,17 @@ function verifySecret(authHeader: string, secret: string): boolean {
 function extractSheetId(url: string): string | null {
   const match = url?.match(/spreadsheets\/d\/([^/]+)/)
   return match ? match[1] : null
+}
+
+function formatChangeLines(diffResult: DiffResult): string[] {
+  return diffResult.changes.map((c) => {
+    if (c.field === "price") {
+      const oldPrice = typeof c.old === "number" ? `$${c.old.toLocaleString()}` : String(c.old)
+      const newPrice = typeof c.new === "number" ? `$${c.new.toLocaleString()}` : String(c.new)
+      return `💰 ${c.unit}: ${oldPrice} → ${newPrice}`
+    }
+    return `📋 ${c.unit}: ${c.old} → ${c.new}`
+  })
 }
 
 function buildSummary(diffResult: DiffResult): string {
@@ -312,6 +324,7 @@ async function syncProjectInner(
       catalogId: source.catalog_id,
       status: "changes_applied",
       changesCount: applyResult.applied,
+      changeLines: formatChangeLines(diffResult),
     }
   }
 
@@ -322,6 +335,7 @@ async function syncProjectInner(
     status: "changes_applied",
     changesCount: diffResult.changes.length,
     dryRun: true,
+    changeLines: formatChangeLines(diffResult),
   }
 }
 
@@ -426,15 +440,20 @@ async function handleSync(opts: {
       for (const d of summary.details) {
         if (d.status === "changes_applied") {
           lines.push(
-            `${d.dryRun ? "[DRY]" : ""} ${d.project} (#${d.catalogId}): ${d.changesCount} changes`
+            `${d.dryRun ? "🔍 " : "✅ "}<b>${d.project}</b> (#${d.catalogId})`
           )
+          if (d.changeLines?.length) {
+            for (const line of d.changeLines) {
+              lines.push(`  ${line}`)
+            }
+          }
         } else if (d.status === "anomaly") {
           lines.push(
-            `${d.project} (#${d.catalogId}): ANOMALY (${d.anomalyType})`
+            `⚠️ <b>${d.project}</b> (#${d.catalogId}): аномалия (${d.anomalyType})`
           )
         } else if (d.status === "error") {
           lines.push(
-            `${d.project} (#${d.catalogId}): ERROR`
+            `❌ <b>${d.project}</b> (#${d.catalogId}): ошибка`
           )
         }
       }
