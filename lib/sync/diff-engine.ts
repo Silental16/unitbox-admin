@@ -28,7 +28,7 @@ export interface DiffChange {
 }
 
 export interface DiffAnomaly {
-  type: "suspicious_price_change" | "missing_unit" | "mass_status_change"
+  type: "suspicious_price_change" | "missing_unit" | "mass_status_change" | "new_units"
   details: string
 }
 
