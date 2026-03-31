@@ -247,6 +247,7 @@ export function hasBlockingAnomaly(
 ): boolean {
   return anomalies.some((a) => {
     if (a.type === "mass_status_change") return true
+    if (a.type === "new_units") return true
     // missing_unit is blocking only when >50% of expected units are missing
     // (partial tab coverage is expected for multi-tab projects)
     if (a.type === "missing_unit" && stats) {

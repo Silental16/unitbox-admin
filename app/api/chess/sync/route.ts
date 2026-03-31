@@ -264,23 +264,6 @@ async function syncProjectInner(
     }
   }
 
-  // Log non-blocking anomalies (new_units) even if no price/status changes
-  const newUnitsAnomaly = diffResult.anomalies.find((a) => a.type === "new_units")
-  if (newUnitsAnomaly && !dryRun) {
-    await logSyncEvent(source.project_uuid, "sync_anomaly_new_units", newUnitsAnomaly.details, {
-      anomaly: newUnitsAnomaly,
-      stats: diffResult.stats,
-    })
-    await updateChessSource(source.id, {
-      last_anomaly: {
-        type: "new_units",
-        detected_at: new Date().toISOString(),
-        details: newUnitsAnomaly.details,
-        resolved: false,
-      } as unknown as Record<string, unknown>,
-    })
-  }
-
   // No price/status changes
   if (diffResult.changes.length === 0) {
     if (!dryRun) {
@@ -296,8 +279,7 @@ async function syncProjectInner(
     return {
       project: source.project_name,
       catalogId: source.catalog_id,
-      status: newUnitsAnomaly ? "anomaly" : "no_changes",
-      anomalyType: newUnitsAnomaly ? "new_units" : undefined,
+      status: "no_changes",
     }
   }
 
@@ -465,15 +447,9 @@ async function handleSync(opts: {
             }
           }
         } else if (d.status === "anomaly") {
-          if (d.anomalyType === "new_units") {
-            lines.push(
-              `🆕 <b>${d.project}</b> (#${d.catalogId}): новые юниты в шахматке — нужен Claude для добавления на прод`
-            )
-          } else {
-            lines.push(
-              `⚠️ <b>${d.project}</b> (#${d.catalogId}): аномалия (${d.anomalyType})`
-            )
-          }
+          lines.push(
+            `⚠️ <b>${d.project}</b> (#${d.catalogId}): аномалия — ${d.anomalyType}. Нужен Claude.`
+          )
         } else if (d.status === "error") {
           lines.push(
             `❌ <b>${d.project}</b> (#${d.catalogId}): ошибка`
