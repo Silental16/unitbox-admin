@@ -78,15 +78,14 @@ export async function login(): Promise<string> {
     throw new Error("Refresh succeeded but no accessToken in Set-Cookie");
   }
 
-  cachedJwt = match[1];
+  const jwt = match[1];
 
   // Safety: verify token belongs to developer 61 (decode JWT payload)
   try {
     const payload = JSON.parse(
-      Buffer.from(cachedJwt.split(".")[1], "base64").toString()
+      Buffer.from(jwt.split(".")[1], "base64").toString()
     );
     if (payload.developerId !== ALLOWED_DEVELOPER_ID) {
-      cachedJwt = null;
       throw new Error(
         `SAFETY: JWT developerId=${payload.developerId}, expected ${ALLOWED_DEVELOPER_ID}`
       );
@@ -96,7 +95,8 @@ export async function login(): Promise<string> {
     // If JWT decode fails, allow — the API will reject bad tokens anyway
   }
 
-  return cachedJwt;
+  cachedJwt = jwt;
+  return jwt;
 }
 
 // --- Generic API call ---
