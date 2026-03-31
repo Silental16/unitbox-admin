@@ -264,8 +264,19 @@ async function syncProjectInner(
     }
   }
 
-  // No changes
+  // No price/status changes
   if (diffResult.changes.length === 0) {
+    // Notify about new units (added in sheet but not on prod)
+    const newUnitLines: string[] = []
+    if (diffResult.stats.added > 0) {
+      newUnitLines.push(
+        `🆕 <b>${source.project_name}</b> (#${source.catalog_id}): ${diffResult.stats.added} new unit(s) in sheet — not on prod yet. Manual fill needed.`
+      )
+    }
+    if (newUnitLines.length > 0 && !dryRun) {
+      await sendTelegram(newUnitLines.join("\n"))
+    }
+
     if (!dryRun) {
       await updateChessSource(source.id, {
         last_successful_sync: true,
