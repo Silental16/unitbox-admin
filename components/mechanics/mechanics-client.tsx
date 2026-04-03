@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useCallback } from "react"
+import { useState, useMemo, useCallback, useEffect } from "react"
 import { HeartIcon,
   UsersIcon,
   BriefcaseIcon,
@@ -119,13 +119,14 @@ export function MechanicsClient() {
   const [search, setSearch] = useState("")
   const [selectedMechanic, setSelectedMechanic] = useState<Mechanic | null>(null)
   const [sheetOpen, setSheetOpen] = useState(false)
-  const [likedIds, setLikedIds] = useState<Set<string>>(() => {
-    if (typeof window === "undefined") return new Set()
+  const [likedIds, setLikedIds] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
     try {
       const saved = localStorage.getItem("liked-mechanics")
-      return saved ? new Set(JSON.parse(saved)) : new Set()
-    } catch { return new Set() }
-  })
+      if (saved) setLikedIds(new Set(JSON.parse(saved)))
+    } catch { /* ignore */ }
+  }, [])
 
   const toggleLike = useCallback((id: string, e: React.MouseEvent) => {
     e.stopPropagation()
