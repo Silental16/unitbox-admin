@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useEffect, useRef, type ReactNode } from "react"
+import { useState, useCallback, useEffect, useRef } from "react"
 import { ArrowLeftIcon, ChevronRightIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -65,6 +65,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Card } from "@/components/ui/card"
+import { Prose } from "@/components/ui/prose"
 import { CATEGORY_LABELS, type Mechanic, type MechanicExample } from "@/lib/data/mechanics"
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -129,11 +130,12 @@ interface MechanicSheetProps {
   onOpenChange: (open: boolean) => void
 }
 
-function CaseStudySection({ label, children }: { label: string; children: ReactNode }) {
+function CaseStudySection({ label, children }: { label: string; children: string | undefined }) {
+  if (!children) return null
   return (
     <section>
       <h3 className="text-sm font-semibold mb-2">{label}</h3>
-      <p className="text-sm leading-relaxed whitespace-pre-line">{children}</p>
+      <Prose>{children}</Prose>
     </section>
   )
 }
@@ -308,9 +310,7 @@ export function MechanicSheet({ mechanic, open, onOpenChange }: MechanicSheetPro
                     <section>
                       <h3 className="text-sm font-semibold mb-2">MVP версия</h3>
                       <div className="rounded-md bg-muted border border-border p-4">
-                        <p className="text-sm leading-relaxed text-foreground whitespace-pre-line">
-                          {activeCase.caseStudy.mvpVersion}
-                        </p>
+                        <Prose>{activeCase.caseStudy.mvpVersion ?? ""}</Prose>
                       </div>
                     </section>
                   )}
@@ -341,9 +341,7 @@ export function MechanicSheet({ mechanic, open, onOpenChange }: MechanicSheetPro
                       <section>
                         <h3 className="text-sm font-semibold mb-2">Уроки для Unitbox</h3>
                         <div className="rounded-md bg-muted border border-border p-4">
-                          <p className="text-sm leading-relaxed text-foreground whitespace-pre-line">
-                            {activeCase.caseStudy.lessonsForUnitbox}
-                          </p>
+                          <Prose>{activeCase.caseStudy.lessonsForUnitbox ?? ""}</Prose>
                         </div>
                       </section>
                     </>
@@ -385,7 +383,7 @@ export function MechanicSheet({ mechanic, open, onOpenChange }: MechanicSheetPro
               <div className="flex flex-col gap-6 p-6">
                 <section>
                   <h3 className="text-sm font-semibold mb-2">Что это</h3>
-                  <p className="text-sm leading-relaxed">{mechanic.whatIsIt}</p>
+                  <Prose>{mechanic.whatIsIt}</Prose>
                 </section>
 
                 <Separator />
@@ -409,7 +407,7 @@ export function MechanicSheet({ mechanic, open, onOpenChange }: MechanicSheetPro
                 <section>
                   <h3 className="text-sm font-semibold mb-2">Ключевой инсайт</h3>
                   <div className="border-l-4 border-primary/40 pl-4 py-2">
-                    <p className="text-sm leading-relaxed italic">{mechanic.keyInsight}</p>
+                    <Prose className="italic">{mechanic.keyInsight}</Prose>
                   </div>
                 </section>
 
@@ -445,9 +443,7 @@ export function MechanicSheet({ mechanic, open, onOpenChange }: MechanicSheetPro
                 <section>
                   <h3 className="text-sm font-semibold mb-2">Применение в Unitbox</h3>
                   <div className="rounded-md bg-muted border border-border p-4">
-                    <p className="text-sm leading-relaxed text-foreground">
-                      {mechanic.unitboxApplication}
-                    </p>
+                    <Prose>{mechanic.unitboxApplication}</Prose>
                   </div>
                 </section>
               </div>

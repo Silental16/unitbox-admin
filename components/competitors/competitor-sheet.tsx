@@ -19,6 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Prose } from "@/components/ui/prose"
 import type { Competitor, CompetitorResearchStatus, ThreatLevel } from "@/lib/data/competitors"
 
 const RESEARCH_OPTIONS: { value: CompetitorResearchStatus; label: string; dot: string; bg: string; text: string }[] = [
@@ -80,45 +81,7 @@ function RichText({ content }: { content: string }) {
     return <p className="text-sm text-muted-foreground italic">Анализ ещё не проведён</p>
   }
 
-  const lines = content.split(/\n|(?<=[.!?])\s+(?=[•\-\d])|(?<=\.)\s+(?=[А-ЯA-Z])/g).filter(Boolean)
-
-  return (
-    <div className="space-y-1.5">
-      {lines.map((line, i) => {
-        const trimmed = line.trim()
-        if (!trimmed) return null
-
-        const isBullet = trimmed.startsWith("•") || trimmed.startsWith("- ") || trimmed.startsWith("— ")
-        const isNumbered = /^\d+[.)]/.test(trimmed)
-
-        if (isBullet) {
-          const text = trimmed.replace(/^[•\-—]\s*/, "")
-          return (
-            <div key={i} className="flex gap-2 pl-1">
-              <span className="text-muted-foreground shrink-0 mt-0.5">•</span>
-              <span className="text-sm leading-relaxed">{text}</span>
-            </div>
-          )
-        }
-
-        if (isNumbered) {
-          const match = trimmed.match(/^(\d+[.)]\s*)(.+)/)
-          if (match) {
-            return (
-              <div key={i} className="flex gap-2 pl-1">
-                <span className="text-muted-foreground shrink-0 mt-0.5 tabular-nums text-sm">{match[1]}</span>
-                <span className="text-sm leading-relaxed">{match[2]}</span>
-              </div>
-            )
-          }
-        }
-
-        return (
-          <p key={i} className="text-sm leading-relaxed">{trimmed}</p>
-        )
-      })}
-    </div>
-  )
+  return <Prose>{content}</Prose>
 }
 
 interface DossierSectionProps {

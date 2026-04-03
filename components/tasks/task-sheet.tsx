@@ -29,6 +29,7 @@ import {
 import { Calendar } from "@/components/ui/calendar"
 import { CalendarIcon, XIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Prose } from "@/components/ui/prose"
 import type { Task, TaskStatus, TaskPriority, TaskStage, TaskUser } from "@/lib/data/tasks"
 import {
   TASK_STATUSES,
@@ -296,9 +297,7 @@ export function TaskSheet({
             {task.detailedDescription && (
               <div>
                 <p className="text-xs font-medium text-muted-foreground mb-1.5">Details</p>
-                <div className="text-sm whitespace-pre-wrap leading-relaxed break-words overflow-hidden">
-                  {task.detailedDescription}
-                </div>
+                <Prose className="break-words overflow-hidden">{task.detailedDescription}</Prose>
               </div>
             )}
 
