@@ -139,8 +139,21 @@
   }
   h1, h2, h3, h4 { text-wrap: balance; }
   p { text-wrap: pretty; }
+  .scroll-fade {
+    mask-image: linear-gradient(to bottom, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
+  }
+  .scroll-fade-x {
+    mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
+  }
 }
 
+@keyframes pulse-reverse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+.animate-pulse-reverse {
+  animation: pulse-reverse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 
 .hero-gradient {
   background:
