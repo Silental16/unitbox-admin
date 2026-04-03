@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import {
+import { useState, useMemo, useCallback } from "react"
+import { HeartIcon,
   UsersIcon,
   BriefcaseIcon,
   BuildingIcon,
@@ -119,6 +119,24 @@ export function MechanicsClient() {
   const [search, setSearch] = useState("")
   const [selectedMechanic, setSelectedMechanic] = useState<Mechanic | null>(null)
   const [sheetOpen, setSheetOpen] = useState(false)
+  const [likedIds, setLikedIds] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set()
+    try {
+      const saved = localStorage.getItem("liked-mechanics")
+      return saved ? new Set(JSON.parse(saved)) : new Set()
+    } catch { return new Set() }
+  })
+
+  const toggleLike = useCallback((id: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    setLikedIds(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      localStorage.setItem("liked-mechanics", JSON.stringify([...next]))
+      return next
+    })
+  }, [])
 
   const filtered = useMemo(() => {
     if (!search) return mechanics
@@ -184,16 +202,34 @@ export function MechanicsClient() {
               return (
                 <Card
                   key={mechanic.id}
-                  className="flex flex-col gap-2 p-4 cursor-pointer transition-colors hover:bg-accent/50"
+                  className="group/card flex flex-col gap-2 p-4 cursor-pointer transition-colors hover:bg-accent/50 relative"
                   onClick={() => handleSelect(mechanic)}
                 >
+                  <button
+                    type="button"
+                    onClick={(e) => toggleLike(mechanic.id, e)}
+                    className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full transition-all duration-150 hover:bg-muted opacity-0 group-hover/card:opacity-100 focus-visible:opacity-100"
+                    aria-label={likedIds.has(mechanic.id) ? "Unlike" : "Like"}
+                  >
+                    <HeartIcon
+                      className={`size-4 transition-all duration-300 ${
+                        likedIds.has(mechanic.id)
+                          ? "fill-red-500 text-red-500 scale-110"
+                          : "fill-none text-muted-foreground hover:text-foreground"
+                      }`}
+                      style={{
+                        transform: likedIds.has(mechanic.id) ? "scale(1.1)" : "scale(1)",
+                        transition: "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s, fill 0.2s",
+                      }}
+                    />
+                  </button>
                   <div className="flex items-start gap-3">
                     {Icon && (
                       <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted">
                         <Icon className="size-4 text-muted-foreground" />
                       </div>
                     )}
-                    <div className="flex flex-col gap-1 min-w-0">
+                    <div className="flex flex-col gap-1 min-w-0 pr-6">
                       <span className="text-sm font-medium leading-tight">
                         {mechanic.title}
                       </span>
