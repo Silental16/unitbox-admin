@@ -83,8 +83,19 @@ export const mechanics: Mechanic[] = [
       "«AI для всех» проигрывает «AI для стоматологов». Чем уже ниша, тем выше конверсия и willingness-to-pay. Greg строит 3-5 продуктов одновременно и убивает проигравших быстро.",
     examples: [
       {
-        company: "Late Checkout (Greg Isenberg)",
-        detail: "Студия стартапов — параллельно строит несколько AI-продуктов для нишевых сообществ",
+        company: "Skool (Sam Ovens + Hormozi)",
+        detail: "~$50M ARR, 170K сообществ. All-in-one для платных community. Bootstrapped",
+        caseStudy: {
+          mechanicInAction: "• Sam Ovens (экс-Consulting.com) в 2019 создал Skool — all-in-one для платных сообществ (курсы + форум + геймификация)\n• 2024: Alex Hormozi вложился и запустил Skool Games — конкурс среди создателей, превративший GTM в вирусный цикл\n• Модель: найди нишу → собери платное сообщество → продай курс/коучинг → платформа забирает $99/мес + 2.9%\n• К 2025: ~170K сообществ, ~$50M выручки, ~240 человек, bootstrapped\n• 98% загруженных видео просматриваются (vs ~10-20% на обычных курсах)\n• Кейсы: менопауза-коуч — 13K × $10/мес = $130K/мес; AI-автоматизатор — $121K за 60 дней",
+          jtbd: "**Core Job (креатор):** Монетизировать аудиторию без склеивания 5 инструментов (Discord + Teachable + Stripe + email + Zapier).\n\n**Core Job (участник):** Получить результат через живое сообщество, не одинокий курс.\n\n**Trigger:** Разочарование в курсах с 3-5% completion rate → поиск формата с accountability.\n\n**Push:** 5+ инструментов, данные разрозненны, engagement падает.\n\n**Pull:** Один инструмент: форум + курсы + gamification + payments.",
+          monetization: "**Тарифы:** $99/мес за сообщество (+ Hobby $9/мес с 10% комиссией, 2026). Transaction fee 2.9%.\n\n**Revenue:** ~$50M ARR. 170K сообществ. ~240 человек. Bootstrapped ($5M от Hormozi единственное).\n\n**Кейсы:** 13K членов × $10/мес = $130K/мес. AI-автоматизатор — $121K за 60 дней. Копирайтер — 400 × $49/мес.",
+          marketing: "• Skool Games — конкурс (кто привлечёт больше → приз). Создатели рекламируют бесплатно\n• Hormozi leverage: запуск $100M Leads — 500K регистраций, 2.9M копий, 90-дн trial\n• 1 план, 14-дн trial, zero-code setup — снятие барьера «я не технарь»\n• Gamification: leaderboard, levels, points → retention и вирусность",
+          impact: "**Для креатора:** 5 инструментов → 1. 98% completion vs 3-5%. Revenue с сообщества за дни.\n\n**Для компании:** ~$50M ARR bootstrapped. 170K сообществ. 240 чел. Категория «платные community» создана.",
+          tocConstraint: "**Ограничение:** Качество сообщества = мотивация создателя. Без effort — мертвеет → churn.\n\n**Решение:** Геймификация (leaderboard + Skool Games) переносит constraint с мотивации на механику платформы.\n\n**Куда сместилось:** Один план $99 отсекал микро-создателей → добавлен Hobby $9/мес (2026).",
+          trizContradictions: "**ТП #1:** Простота vs Функциональность. Убрали 80% фич конкурентов (нет email, лендингов, воронок) → выиграли за счёт фокуса. #34 Отброс.\n\n**ТП #2:** Масштаб vs Качество. Больше сообществ = больше мусора. $99/мес как фильтр серьёзности.\n\n**Физическое:** Цена высокая (фильтр) И низкая (привлечение). Разделение во времени: 14-дн бесплатный trial → полная цена.",
+          conditions: "**Ниша:** Высокий WTP (бизнес-коучинг, здоровье, AI) — участники платят $10-99/мес.\n\n**Creator-market fit:** Создатель уже имеет аудиторию и хочет монетизировать.\n\n**Формат:** «Трансформация через community» > solo-курс — peer accountability.\n\n**Distribution partner:** Hormozi-уровень influencer = бесплатный GTM на миллионы.\n\n**Bootstrapped DNA:** Фокус на unit economics без давления инвесторов.",
+          mvpVersion: "**Гипотеза:** Креаторы выберут all-in-one community platform за $99/мес вместо 5 инструментов.\n\n**Эксперимент:** Форум + курсы + gamification leaderboard, один план $99/мес. Первые пользователи — ученики из Consulting.com (~5K).\n\n**Метрика:** Retention 30 дней > 80%, video completion > 50%.\n\n**Урок:** MVP жил 3 года в нише, пока не нашёлся distribution partner (Hormozi, 2023).",
+        },
       },
       {
         company: "HeadshotPro (Danny Postma)",
@@ -119,7 +130,18 @@ export const mechanics: Mechanic[] = [
     examples: [
       {
         company: "Morningside AI (Liam Ottley)",
-        detail: "7-значный revenue, реальное агентство + образовательная платформа AAA Accelerator",
+        detail: "$7M+ revenue. Агентство + AAA Accelerator (3800 студентов, 280K Skool)",
+        caseStudy: {
+          mechanicInAction: "• Liam Ottley (Новая Зеландия, сейчас Дубай) основал Morningside AI в начале 2023\n• Модель: бесплатный аудит AI-зрелости SMB → демо → ретейнер на внедрение\n• Эволюция за 24 мес: чатботы $5K → AI-аудит $60K → девелопмент $250K+\n• 2026: AIOS (AI Operating System) — установка «AI-операционки» бизнесу за премиум\n• Параллельно: AAA Accelerator (3800+ студентов, Skool 280K+ участников)\n• $7M+ к 2025, команда 40+. Двойной stream: услуги + education\n• Создал категорию «AI Automation Agency» — термин AAA стал нарицательным",
+          jtbd: "**Core Job (SMB):** Автоматизировать рутину с AI без найма AI-команды.\n\n**Core Job (студент):** Запустить прибыльный бизнес на волне AI без tech background.\n\n**Trigger (SMB):** FOMO — «все внедряют AI, мы отстаём».\n\n**Trigger (студент):** Видит YouTube-кейсы с revenue screenshots.\n\n**Push:** Дорогие консалтеры, generic ChatGPT без внедрения.\n\n**Pull:** Готовая система: скрипты продаж + шаблоны + коучинг.",
+          monetization: "**Услуги:** Аудит $60K → девелопмент $250K+ → ретейнер/поддержка.\n\n**Education:** AAA Accelerator ~$5-8K/6 мес, 3800+ студентов.\n\n**Skool:** 280K+ бесплатный вход → апсейл в Accelerator.\n\n**YouTube:** 1M+ views → органическая воронка. Суммарно $7M+.\n\nUnit economics: бесплатный контент → лиды → high-ticket ($5-60K) → LTV через ретейнер.",
+          marketing: "• YouTube с первого дня (янв 2023) — экспертный контент, 1M views за месяцы\n• Skool community 280K — крупнейший AI-хаб, social proof\n• LinkedIn/X — личный бренд, кейсы, ROI-модели\n• Воронка: бесплатный курс → Skool → воркшопы → weekly calls → Accelerator\n• GTM для услуг: outreach + бесплатный аудит как лид-магнит",
+          impact: "**Для клиента:** Аудит AI-зрелости → roadmap → внедрение. Экономия vs in-house AI team.\n\n**Для студентов:** Кейс Mert Yerlikaya — контракт $26K. Реальный таймлайн: 6-12 мес (не 90 дн из маркетинга).\n\n**Для компании:** $0 → $7M+ за 2 года. 40+ чел. 3800 студентов. 280K Skool. Категория AAA создана.",
+          tocConstraint: "**Ограничение:** Масштабируемость услуг (человеко-часы команды).\n\n**Решение:** Эволюция: кастом-проекты → продуктизация (AIOS) → платформенная модель.\n\n**Для студентов:** Узкое место — клиент-аквизиция → outreach coach + скрипты + practice clients.",
+          trizContradictions: "**ТП #1:** Масштабировать выручку → больше проектов → больше людей → маржа падает. #1 Сегментация: услуги (high-ticket) + education (масштаб).\n\n**ТП #2:** 3800 студентов качественно → время основателя конечно. #24 Посредник: expert devs + sales/outreach coaches.\n\n**ИКР:** AIOS — стандартное ядро + кастомная настройка = масштаб без потери качества.",
+          conditions: "**AI hype 2023-2026:** SMB не разобрались → окно для агентств.\n\n**Личный бренд:** YouTube + community = бесплатный GTM.\n\n**Двойной stream:** Услуги дают кейсы → education монетизирует.\n\n**Низкий порог:** No-code/low-code AI tools для студентов.\n\n**Риск:** Насыщение рынка + SaaS-ификация AI уберут window.",
+          mvpVersion: "**Гипотеза:** SMB заплатят $2-5K за AI-автоматизацию конкретного процесса.\n\n**Эксперимент:** Демо на Voiceflow/n8n за 2 дня. Аудит-чеклист (10 вопросов). Холодный outreach 50 компаниям: «бесплатный AI-аудит». 5-10 аудитов → показать демо → 1-2 пилота.\n\n**Метрика:** 1-2 платных пилота из 50 outreach.\n\n**Следующий шаг:** Документировать кейс → YouTube → следующий клиент.",
+        },
       },
       {
         company: "Соло AI-агентства",
@@ -278,7 +300,18 @@ export const mechanics: Mechanic[] = [
     examples: [
       {
         company: "ShipFast (Marc Lou)",
-        detail: "$50K/мес — Next.js boilerplate для AI SaaS. Build Friday → Launch Monday → Kill or Iterate Friday",
+        detail: "$1M/год портфель: ShipFast, CodeFast, DataFast, TrustMRR. 25+ запусков, 0 сотрудников",
+        caseStudy: {
+          mechanicInAction: "• Marc Lou за 3 года запустил 25+ микро-стартапов\n• Вместо AI-продуктов для юзеров — упаковал повторяющуюся инфраструктуру (auth, payments, DB, email) в NextJS-бойлерплейт ShipFast\n• Портфель: ShipFast (~$20K/мес), CodeFast (~$20K/мес, курс), DataFast (~$15.8K), TrustMRR (~$31.4K)\n• $1.03M за 2025. Пиковый месяц — $133K/мес\n• 7200+ разработчиков купили ShipFast, 3300+ студентов CodeFast\n• Все продукты кросс-продаются через личный бренд и newsletter «Just Ship It»\n• Разовая оплата (не подписка) — снижает воспринимаемую стоимость при высоком LTV",
+          jtbd: "**Core Job:** Запустить SaaS и начать зарабатывать как можно быстрее.\n\n**Functional:** Пропустить 40-80 часов boilerplate (auth, Stripe, DB, SEO, email).\n\n**Emotional:** Снять страх «потрачу месяц на фундамент и выгорю».\n\n**Social:** Присоединиться к 7200+ шипперов — статус indie hacker.\n\n**Trigger:** Начинаешь новый SaaS → понимаешь что первые 2 недели = setup.",
+          monetization: "**ShipFast:** ~$20K/мес, разовая оплата за boilerplate. **CodeFast:** ~$20K/мес, курс NextJS, 3300+ студентов.\n**DataFast:** $15.8K MRR. **TrustMRR:** $31.4K MRR.\n\nВсего: $1.03M за 2025. Пик $133K/мес. Solo, без инвесторов. Кросс-продажи через newsletter.",
+          marketing: "• Build in Public — скриншоты дохода, каждый запуск = контент\n• Twitter/X 100K+ подписчиков — органический рост, CAC ≈ 0\n• Каждый новый продукт на прогретую аудиторию\n• Newsletter «Just Ship It» как воронка кросс-продаж\n• Вдохновлён Pieter Levels: прозрачность → доверие → конверсия",
+          impact: "**Для клиента:** 40-80 часов setup → 0. От идеи до deploy за выходные.\n\n**Для компании:** $0 → $1M/год solo. 7200+ ShipFast. 3300+ CodeFast. First mover в «NextJS boilerplate for indie hackers».",
+          tocConstraint: "**Ограничение:** Время от идеи до первой выручки. Boilerplate setup съедает 2-4 недели.\n\n**Решение:** ShipFast расшивает: от идеи до deploy за выходные.\n\n**Вторичное:** Знания (CodeFast). Третичное: социальное доказательство (TrustMRR). Каждый продукт = расшивка следующего bottleneck.",
+          trizContradictions: "**ТП #1:** Универсальный (все SaaS) и Специализированный (конкретная боль). #1 Дробление: модульная архитектура, бери нужные блоки.\n\n**ТП #2:** Низкая цена (indie hackers) и Высокая (окупить solo). #24 Посредник: разовый платёж вместо подписки.\n\n**Физическое:** Маркетинг И разработка одновременно. Build in Public = процесс разработки = контент.",
+          conditions: "**Gold rush:** Массовый приток строителей SaaS/AI (2023-2026).\n\n**Повторяющаяся боль:** Каждый проект = одинаковый фундамент.\n\n**Личный бренд:** CAC ≈ 0 через Twitter.\n\n**One-time payment:** Нет ongoing support costs.\n\n**НЕ работает:** Зрелый рынок без притока новичков.",
+          mvpVersion: "**Гипотеза:** Инди-хакеры заплатят за готовый boilerplate чтобы пропустить 2 недели setup.\n\n**Эксперимент:** Собственный setup-код из 25+ проектов → вычистить → задокументировать → Gumroad + лендинг + 2-мин демо.\n\n**Метрика:** $40K за первый месяц (реальность Marc Lou).\n\n**Следующий шаг:** Кросс-продукты: курс (CodeFast), данные (DataFast), social proof (TrustMRR).",
+        },
       },
       {
         company: "FutureTools.io (Matt Wolfe)",
