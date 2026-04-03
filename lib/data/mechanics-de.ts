@@ -19,8 +19,19 @@ export const mechanicsDE: any[] = [
       "SaaStr: 140% Q1 revenue с 1.25 человека + 20 AI агентов. 38% семизначных бизнесов в 2026 управляются solopreneurs с AI. 20 узких агентов > 1 «умный». Cost per meeting: $50-100 vs $200-500. Ошибка: автоматизировать всё сразу — начинай с самой repetitive задачи.",
     examples: [
       {
-        company: "SaaStr",
-        detail: "140% Q1 2026. 1.25 человека + 20 agents",
+        company: "SaaStr (Jason Lemkin)",
+        detail: "140% Q1 revenue, $2.4M закрыто. 20 AI-агентов + 1.25 человека заменили GTM-команду из 9",
+        caseStudy: {
+          mechanicInAction: "• Май 2025: 2 сейлза ушли → вместо найма пошли all-in на AI-агентов\n• 8 месяцев: полностью заменили GTM-команду из 8-9 человек\n• Q1 2026: 140% выручки Q1 2025. $4.8M pipeline, $2.4M закрыто\n• 20+ агентов по ролям: Quali (квалификация), Arty (outreach), Repli (поддержка)\n• Агент закрыл сделку на $70K автономно в новогоднюю ночь\n• 70K персонализированных email (было 7K). Удвоение deal volume и win rate\n• Chief AI Officer тратит 1-2 ч/день на ревью поведения агентов",
+          jtbd: "**Core Job:** Масштабировать GTM без найма при уходе ключевых людей.\n\n**Trigger:** 2 сейлза ушли — нанимать или автоматизировать?\n\n**Push:** Найм SDR = $60-80K/год, 3 мес до продуктивности.\n\n**Pull:** 20 AI-агентов = 24/7, $50-100 per meeting vs $200-500.\n\n**Insight:** Training важнее инструмента. Фокус на «layup roles» — задачи с высоким импактом, которые никто не делает полноценно.",
+          monetization: "**Результат:** Q1 2026 = 140% Q1 2025. $4.8M pipeline. $2.4M закрыто.\n\n**Экономия:** 8-9 FTE GTM → 1.25 человека + 20 агентов. Cost per meeting: $50-100 vs $200-500.\n\n**Масштаб:** 70K персонализированных email (10x от 7K). Удвоение deal volume.",
+          marketing: "• Lemkin публикует результаты на SaaStr blog → виральный контент для SaaS community\n• Lenny's Newsletter guest post → million+ reach\n• Конференция SaaStr Annual — live demo AI-агентов\n• Позиционирование: «не замена людей, а unlocking capacity»",
+          impact: "**Для SaaStr:** Revenue +40% YoY. Pipeline 10x. Email volume 10x. 8-9 FTE → 1.25.\n\n**Для рынка:** Proof point что SMB может заменить целую GTM-команду AI-агентами. $70K сделка закрыта автономно.",
+          tocConstraint: "**Ограничение:** Без человека-оркестратора агенты дрейфуют — пересекающиеся агенты генерируют неточный контекст.\n\n**Решение:** Chief AI Officer 1-2 ч/день на ревью поведения. Дешёвые сделки — полностью AI, дорогие — человек на переговорах.\n\n**Куда сместилось:** Качество обучения агентов (training > tooling).",
+          trizContradictions: "**ТП #1:** Масштаб outreach (70K email) vs Персонализация. AI-агент персонализирует каждый email из данных CRM.\n\n**ТП #2:** Автономность vs Контроль (drift, галлюцинации). #1 Сегментация: дешёвые сделки = AI, дорогие = human handoff.\n\n**ИКР:** Агенты сами находят, квалифицируют и закрывают клиентов 24/7 без drift.",
+          conditions: "**Контекст:** B2B с понятным ICP и repeatable sales process.\n\n**Данные:** Достаточно CRM-данных для обучения агентов.\n\n**Оркестратор:** Нужен Chief AI Officer (1-2 ч/день) — не «set and forget».\n\n**Risk:** «We're done with hiring humans» (Lemkin) — но 1.25 FTE всё ещё критичны.",
+          mvpVersion: "**Гипотеза:** 5 AI-агентов заменят 1 SDR при сохранении pipeline quality.\n\n**Эксперимент:** Quali (inbound квалификация) + Arty (outreach) + Repli (follow-up). 1 мес, 500 лидов.\n\n**Метрика:** Meetings booked ≥ SDR baseline, response rate > 2%.\n\n**Следующий шаг:** Если ОК — добавить агентов для каждой роли в GTM. Chief AI Officer 1ч/день.",
+        },
       },
       {
         company: "Solopreneur stack 2026",
@@ -124,8 +135,19 @@ export const mechanicsDE: any[] = [
       "Agent.ai (2M+ юзеров) = маркетплейс AI-агентов для hybrid teams. Ключ: чёткие handoff protocols. AI без handoff = плохой customer experience.",
     examples: [
       {
-        company: "Agent.ai",
-        detail: "2M+ пользователей. Маркетплейс для hybrid teams",
+        company: "Agent.ai (Dharmesh Shah)",
+        detail: "250K+ юзеров за 4 мес. «LinkedIn для AI-агентов». CTO $30B+ HubSpot",
+        caseStudy: {
+          mechanicInAction: "• Dharmesh Shah (CTO HubSpot, $30B+) запустил Agent.ai на INBOUND 2024\n• «LinkedIn для AI-агентов»: каталог готовых агентов с профилями, навыками, рейтингами\n• Пользователь собирает персональную AI-команду: маркетинг, продажи, сервис, ops\n• UGC-модель: любой может создать агента и опубликовать\n• 250K+ юзеров за 4 месяца. Платформа бесплатна, монетизация через payments позже\n• Идея из личного опыта: построил AI-агента для жены (нарезка YouTube-клипов)\n• Ранее купил chat.com, создал ChatSpot (теперь Breeze Copilot в HubSpot)",
+          jtbd: "**Core Job:** Найти, протестировать и развернуть AI-агентов как коллег за минуты.\n\n**Push:** Каждый AI-инструмент отдельно, нет единого места для scout/test/deploy.\n\n**Pull:** Один маркетплейс: профили агентов, рейтинги, UGC — как при найме людей.\n\n**Insight:** AI-агенты — не инструменты, а члены команды с профилями и репутацией.",
+          monetization: "**Текущая:** Бесплатно (рост аудитории). 250K+ юзеров, 250K email-подписчиков.\n\n**Планы:** Payments за premium-агентов. Marketplace commission.\n\n**Контекст:** Запущен одним человеком (Shah) параллельно с CTO-ролью. HubSpot интеграция планируется.",
+          marketing: "• INBOUND 2024 анонс — мгновенный охват через HubSpot community\n• Dharmesh = personal brand: Twitter 1M+, LinkedIn influence\n• Product Hunt launch\n• Бесплатность = viral: нет барьера для входа\n• chat.com redirect на ChatGPT — conviction в AI-first",
+          impact: "**Для юзера:** Scout → test → deploy агентов за минуты. Персональная AI-команда.\n\n**Для рынка:** 250K юзеров за 4 мес с нуля. Стирает границу tool/teammate.\n\n**Для HubSpot:** Потенциальная интеграция AI-агентов в CRM-экосистему.",
+          tocConstraint: "**Ограничение:** Качество UGC-агентов не гарантировано — marketplace trust problem.\n\n**Решение:** Рейтинги, отзывы, верификация — как при найме людей.\n\n**Куда сместилось:** Монетизация. Бесплатная модель пока не конвертируется. Конкуренция: Oracle, Microsoft, Moveworks.",
+          trizContradictions: "**ТП #1:** Открытость (UGC, много агентов) vs Качество (мусор). #1 Сегментация: рейтинги + верификация фильтруют.\n\n**ТП #2:** Бесплатно (рост) vs Revenue (бизнес). Разделение во времени: сначала аудитория → потом monetization.\n\n**ИКР:** Каждый бизнес имеет AI-команду, собранную за минуты, где агенты сами координируются.",
+          conditions: "**Founder:** Dharmesh Shah — 30+ лет «soloware», CTO $30B HubSpot. Personal brand 1M+.\n\n**Timing:** 2024 — AI-агенты созрели, но нет единого маркетплейса.\n\n**Distribution:** INBOUND + HubSpot ecosystem = мгновенный reach.\n\n**Бесплатность:** $0 вход при поддержке HubSpot-капитала.",
+          mvpVersion: "**Гипотеза:** Бизнесы хотят собирать AI-команду из каталога агентов с рейтингами.\n\n**Эксперимент:** Каталог 50 агентов + профили + рейтинги. Запуск на existing audience.\n\n**Метрика:** 10K юзеров за 30 дней, 3+ агента deployed на юзера.\n\n**Для Unitbox:** Позиционировать AI-заполнение как «команду агентов»: агент-контент, агент-финмодель, агент-медиа.",
+        },
       },
       {
         company: "Intercom Fin",

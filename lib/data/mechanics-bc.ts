@@ -69,7 +69,18 @@ export const mechanicsBC: any[] = [
     examples: [
       {
         company: "ACQ AI (Hormozi)",
-        detail: "Строит Grand Slam Offers за один afternoon",
+        detail: "AI обучен на $31M консалтинга 1026+ бизнесов. $3K initiation + $299/мес",
+        caseStudy: {
+          mechanicInAction: "• Формула: Value = (Dream Outcome × Likelihood) ÷ (Time × Effort). AI оптимизирует все 4 одновременно\n• ACQ AI натренирован на приватных плейбуках — 80% данных из реального консалтинга 1026+ компаний, не из книг\n• За одну сессию: полный Grand Slam Offer — ценообразование, гарантии, позиционирование, бонусы, risk reversal\n• Отличие от «загрузить книгу в ChatGPT»: implementation, не information — конкретные шаги под твой бизнес\n• Портфель Acquisition.com: 15+ компаний, $200-250M совокупной выручки\n• $100M Offers — 100K+ копий за первую неделю. 3.87M YouTube подписчиков",
+          jtbd: "**Core Job:** Собрать неотразимый оффер для бизнеса $1-10M чтобы клиент не мог отказать.\n\n**Push:** Консультанты $500-1000/час дают теорию. ChatGPT даёт generic советы.\n\n**Pull:** $31M реального опыта за $299/мес. Готовые артефакты (скрипты, модели, воронки) за минуты.\n\n**Consumption Chain:** YouTube 3.87M → книги $100M Offers → ACQ AI $3K + $299/мес → ACQ Vantage $1K/мес.",
+          monetization: "**Тарифы:** ACQ AI: $3K initiation + $299/мес. ACQ Vantage: $1K/мес (community + AI + workshops).\n\n845 участников Vantage ≈ ~$10M ARR. CAC ≈ $0 (контент-маркетинг). Gross margin ~85-90%.\n\nПортфель: $200-250M годовой выручки. Net worth ~$100-200M.",
+          marketing: "• Content-led + community-led. $0 на paid ads\n• YouTube 3.87M, 880M+ просмотров. Книги-бестселлеры\n• Skool community. Referral: 2 реферала = бесплатная подписка\n• Каждый piece of content → воронка в ACQ AI/Vantage",
+          impact: "**Для клиента:** Оффер: 2-4 недели → 1 день. Консалтинг: $15-50K → $299-1K/мес. Скрипт: trial & error → готовый за минуты.\n\n**Для компании:** 2016 $0 → 2021 $46.2M exit → 2026 портфель $250M+. YouTube 0 → 3.87M.",
+          tocConstraint: "**Ограничение:** Масштабирование экспертизы — физически не могут консультировать >50-100 бизнесов.\n\n**Решение:** ACQ AI — один инструмент обслуживает 845+ одновременно. Capacity: ~100 → неограниченно.\n\n**Куда сместилось:** Качество AI ответов. Не заменяет live diagnostic session.",
+          trizContradictions: "**ТП #1:** Персонализация ↑, масштабируемость ↓. #26 Копирование: клонирование экспертизы в AI из 1026 реальных кейсов.\n\n**Физическое:** Знания открытые (привлечение) И закрытые (монетизация). 20% в книгах/YouTube, 80% $31M data в ACQ AI.\n\n**Приёмы:** #10 Предварительное действие (10 лет данных ДО создания AI), #1 Сегментация (бесплатное/платное).",
+          conditions: "**Founder:** Hormozi — 10+ лет hands-on, $31M документированного консалтинга. Без этого объёма BYOA невозможен.\n\n**Timing:** 2025 — массовое LLM. Предприниматели разочаровались в generic ChatGPT.\n\n**Capital:** Минимальные — аудитория = бесплатная дистрибуция. $46.2M от exit.",
+          mvpVersion: "**Гипотеза:** Предприниматели $1-10M заплатят за AI с реальным консалтинговым опытом.\n\n**Эксперимент:** Custom GPT на 20-50 лучших документов/ответов клиентам. 5-10 клиентам бесплатно на неделю.\n\n**Метрика:** 6+ из 10 говорят «значительно полезнее generic AI» И 3+ готовы платить.\n\n**Следующий шаг:** Лендинг + Stripe, 50 платящих $99-299/мес.",
+        },
       },
       {
         company: "Liam Ottley AAA",
@@ -289,9 +300,19 @@ export const mechanicsBC: any[] = [
       "Pieter Levels: 700K+ Twitter followers через building in public. Каждый запуск = instant audience. Danny Postma: open revenue charts как marketing tool. Прозрачность = trust = premium pricing.",
     examples: [
       {
-        company: "Pieter Levels",
-        detail:
-          "700K+ followers. Публичные revenue $3-5M/год. Каждый твит = marketing",
+        company: "Pieter Levels (Building in Public)",
+        detail: "600K+ followers. $3.1M ARR. Open Startup дашборд. CAC ≈ $0 через прозрачность",
+        caseStudy: {
+          mechanicInAction: "• Пионер Building in Public с 2014. Скриншоты Stripe с MRR, revenue в био Twitter, Open Startup дашборд\n• Каждый milestone = вирусный пост. Посты об ошибках и убитых проектах = engagement\n• Рост с 350K до 600K+ followers за 2 года (при запуске PhotoAI)\n• CAC ≈ $0 — весь трафик органический. Каждый запуск = мгновенная аудитория\n• $3.1M ARR портфель, ~$250K/мес. Nomad List $5.3M revenue за 2024\n• Тактики: Stripe screenshots, MRR в био, Open Startup™, livestream кодинг, user testimonials",
+          jtbd: "**Core Job (фаундер):** Получить бесплатную дистрибуцию без маркетингового бюджета.\n\n**Механизм:** Прозрачность → доверие → community moat → покупки «чтобы поддержать».\n\n**3 эффекта:** (1) Реальные цифры > маркетинг. (2) Аудитория эмоционально инвестирована. (3) Revenue-посты виралятся как proof of concept.",
+          monetization: "**Прямая:** $3.1M ARR. PhotoAI $132K/мес, Nomad List $38K, RemoteOK $35-41K, InteriorAI $38-45K.\n\n**Косвенная:** $0 на маркетинг. 600K followers = бесплатная дистрибуция для каждого нового продукта.\n\n**Flywheel:** Прозрачность → followers → запуск → revenue → скриншот → followers.",
+          marketing: "• Stripe screenshots при каждом milestone\n• MRR в bio Twitter — постоянный social proof\n• Open Startup™ — публичный live-дашборд\n• Посты об ошибках и убитых проектах\n• Livestream кодинг — аудитория видит продукт до запуска\n• Подкасты (Lex Fridman) — «герой-нарратив» одиночки",
+          impact: "**До:** Нет аудитории, нет бюджета. **После:** 600K+ followers, $3.1M ARR, CAC ≈ $0.\n\nОт побочного проекта до $1M ARR за 5 лет (2014-2019), затем экспоненциальный рост. Создал движение — тысячи фаундеров копируют подход.",
+          tocConstraint: "**Ограничение:** Дистрибуция для solo-фаундера без бюджета.\n\n**Решение:** Процесс разработки = контент. Каждое действие (фича, ошибка, рост) → единица контента с встроенным social proof.\n\n**Куда сместилось:** Насыщение — к 2025 тысячи копируют, сложнее выделиться. Нужен genuinely interesting product + story.",
+          trizContradictions: "**ТП #1:** Время на маркетинг vs Время на продукт. Разрешение: Build in Public = маркетинг IS процесс разработки. Нет разделения.\n\n**ТП #2:** Открытость (привлекает) vs Копирование (конкуренты видят revenue). Принятие риска: community moat > information moat.\n\n**ИКР:** Дистрибуция — побочный продукт работы, не отдельная статья расходов.",
+          conditions: "**Работает:** Продукт для tech-аудитории (Twitter). Solo/small team. Фаундер готов к радикальной прозрачности.\n\n**НЕ работает:** B2B enterprise (длинный цикл). Аудитория не на Twitter. Survivorship bias — успешные затмевают тысячи безрезультатных. Контрпримеры: PopClip, OrbStack — прибыльны без BIP.",
+          mvpVersion: "**Гипотеза:** Прозрачность revenue + процесса создаёт organic audience.\n\n**Эксперимент:** Публикуй Stripe screenshots + процесс 30 дней. Twitter + один дополнительный канал.\n\n**Метрика:** 1K+ followers за 30 дней, 2+ inbound запроса.\n\n**Для Unitbox:** Публикация метрик каталога (проекты, юниты, синки), behind-the-scenes AI-заполнения, open roadmap в Telegram/LinkedIn.",
+        },
       },
       {
         company: "Danny Postma",
