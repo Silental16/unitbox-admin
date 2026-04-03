@@ -17,7 +17,17 @@
 - `tabular-nums` class on all numeric values
 - `toLocaleString()` for numbers > 999
 
+## ElevenLabs Design System
+- NEVER use `rounded-4xl` (pill) on buttons, inputs, selects, tabs
+- NEVER use solid gray borders — use alpha: `border-border` resolves to `rgba(0,0,29,0.075)`
+- NEVER use amber/brand primary — primary is near-black
+- NEVER use pill TabsList as default — use underline variant
+- NEVER add per-page padding — layout wrapper handles `px-5 py-8`
+- ALWAYS use `tabular-nums` on numeric values
+- Font is Inter globally — no per-component font overrides
+
 ## Conditional classNames
+
 - Use `cn()` from `@/lib/utils`, never string template concatenation
 
 ## React keys
