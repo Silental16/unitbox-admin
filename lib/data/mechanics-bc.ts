@@ -1,102 +1,43 @@
 export const mechanicsBC: any[] = [
   // ── CATEGORY B: building-launch ──────────────────────────────────────
   {
-    id: "vibe-coding",
-    title: "Vibe Coding",
+    id: "rapid-shipping",
+    title: "Rapid Shipping",
     category: "building-launch",
-    author: "Pieter Levels, Andrej Karpathy",
-    summary: "Опиши что хочешь → AI пишет код → ship за часы",
+    author: "Marc Lou, Pieter Levels",
+    summary:
+      "Weekend MVP → Launch Monday → Kill or Iterate. Portfolio approach = 1-2 winners из десятков попыток",
     whatIsIt:
-      "Революционный подход: описываешь что хочешь естественным языком, AI генерирует код. Термин придумал Karpathy в 2025. Рынок $8.5B в 2026, 63% пользователей — не разработчики.",
+      "Философия максимальной скорости: построй MVP за выходные (или за месяц), запусти, замерь traction, убей или удвой. Marc Lou делает $1M+/год на портфеле микро-продуктов. Pieter Levels запустил 70+ проектов — выжили NomadList, RemoteOK, PhotoAI. Если не стыдно за первую версию — запустил поздно.",
     howItWorks: [
-      "Опиши продукт/фичу текстом",
-      "AI генерирует код (Claude Code, Cursor, Bolt, Lovable)",
-      "Итерируй через диалог",
-      "Деплой за минуты (Vercel, Netlify)",
-      "Получай фидбек, итерируй",
+      "Выбери идею, построй MVP через boilerplate + AI за weekend (или месяц)",
+      "Landing + Stripe + core feature — ничего лишнего",
+      "Запуск: Product Hunt, Twitter, community",
+      "Нет traction за 7-30 дней → kill. Есть → double down",
+      "Portfolio approach: 10 мёртвых + 1-2 работающих = success",
     ],
     keyInsight:
-      "Claude Code достиг $1B ARR за 6 месяцев — быстрее ChatGPT. Ограничение: vibe coding hangover реален — quick builds без архитектуры ломаются на масштабе.",
-    examples: [
-      {
-        company: "Pieter Levels",
-        detail: "$3-5M/год, 0 сотрудников. PHP+jQuery+AI",
-      },
-      {
-        company: "Base44 → Wix",
-        detail: "Соло-фаундер, vibe coding → $80M продажа за 6 мес",
-      },
-      {
-        company: "Cursor",
-        detail: "$2B+ ARR, $29.3B оценка. Главный инструмент vibe coding",
-      },
-    ],
-    unitboxApplication:
-      "Unitbox уже использует Claude Code. Следующий шаг — быстро прототипировать UI для девелоперов, генерировать custom reports за часы.",
-    icon: "Wand",
-  },
-  {
-    id: "weekend-mvp",
-    title: "Weekend MVP",
-    category: "building-launch",
-    author: "Marc Lou",
-    summary: "Build Friday → Launch Monday → Kill or Iterate Friday",
-    whatIsIt:
-      "Фреймворк максимальной скорости: построй MVP за выходные, запусти в понедельник, к пятнице реши — развивать или убить. Marc Lou делает $1M+/год на портфеле таких микро-продуктов.",
-    howItWorks: [
-      "Пятница: выбери идею, построй MVP через boilerplate + AI",
-      "Суббота-воскресенье: landing, Stripe, basic features",
-      "Понедельник: запуск на Product Hunt + Twitter",
-      "Вторник-четверг: смотри метрики",
-      "Пятница: $0 = kill, >$500 = double down",
-    ],
-    keyInsight:
-      "Marc Lou: $1,032,000 в 2025 на 4 продуктах. TrustMRR $22.9K, CodeFast $21.8K, ShipFast $20.3K, DataFast $15.9K/мес. 95% маржа, solo.",
+      "Marc Lou: $1,032,000 в 2025 на 4 продуктах, 95% маржа, solo. Pieter Levels: 70+ проектов, 3-4 приносят $3-5M/год, 0 сотрудников. PhotoAI запущен как грубый прототип — сейчас $138K/мес. Перфекционизм = смерть. 95% запланированных фич никогда не понадобятся. Success rate ~3-5%, но каждый успех оправдывает все провалы.",
     examples: [
       {
         company: "Marc Lou portfolio",
-        detail: "$85K/мес на 4 продуктах, ~95% margins",
+        detail: "$85K/мес на 4 продуктах, ~95% margins. ShipFast, TrustMRR, CodeFast, DataFast",
+      },
+      {
+        company: "Pieter Levels",
+        detail: "70+ проектов, 3-4 приносят $3-5M/год. 0 сотрудников. NomadList начался как Google Sheet",
       },
       {
         company: "Danny Postma",
-        detail:
-          "Headlime → $20K MRR → продал за $1M. Потом HeadshotPro → $3.6M ARR",
-      },
-      {
-        company: "Indie hackers",
-        detail: "Сотни micro-SaaS $1-10K MRR построенных за выходные",
-      },
-    ],
-    unitboxApplication:
-      "Weekend MVP для тестов: AI property report, Bali investment calculator, developer CRM — каждый как weekend project.",
-    icon: "Rocket",
-  },
-  {
-    id: "12-startups-12-months",
-    title: "12 Startups in 12 Months",
-    category: "building-launch",
-    author: "Pieter Levels",
-    summary: "Запусти 12 продуктов за год — один выстрелит",
-    whatIsIt:
-      "Челлендж Pieter Levels: по одному продукту каждый месяц. Большинство провалятся, но 1-2 найдут PMF. Portfolio approach к стартапам.",
-    howItWorks: [
-      "Месяц 1: идея → MVP → запуск → замер",
-      "Нет traction за 30 дней → следующий",
-      "Есть traction → продолжай параллельно",
-      "К концу года: 10 мёртвых + 1-2 работающих",
-      "Удвой ставку на победителей",
-    ],
-    keyInsight:
-      "Levels запустил 70+ проектов. Выжили NomadList, RemoteOK, PhotoAI — $3-5M/год суммарно. Success rate ~3-5%, но каждый успех оправдывает все провалы.",
-    examples: [
-      {
-        company: "Pieter Levels",
-        detail: "70+ проектов, 3-4 приносят $3-5M/год. 0 сотрудников",
+        detail: "Headlime → $20K MRR → продал за $1M. Потом HeadshotPro → $3.6M ARR",
       },
       {
         company: "Sahil Lavingia (Gumroad)",
-        detail:
-          "Множество проектов до Gumroad. $10M+ revenue, 1 сотрудник",
+        detail: "Множество проектов до Gumroad. $10M+ revenue, 1 сотрудник",
+      },
+      {
+        company: "Stripe",
+        detail: "Первая версия — 7 строк кода. Сейчас $95B",
       },
       {
         company: "YC trend",
@@ -104,83 +45,8 @@ export const mechanicsBC: any[] = [
       },
     ],
     unitboxApplication:
-      "Мини-продукты вокруг каталога: price tracker, dev comparison tool, ROI simulator, investment newsletter.",
-    icon: "CalendarRange",
-  },
-  {
-    id: "ship-before-ready",
-    title: "Ship Before Ready",
-    category: "building-launch",
-    author: "Pieter Levels",
-    summary: "Конкурентное преимущество = скорость, не качество",
-    whatIsIt:
-      "Философия: если не стыдно за первую версию — запустил поздно. Скорость важнее качества кода и идеального дизайна.",
-    howItWorks: [
-      "Определи core feature — одну вещь",
-      "Построй только её",
-      "Запусти с минимальным UI",
-      "Слушай фидбек первых пользователей",
-      "Итерируй на основе реального использования",
-    ],
-    keyInsight:
-      "PhotoAI запущен как грубый прототип — сейчас $138K/мес. Перфекционизм = смерть. 95% запланированных фич никогда не понадобятся.",
-    examples: [
-      {
-        company: "Pieter Levels",
-        detail:
-          "Каждый продукт запущен в «ужасном» виде. NomadList начался как Google Sheet",
-      },
-      {
-        company: "Twitter/X",
-        detail: "Первые годы — баги и downtime. Но были первыми",
-      },
-      {
-        company: "Stripe",
-        detail: "Первая версия — 7 строк кода. Сейчас $95B",
-      },
-    ],
-    unitboxApplication:
-      "AI-консьерж для покупателей — запусти как простого Telegram-бота, не жди идеального UI.",
-    icon: "Zap",
-  },
-  {
-    id: "vibe-shipping",
-    title: "Vibe Shipping",
-    category: "building-launch",
-    author: "Autoflowly, ecosystem",
-    summary:
-      "Эволюция vibe coding: AI деплоит готовые продукты из разговора",
-    whatIsIt:
-      "Если vibe coding = «AI пишет код», то vibe shipping = «AI деплоит готовый продукт». Фаундерам не нужны файлы — им нужны live deployed apps.",
-    howItWorks: [
-      "Опиши продукт в разговоре с AI",
-      "AI генерирует полный стек",
-      "AI автоматически деплоит",
-      "Получи URL за минуты",
-      "Итерируй — каждое изменение сразу live",
-    ],
-    keyInsight:
-      "Сдвиг 2026: от generating code к shipping products. 63% пользователей vibe coding — не разработчики (фаундеры, PM, маркетологи).",
-    examples: [
-      {
-        company: "Autoflowly",
-        detail:
-          "Full-stack: React + Python + PostgreSQL + hosting из разговора",
-      },
-      {
-        company: "Lovable",
-        detail:
-          "Frontend + Supabase backend. Тысячи non-technical founders",
-      },
-      {
-        company: "Bolt.new",
-        detail:
-          "In-browser preview. От идеи до deployed app за 1 сессию",
-      },
-    ],
-    unitboxApplication:
-      "Быстрое создание инструментов: landing pages для девелоперов, dashboards, demo-страницы — деплой за минуты.",
-    icon: "Ship",
+      "Weekend MVP для тестов: AI property report, Bali investment calculator, developer CRM, AI-консьерж для покупателей — каждый как weekend project. Запусти как простого Telegram-бота, не жди идеального UI.",
+    icon: "Rocket",
   },
   {
     id: "grand-slam-offer-ai",
@@ -258,23 +124,23 @@ export const mechanicsBC: any[] = [
 
   // ── CATEGORY C: sales-distribution ───────────────────────────────────
   {
-    id: "outcome-pricing",
-    title: "Outcome Pricing",
+    id: "ai-pricing-revolution",
+    title: "AI Pricing Revolution",
     category: "sales-distribution",
-    author: "Sarah Guo, Deloitte",
+    author: "Sarah Guo, Gartner, Replit, Multiple",
     summary:
-      "Продавай результат, не технологию — «−60% расходов» бьёт «AI чатбот»",
+      "Per-seat SaaS умирает. Outcome, usage, AI-employee, credits — новые модели ценообразования",
     whatIsIt:
-      "Ценообразование по результату: клиент платит за measurable outcome (лид, сделка, решённый тикет), не за доступ к инструменту. Premium pricing потому что risk на продавце.",
+      "Per-seat pricing ломается когда AI-агент заменяет 3 сотрудников. Новые модели атакуют со всех сторон: outcome-based (плати за результат), usage-based (плати за потребление), AI-employee ($3-5K/мес за виртуального работника), open core + cloud, flexible credits. Sarah Guo: «Лучшие AI-компании не продают AI — они продают outcomes». Gartner: 40% SaaS перейдёт к usage/outcome к 2030.",
     howItWorks: [
-      "Определи measurable outcome для клиента",
-      "Привяжи pricing к outcome",
-      "$50 за meeting vs $300 через человека",
-      "Гарантируй результат или refund",
-      "Track и оптимизируй outcome rate",
+      "Определи unit of value (resolution, лид, API call, документ)",
+      "Per-outcome: $X за результат (Sierra $0.99/resolution, Intercom Fin)",
+      "Usage-based: $X за потребление (Snowflake, Replit — effort-based)",
+      "AI-employee: $3-5K/мес за виртуального работника (11x, Artisan)",
+      "Hybrid: base subscription + usage/outcome overage (92% AI компаний)",
     ],
     keyInsight:
-      "Sarah Guo: «Лучшие AI-компании не продают AI. Они продают outcomes.» Outcome pricing поддерживает $500-5000/мес. API-access — $20/мес. Разница 25-250x за тот же AI.",
+      "Outcome pricing поддерживает $500-5000/мес. API-access — $20/мес. Разница 25-250x за тот же AI. Replit: $2M → $253M ARR за год на usage-based — 90x рост одной сменой модели. Ребрендинг AI из tool в employee = 100x pricing. Per-seat SaaS $50/мес → AI virtual worker $3-5K/мес.",
     examples: [
       {
         company: "Sierra",
@@ -283,93 +149,104 @@ export const mechanicsBC: any[] = [
       {
         company: "Intercom Fin",
         detail: "$0.99/resolution. Pure outcome pricing",
+        caseStudy: {
+          mechanicInAction: "Intercom совершила радикальный поворот к outcome-based pricing через AI-агента Fin. Fin заряжает $0.99 за успешный \"outcome\" (резолюцию). Клиент платит ТОЛЬКО за результат.\n\nПараллельно per-seat pricing для human agents: Essential ($29/мес), Advanced ($85/мес), Expert ($132/мес). Гибридная модель.\n\nFin вырос с $1M до $100M+ ARR менее чем за 2 года. При общем ARR ~$400M, Fin уже ~25% выручки.\n\nFin доступен на платформах конкурентов (Zendesk, Salesforce) через fin.ai. Гарантия производительности до $1M.",
+          jtbd: "**Core Job:** Мгновенно решать проблемы клиентов 24/7 без увеличения штата.\n\n**Switching Trigger:** CSAT падает, время ответа растёт, руководство давит на сокращение headcount.\n\n**Push:** Per-seat: 2x клиентов = 2x агентов = 2x расходов. Pull: $0.99 за решённую проблему. Resolution rate 66%, топовые 80%+.\n\n**Anxiety:** \"AI будет галлюцинировать\" — гарантия до $1M + деньги только за подтверждённые резолюции.",
+          monetization: "**Тарифы:** Essential $29/seat, Advanced $85/seat, Expert $132/seat + Fin $0.99/outcome.\n\n**Revenue:** $400M+ ARR (2026). Fin ~$100M ARR. 30,000+ клиентов, 7,000+ на Fin. Fin решает 1M+ запросов/неделю.\n\n**Почему работает:** Outcome-based — forcing function для качества. Intercom зарабатывает только когда Fin решает проблему → выравнивание incentives.",
+          marketing: "**GTM:** Гибрид PLG + enterprise sales. 14-дневный trial, Fin включён во все планы. Case studies с метриками (Lightspeed 65%, Anthropic 50.8%). Fin.ai как standalone бренд для пользователей конкурентов.\n\n**Первые клиенты (2011):** Ирландская tech-тусовка. Biz Stone (Twitter) — ранний инвестор.",
+          impact: "**Для клиента:** AI resolution 50-80%. Время ответа: 2-24ч → мгновенно. Стоимость тикета: $5-15 → $0.99. Lightspeed: +31% закрытий/день. Databox: +40% revenue.\n\n**Для компании:** 2023 $275M ARR (10% рост, стагнация) → 2024 $343M (25%, AI reacceleration) → 2026 $400M+. Fin: $1M → $100M ARR за 2 года.",
+          tocConstraint: "**Ограничение:** Пропускная способность человеческих агентов (~30-50 тикетов/день). Fin AI Agent — фундаментальное расширение capacity: неограниченное количество тикетов параллельно, 24/7.\n\n**Куда сместилось:** Качество knowledge base. Fin решает только то, что покрыто документацией. Далее: AI, который сам обучается из резолюций.",
+          trizContradictions: "**ТП #1:** Скорость ответа ↑, точность ↓ (галлюцинации). Решение: проприетарный RAG с тройной фильтрацией (retrieval → reranking → generation).\n\n**ТП #2:** Автоматизация ↑, revenue от per-seat ↓. Решение: гибридная модель — per-seat для платформы + outcome-based сверху. Revenue не каннибализируется.\n\n**Физическое:** Дешёвый для клиента И прибыльный для Intercom. $0.99 в 5-15x дешевле человека, но при 1M+ резолюций/неделю = $100M+ ARR. #17 Переход в другое измерение.",
+          conditions: "**Founders:** Eoghan McCabe и команда — 13 лет в customer messaging. Продали Exceptional → Rackspace.\n\n**Market timing:** GPT-4 (2023) + 30,000 клиентов + миллиарды разговоров как training data. Zendesk медленнее из-за legacy.\n\n**Capital:** $240M+ до Fin. $250M debt round (март 2026).",
+          mvpVersion: "**Эксперимент:** Определить measurable outcome в своём домене. Предложить 10 клиентам две опции: (A) $99/мес фиксированно, (B) $X за outcome. Измерить выбор и willingness to pay.\n\n**Метрика:** >60% выбирают outcome-based; средний чек >= фиксированной через 30 дней; NPS > 50.",
+        },
+      },
+      {
+        company: "Snowflake",
+        detail: "$2.8B+ revenue. Usage-based gold standard",
+        caseStudy: {
+          mechanicInAction: "Snowflake построил бизнес на $4.68B revenue вокруг одного решения: разделение compute и storage на три слоя. Это сделало usage-based pricing технически возможным.\n\nКлюч — Virtual Warehouses (изолированные кластеры, billing посекундный), принципиальный отказ от per-seat модели. Когда весь рынок продавал лицензии, Snowflake сказал: платите только за потреблённые вычисления.\n\nОснована 2012, первый релиз 2014, IPO сентябрь 2020 ($3.4B — крупнейшее софтверное IPO).",
+          jtbd: "**Core Job:** Запустить аналитику на петабайтах за минуты без provisioning.\n\n**Emotional Job:** Контроль над расходами — не бояться запустить тяжёлый запрос.\n\n**Switching Trigger:** CFO видит счёт за Redshift/Teradata, где 80% мощности простаивает.\n\n**Push:** On-prem DWH $500K-2M/год + DBA-команда. Pull: per-second billing, auto-suspend, масштабирование за 30 секунд.",
+          monetization: "**Тарифы:** Standard ~$2.00/credit, Enterprise ~$3.00, Business Critical ~$4.00. Storage $23-40/TB/мес. Billing посекундный.\n\n**Revenue:** $4.68B FY2026 (рост 29%). NRR 126-128%. 580 клиентов с >$1M/год. Gross margin 67%. Market cap ~$70B.\n\n**Почему работает:** NRR 127% = даже без новых клиентов revenue +27%/год. Клиент начинает с $10K, через год $100K, потом $1M+.",
+          marketing: "**GTM:** PLG + enterprise sales. Free trial 30 дней, $400 credits. Cloud Marketplaces (AWS/Azure/GCP). Partner ecosystem (Deloitte, Accenture, dbt, Fivetran).\n\nData Sharing network effect: если A шарит данные с B через Snowflake, B тоже должен быть на Snowflake.\n\n**Первые клиенты:** Personal network из Oracle world. Компании, страдавшие от Teradata/Oracle стоимости.",
+          impact: "**Для клиента:** Стоимость DWH: $500K-2M → $50-200K/год. Provisioning: 2-4 недели → 30 секунд. Утилизация: 20-30% → ~100%. DBA: 3-5 FTE → 0.5-1.\n\n**Для компании:** FY2020 $265M → FY2023 $2.07B → FY2026 $4.68B. 580 → ~700 клиентов >$1M. Команда: ~500 → 7,000+.",
+          tocConstraint: "**Ограничение:** Utilization rate — клиент платил 24/7 при реальной загрузке 4 часа/день. Exploit: auto-suspend/auto-resume, result caching.\n\n**Elevate:** Data Marketplace + Cortex AI (ML/LLM в SQL) — новые use cases = больше compute consumption.\n\n**Куда сместилось:** Data gravity и vendor lock-in. Ответ: Apache Iceberg support. Конкуренция с Databricks за AI/ML workloads.",
+          trizContradictions: "**ТП #1:** Производительность ↑, стоимость ↑ пропорционально. Решение: warehouses разных размеров — клиент сам выбирает скорость/цена. #1 Сегментация.\n\n**Физическое:** Данные должны быть общими (единая версия) И изолированными (запросы не влияют друг на друга). Решение: единый storage, раздельные compute warehouses. #2 Вынесение.\n\n**Приёмы:** #10 Result caching (хранятся 24ч), #26 Zero-copy cloning без физического дублирования.\n\n**ИКР:** Data warehouse, которого нет — стоимость = 0 при отсутствии запросов, бесконечная масштабируемость, zero admin.",
+          conditions: "**Founders:** Dageville и Cruanes — 15+ лет в Oracle. Żukowski — создатель Vectorwise. Deep-tech инженеры за 40.\n\n**Market timing:** 2012 — AWS зрелый, cloud-native DWH не существует. 2 года раньше — AWS сырой. 2 года позже — Redshift укрепился бы.\n\n**Capital:** $1.4B+ до IPO. 2-3 года R&D до первого платящего клиента. Высокий барьер входа.",
+          mvpVersion: "**Эксперимент:** Добавить metered billing (Stripe Meters/Lago) к существующему продукту. Две landing pages: фиксированный прайс vs usage-based. A/B тест 50/50.\n\n**Метрика:** Usage-based signup rate +20%+, средний revenue за 30 дней не падает.\n\n**Следующий шаг:** Commitment tiers (предоплата со скидкой), resource monitors, dashboard потребления.",
+        },
+      },
+      {
+        company: "Replit",
+        detail: "$2.8M → $253M ARR за год. Effort-based pricing = 90x рост",
+        caseStudy: {
+          mechanicInAction: "Replit применила радикальный переход от подписки к usage-based pricing. До конца 2024 — Hacker Plan $7/мес, ~$2.8M ARR. В сентябре 2024 запустили Replit Agent — AI-агент для создания приложений по описанию.\n\nВместо flat-rate: effort-based pricing — оплата за фактическую работу агента. Простые задачи ~$0.06-0.25 за checkpoint, сложные — несколько долларов. Подписка ($20-40/мес) даёт кредиты, перерасход — pay-as-you-go.\n\nМодель AWS/Stripe: чем больше строишь, тем больше платишь.\n\nTimeline: 2016 основание → 2022 $2.8M ARR → сентябрь 2024 Agent → октябрь 2025 $253M ARR (~90x за год) → март 2026 оценка $9B.",
+          jtbd: "**Core Job:** Превратить идею приложения в работающий продукт без программистов за часы.\n\n**Switching Trigger:** Видит, как Agent за 30 минут создаёт рабочее приложение. Один пользователь: \"$2,000/год заменил за $2.40 и 20 минут.\"\n\n**Push:** Фрилансер $50-150/час, 2-4 недели на MVP. No-code ограничен. Pull: говоришь → получаешь код. Стоимость пропорциональна усилию.",
+          monetization: "**Тиры:** Starter $0, Core $20/мес ($25 кредитов), Pro $100/мес, Teams $40/user/мес, Enterprise custom.\n\nUsage: checkpoint $0.06 — несколько $. ARPU вырос с $2-5/мес до $140/мес.\n\n**Revenue:** $2.8M (2022) → $16M (конец 2024) → $253M (октябрь 2025). Цель $1B к концу 2026. 30M+ пользователей. Оценка $9B.",
+          marketing: "**GTM:** Bottom-up PLG + community-led growth. 30M+ пользователей = UGC → SEO. Creator marketing (Passionfroot, $300K+ бюджет). Viral demos в Twitter/X. 2,500 members инвестировали через краудфандинг.\n\n**Первые клиенты:** Open-source JSRepl (2011) → 750K органических к 2016. Enterprise — inbound после вирусных видео.",
+          impact: "**Для клиента:** Время MVP: 2-4 недели → 30-60 минут. Стоимость прототипа: $5,000-50,000 → $2-50. Zinus: 1.5 мес вместо 3, экономия $140,000+.\n\n**Для компании:** ~90x рост ARR за 12 месяцев. Оценка: $1.16B (2022) → $3B (2025) → $9B (2026). Привлечено $650M за 6 месяцев.",
+          tocConstraint: "**Ограничение:** ARPU ceiling — flat-rate $7/мес при 30M пользователей и <1% конверсии = $2.8M ARR. Ограничение НЕ количество пользователей, а неспособность монетизировать потребление.\n\n**Elevate:** Effort-based pricing полностью снял потолок ARPU. Одна смена модели → 90x рост.\n\n**Куда сместилось:** Стоимость inference (GPU). 80% gross margin на Enterprise, ~50-60% на individual.",
+          trizContradictions: "**ТП #1:** Доступность ↑, доход ↓. Бесплатно для масс → не зарабатываешь. Решение: usage-based — вход бесплатный, платишь за потребление. #1 Сегментация на микротранзакции.\n\n**Физическое:** Простой (для non-coders) И мощный (для developers). Решение: Multi-agent — manager на естественном языке (простота), editor agents пишут production-код (мощность). #5 Объединение.\n\n**Приёмы:** #7 Матрёшка (подписка → кредиты → checkpoints → inference calls), #10 Предварительное действие (auto-commit перед каждым шагом агента).",
+          conditions: "**Founder:** Amjad Masad — Facebook (JS infrastructure) + Codecademy. Вырос в Аммане, кодил в интернет-кафе. 4 отказа от Y Combinator. 8 лет строительства платформы.\n\n**Market timing:** LLM production-quality code generation (GPT-4, Claude 3.5) в 2024. Раньше — AI-код слишком плохой. Позже — рынок занят.\n\n**Network effects:** Community 30M = UGC → SEO → новые пользователи. Cold start: бесплатный IDE + образование.",
+          mvpVersion: "**Эксперимент:** Взять SaaS с AI-функциями. Для 50% — usage-based (кредиты за AI-запросы). Для остальных — подписка. Stripe Metered Billing + middleware.\n\n**Метрика:** ARPU usage-based > 3x подписочной. Retention не ниже 80%. Churn не вырос.\n\n**Следующий шаг:** Мигрировать всех AI-users на hybrid (подписка + usage credits). Tiered credit packs. Enterprise с committed spend.",
+        },
       },
       {
         company: "AI SDR services",
         detail: "$50 за meeting vs $200-500 через SDR человека",
       },
+      {
+        company: "11x.ai",
+        detail: "$3-5K/мес AI SDR. Employee pricing = 100x premium",
+      },
     ],
     unitboxApplication:
-      "Вместо «$X за заполнение» → «$X за каждого квалифицированного лида из каталога». Align incentives.",
+      "От fixed fee → outcome: $X за qualified lead из каталога, или usage: $X за обновлённый юнит при sync. Align: Unitbox зарабатывает когда девелопер зарабатывает.",
     icon: "BadgeDollarSign",
   },
   {
-    id: "ai-outbound-pipeline",
-    title: "AI Outbound Pipeline",
+    id: "ai-outbound-machine",
+    title: "AI Outbound Machine",
     category: "sales-distribution",
     author: "Clay.com ecosystem",
     summary:
-      "Data enrichment → AI personalization → Multi-channel sequences",
+      "Data enrichment → AI personalization → Multi-channel sequences (email + LinkedIn + voice)",
     whatIsIt:
-      "Автоматизированный outbound: Clay.com обогащает данные о prospects через 75+ providers, AI персонализирует messages, multi-channel delivery.",
+      "Полный цикл AI outbound: Clay.com обогащает данные о prospects через 75+ providers, AI персонализирует messages, multi-channel delivery через email + LinkedIn + voice (Vapi/Bland) в одной AI-управляемой sequence. AI адаптирует message и channel на основе response patterns.",
     howItWorks: [
-      "Clay.com обогащает данные о prospects",
+      "Clay.com обогащает данные о prospects (75+ data providers)",
       "AI пишет персонализированные first lines",
-      "Multi-channel: email + LinkedIn + voice (Vapi/Bland)",
-      "AI анализирует responses и adjusts",
-      "Smart follow-ups на автопилоте",
+      "Day 1: AI-personalized email → Day 3: LinkedIn connection → Day 5: follow-up → Day 7: AI voice call",
+      "AI анализирует responses, adjusts sequence и channel",
+      "Smart follow-ups на автопилоте, quality > quantity",
     ],
     keyInsight:
-      "Компании делают 3-5x больше qualified meetings с AI outbound. Cost per meeting: $50-100 vs $200-500 традиционно. Clay.com стал centerpiece AI-powered outbound.",
+      "Компании делают 3-5x больше qualified meetings с AI outbound. Multi-channel outreach: 3-5x response rate vs single-channel. Cost per meeting: $50-100 vs $200-500 традиционно. Voice AI (Vapi) добавляет human touch на масштабе. 10 personalized touches > 100 generic.",
     examples: [
       {
         company: "Clay.com",
-        detail:
-          "Spreadsheet + 75 data providers + AI. Центр AI outbound",
+        detail: "Spreadsheet + 75 data providers + AI. Центр AI outbound",
+      },
+      {
+        company: "Clay + Instantly + Vapi stack",
+        detail: "Full multi-channel: data enrichment → email → LinkedIn → voice. 3-5x response",
       },
       {
         company: "Instantly.ai",
-        detail:
-          "AI email outreach at scale. Тысячи agencies используют",
+        detail: "AI email outreach at scale. Тысячи agencies используют",
       },
       {
-        company: "AI SDR teams",
-        detail:
-          "3-5x qualified meetings vs traditional SDR. Cost per meeting ↓ 70%",
+        company: "11x, Artisan",
+        detail: "AI SDR companies: полный multi-channel на автопилоте",
+      },
+      {
+        company: "Real estate lead gen",
+        detail: "Email + WhatsApp + call sequence для property investors",
       },
     ],
     unitboxApplication:
-      "AI outreach к новым девелоперам: Clay enriches data → AI персонализирует → «Вот как выглядит ваш проект в каталоге» → demo → close.",
+      "AI outreach к новым девелоперам: Clay enriches data → AI персонализирует → email с market data → LinkedIn comment → WhatsApp с demo → Vapi call для qualification.",
     icon: "Mail",
-  },
-  {
-    id: "content-first-lead-gen",
-    title: "Content-First Lead Gen",
-    category: "sales-distribution",
-    author: "Alex Hormozi, Greg Isenberg",
-    summary:
-      "Обучай бесплатно → воронка → AI follow-up → продажа",
-    whatIsIt:
-      "Стратегия: создай бесплатный ценный контент (demo, вебинар, гайд), привлеки leads через value, AI автоматически nurtures и converts.",
-    howItWorks: [
-      "Создай anchor content: deep-dive, вебинар, гайд",
-      "Распространи через SEO + social",
-      "Собери leads через value exchange (email за гайд)",
-      "AI nurtures: персонализированные follow-ups",
-      "AI квалифицирует и бронирует calls",
-    ],
-    keyInsight:
-      "Hormozi: «Давай так много value бесплатно, что люди чувствуют себя обязанными заплатить». Teaching-first подход: демо, вебинары, workshops → серьёзные prospects. AI автоматизирует follow-up.",
-    examples: [
-      {
-        company: "Hormozi content machine",
-        detail:
-          "3.9M YouTube. Бесплатный контент → leads для Acquisition.com",
-      },
-      {
-        company: "Greg Isenberg podcast",
-        detail:
-          "Weekly startup ideas → leads для Late Checkout studio",
-      },
-      {
-        company: "HubSpot",
-        detail:
-          "$2.6B+ ARR. Free tools + education → leads. Классика content-first",
-      },
-    ],
-    unitboxApplication:
-      "Бесплатный Bali RE market report (AI-generated из данных каталога) → email capture → AI nurture → demo каталога → close.",
-    icon: "FileText",
   },
   {
     id: "building-in-public",
@@ -487,122 +364,5 @@ export const mechanicsBC: any[] = [
     unitboxApplication:
       "80/20 для Unitbox: catalog manager тратит 80% на data entry (автоматизировано AI). Оставшиеся 20% — QA и relationships.",
     icon: "PieChart",
-  },
-  {
-    id: "linkedin-25-strategy",
-    title: "LinkedIn <25 Strategy",
-    category: "sales-distribution",
-    author: "LinkMate research",
-    summary:
-      "<25 targeted requests/неделю + strategic commenting > cold DMs",
-    whatIsIt:
-      "Новая LinkedIn стратегия 2026: меньше = больше. Отправляй <25 hyper-targeted connection requests в неделю вместо массовых. Strategic commenting > cold DMs.",
-    howItWorks: [
-      "<25 connection requests/неделю (avoid algorithmic penalties)",
-      "Каждый request — hyper-personalized",
-      "Strategic commenting на посты target audience",
-      "Public engagement drives inbound profile views",
-      "Inbound >> outbound на LinkedIn в 2026",
-    ],
-    keyInsight:
-      "Spray-and-pray умер на LinkedIn в 2026. <25 targeted requests удваивают success rate. Strategic commenting = new cold DM: публичный engagement безопаснее и эффективнее. LinkedIn penalties за mass outreach жёсткие.",
-    examples: [
-      {
-        company: "LinkedIn lead gen data 2026",
-        detail:
-          "<25 requests/неделю = 2x success rate vs mass outreach",
-      },
-      {
-        company: "Strategic commenting trend",
-        detail:
-          "Public engagement → inbound profile views → connections → deals",
-      },
-      {
-        company: "LinkMate research",
-        detail:
-          "Data-driven LinkedIn strategy. Algorithm favors engagement over connections",
-      },
-    ],
-    unitboxApplication:
-      "LinkedIn для привлечения Bali девелоперов: comment на посты RE developers, share market insights, <25 targeted connections/неделю.",
-    icon: "Linkedin",
-  },
-  {
-    id: "multi-channel-ai-sequence",
-    title: "Multi-Channel AI Sequence",
-    category: "sales-distribution",
-    author: "Clay ecosystem",
-    summary:
-      "Email + LinkedIn + Voice в одной AI-powered последовательности",
-    whatIsIt:
-      "Объединение email, LinkedIn и voice (Vapi/Bland) в одну AI-управляемую sequence. AI адаптирует message и channel на основе response patterns.",
-    howItWorks: [
-      "Day 1: AI-personalized email",
-      "Day 3: LinkedIn connection + comment",
-      "Day 5: Follow-up email с new angle",
-      "Day 7: AI voice call (Vapi/Bland)",
-      "AI analyzes responses, adjusts sequence",
-    ],
-    keyInsight:
-      "Multi-channel outreach: 3-5x response rate vs single-channel. AI персонализирует каждый touchpoint. Voice AI (Vapi) добавляет human touch на масштабе. Но: качество > количество — 10 personalized touches > 100 generic.",
-    examples: [
-      {
-        company: "Clay + Instantly + Vapi stack",
-        detail:
-          "Full multi-channel: data enrichment → email → LinkedIn → voice. 3-5x response",
-      },
-      {
-        company: "AI SDR companies",
-        detail:
-          "11x, Artisan: полный multi-channel на автопилоте",
-      },
-      {
-        company: "Real estate lead gen",
-        detail:
-          "Email + WhatsApp + call sequence для property investors",
-      },
-    ],
-    unitboxApplication:
-      "Multi-channel для девелоперов: email с market data → LinkedIn comment → WhatsApp с demo → Vapi call для qualification.",
-    icon: "Route",
-  },
-  {
-    id: "ghl-ai-stack",
-    title: "GHL + AI Stack",
-    category: "sales-distribution",
-    author: "AI agency ecosystem",
-    summary:
-      "GoHighLevel как CRM backbone + AI chatbots + automation = sub-industry",
-    whatIsIt:
-      "GoHighLevel (GHL) стал де-факто инфраструктурой для AI agencies. CRM + landing pages + email + SMS + pipeline — всё в одном, с AI chatbots и automation сверху.",
-    howItWorks: [
-      "GHL как CRM и pipeline management",
-      "AI chatbot на сайте клиента (через GHL)",
-      "Automated follow-ups через email + SMS",
-      "AI qualification и lead scoring",
-      "Dashboard для клиента с metrics",
-    ],
-    keyInsight:
-      "Огромная часть AI agencies построена на GHL. Это почти sub-industry: GHL + AI chatbot + n8n automation = standard AAA stack. Клиенты получают unified platform, agency получает sticky retainer.",
-    examples: [
-      {
-        company: "GHL AI agency ecosystem",
-        detail:
-          "Тысячи agencies на GHL. Standard stack: GHL + Voiceflow/Botpress + n8n",
-      },
-      {
-        company: "Typical agency on GHL",
-        detail:
-          "$2-5K/мес retainer. GHL white-labeled. AI chatbot + automation",
-      },
-      {
-        company: "GHL marketplace",
-        detail:
-          "App marketplace с AI integrations. SaaS-like revenue для agencies",
-      },
-    ],
-    unitboxApplication:
-      "GHL или аналог как CRM для девелоперов: Unitbox каталог + CRM для leads + AI chatbot + automated follow-ups. Всё в одном для девелопера.",
-    icon: "Workflow",
   },
 ];

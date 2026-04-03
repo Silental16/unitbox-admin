@@ -209,22 +209,30 @@ export const mechanics: Mechanic[] = [
     title: "Application Layer Thesis",
     category: "business-models",
     author: "Elad Gil",
-    summary: "Строй apps с доменной экспертизой, не infrastructure — тут ценность и защита",
+    summary: "Строй apps с доменной экспертизой, не infrastructure. Не конкурируй с OpenAI — строй поверх",
     whatIsIt:
-      "AI рынок формируется в слои: foundation models (мало победителей), infrastructure/tooling (много), applications (больше всего). Максимальная ценность аккумулируется на application layer — там где доменная экспертиза встречается с AI.",
+      "AI рынок формируется в слои: foundation models (мало победителей), infrastructure/tooling (много), applications (больше всего). Максимальная ценность аккумулируется на application layer — там где доменная экспертиза встречается с AI. Ключевой тест: может ли OpenAI/Anthropic/Google добавить это как фичу? Если да — pivot, добавь domain-specific data. Если нет (proprietary data/relationships) — safe.",
     howItWorks: [
       "Выбери индустрию которую знаешь глубоко",
       "Найди самый дорогой/болезненный workflow",
       "Построй AI-приложение решающее этот workflow end-to-end",
       "Используй foundation models как commodity input (не строй свои)",
-      "Моат = проприетарные данные + domain expertise + switching costs",
+      "Моат = проприетарные данные + domain expertise + switching costs. AI wrapper без proprietary data = dead on arrival",
     ],
     keyInsight:
-      "Контрарианский тезис Elad Gil: «AI infrastructure переоценена, AI applications недооценены». Infrastructure = knife fight между хорошо финансированными гигантами. Applications с доменной экспертизой имеют defensible moats. Не конкурируй с OpenAI — строй поверх них.",
+      "Контрарианский тезис Elad Gil: «AI infrastructure переоценена, AI applications недооценены». Infrastructure = knife fight между хорошо финансированными гигантами. Applications с доменной экспертизой имеют defensible moats. AI wrapper без proprietary data = dead on arrival. Harvey safe (юр. данные). Cursor safe (IDE experience). Generic AI writing tool = dead (Jasper потерял 50%+ revenue).",
     examples: [
       {
         company: "Harvey (юридический AI)",
-        detail: "$1.5B оценка — AI-юрист для топовых юрфирм. Глубокая доменная экспертиза = непробиваемый моат",
+        detail: "$11B оценка — AI-юрист для топовых юрфирм. Глубокая доменная экспертиза = непробиваемый моат",
+      },
+      {
+        company: "Cursor ($29.3B)",
+        detail: "Safe: IDE experience + workflow. ChatGPT не станет IDE",
+      },
+      {
+        company: "Killed by ChatGPT",
+        detail: "AI writing tools, summarizers — commoditized. Jasper потерял 50%+ revenue",
       },
       {
         company: "Abridge (медицинский AI)",
@@ -236,7 +244,7 @@ export const mechanics: Mechanic[] = [
       },
     ],
     unitboxApplication:
-      "Unitbox — классический application layer play. Проприетарные данные о рынке Бали (цены, юниты, тренды) + доменная экспертиза в RE + AI = приложение которое невозможно повторить без тех же данных.",
+      "Unitbox safe: OpenAI не построит каталог Бали. Проприетарные данные + relationships = непробиваемый moat. Классический application layer play.",
     icon: "Layers",
   },
   {
@@ -279,34 +287,42 @@ export const mechanics: Mechanic[] = [
     title: "SaaS → WaaS → RaaS",
     category: "business-models",
     author: "Dharmesh Shah",
-    summary: "Software → Work → Results as a Service — эволюция от инструмента к результату",
+    summary: "Software → Work → Results as a Service. AI виртуальные работники = 100x pricing vs per-seat SaaS",
     whatIsIt:
-      "SaaS продаёт доступ к софту. WaaS (Work as a Service) продаёт выполненную работу через AI-агентов. RaaS (Results as a Service) продаёт гарантированный результат. Маятник двигается от «вот инструмент, разбирайся сам» к «вот результат, мы всё сделали».",
+      "SaaS продаёт доступ к софту. WaaS (Work as a Service) продаёт выполненную работу через AI-агентов. RaaS (Results as a Service) продаёт гарантированный результат. Ребрендинг AI из tool в «виртуального сотрудника» с именем и KPI = 100x pricing. Per-seat SaaS $50/мес → AI virtual worker $3-5K/мес. Тот же AI, другой framing.",
     howItWorks: [
       "SaaS: подписка за доступ к инструменту ($X/seat/мес)",
-      "WaaS: AI-агент выполняет работу, платишь за действия ($X/task)",
+      "WaaS: AI-агент выполняет работу как виртуальный сотрудник ($X/task или $3-5K/мес)",
       "RaaS: платишь только за результат ($X/outcome — за лид, за сделку, за решённый тикет)",
-      "Каждый шаг повышает ценность для клиента и pricing power для продавца",
-      "RaaS имеет самую высокую маржу — клиент платит за outcome, не за inputs",
+      "AI virtual worker: получает роль и KPI (SDR, support, analyst), работает 24/7, scales instantly",
+      "Каждый шаг повышает ценность и pricing power. RaaS = самая высокая маржа",
     ],
     keyInsight:
-      "Dharmesh Shah купил chat.com за $15M+ и перенаправил на ChatGPT — показатель его conviction в AI-first будущем. Agent.ai (его проект) = маркетплейс AI-агентов с 2M+ пользователями. Per-seat pricing ломается когда AI-агент заменяет 3 сотрудников.",
+      "Dharmesh Shah купил chat.com за $15M+ — conviction в AI-first будущем. Agent.ai = 2M+ пользователей. Ребрендинг AI из tool в employee = 100x pricing. Per-seat SaaS $50/мес. AI virtual worker $3-5K/мес. Тот же AI, другой framing. Per-seat pricing ломается когда AI-агент заменяет 3 сотрудников.",
     examples: [
       {
         company: "Agent.ai (Dharmesh Shah)",
         detail: "2M+ пользователей, маркетплейс AI-агентов. Dharmesh — CTO $30B+ HubSpot",
       },
       {
+        company: "11x.ai «Alice»",
+        detail: "AI SDR за $3-5K/мес вместо человека за $60-80K/год. Research → personalize → send → book. Priced as headcount",
+      },
+      {
+        company: "Artisan Ava",
+        detail: "AI BDR. Full outbound pipeline. Priced as headcount replacement",
+      },
+      {
+        company: "Devin",
+        detail: "$2B+. AI Software Engineer. Junior dev salary pricing",
+      },
+      {
         company: "SaaStr case study",
         detail: "140% Q1 revenue с 1.25 человека + 20 AI агентов. Classic WaaS→RaaS transition",
       },
-      {
-        company: "11x.ai «Alice»",
-        detail: "AI SDR за $3-5K/мес вместо человека за $60-80K/год. Чистый RaaS — платишь за встречи, не за seat",
-      },
     ],
     unitboxApplication:
-      "Эволюция: сейчас Unitbox = SaaS (каталог). Следующий шаг WaaS: AI-агент автоматически обновляет каталог, генерирует отчёты, отвечает покупателям. Финальный RaaS: девелопер платит $X за каждого квалифицированного лида, не за подписку.",
+      "Эволюция: сейчас Unitbox = SaaS (каталог). Следующий шаг: «AI Property Manager» — 24/7 обновляет каталог, отвечает покупателям, reports. $1-2K/мес. Финальный RaaS: девелопер платит $X за каждого квалифицированного лида.",
     icon: "TrendingUp",
   },
   {
@@ -314,18 +330,18 @@ export const mechanics: Mechanic[] = [
     title: "Vertical AI Agent",
     category: "business-models",
     author: "Y Combinator, Sarah Guo, Sequoia",
-    summary: "Узкий AI-агент для конкретной индустрии заменяет целую job function",
+    summary: "Узкий AI-агент для конкретной индустрии = winner-take-vertical. Первый с quality + data = 60-80% рынка",
     whatIsIt:
-      "Вместо горизонтального AI «для всех» — специализированный AI-агент глубоко понимающий одну индустрию. Заменяет не инструмент, а целую рабочую функцию: AI-юрист, AI-бухгалтер, AI-рекрутер. Тезис Sequoia: «1000 вертикальных AI-агентов» — каждая функция в каждой индустрии получит специализированного AI.",
+      "Вместо горизонтального AI «для всех» — специализированный AI-агент глубоко понимающий одну индустрию. Заменяет не инструмент, а целую рабочую функцию. Sequoia: «1000 вертикальных AI-агентов» — каждая функция в каждой индустрии получит своего AI winner. Первый quality product + compound data = доминирует 60-80% вертикали.",
     howItWorks: [
       "Выбери индустрию + job function (юрист в PI, бухгалтер в SMB, SDR в SaaS)",
       "Собери проприетарные данные для обучения (workflows, документы, кейсы)",
       "Построй агента который выполняет 80%+ работы автономно",
-      "Продавай как «AI-сотрудника» за $3-5K/мес (vs $60-80K/год за человека)",
-      "Compound data advantage — чем больше клиентов, тем лучше модель",
+      "Стань default solution — compound data: каждый клиент → AI лучше",
+      "Network effects: больше клиентов → больше данных → лучше продукт → winner takes 60-80%",
     ],
     keyInsight:
-      "Sarah Guo: «Лучшие AI-компании не продают AI. Они продают outcomes, которые случайно используют AI.» Gartner: 80% enterprise примут vertical AI agents к 2026. Vertical AI стартапы привлекли $15B+ в 2025. Retention 3-5x выше чем у горизонтальных решений.",
+      "Sarah Guo: «Лучшие AI-компании не продают AI — они продают outcomes.» Gartner: 80% enterprise примут vertical AI agents к 2026. Vertical AI стартапы привлекли $15B+ в 2025. ServiceTitan ~$9B IPO (домашние услуги). Veeva $38B (фарма CRM). Кто первый с quality + compound data = winner.",
     examples: [
       {
         company: "Harvey (юридический AI)",
@@ -372,9 +388,21 @@ export const mechanics: Mechanic[] = [
           mvpVersion: "Гипотеза: «Доменные эксперты готовы выполнять структурированные AI-training задачи за $50–100/час, и AI-компании готовы платить x2 от прямого найма ради скорости и масштаба.»\n\nЭксперимент (1–2 недели, $0–500):\n1. Выбрать один узкий домен (например, врачи-терапевты)\n2. Найти 10 экспертов через LinkedIn / профессиональные Telegram-чаты\n3. Создать простое AI-интервью (GPT-4 + Google Forms) для assessment знаний\n4. Подготовить 50 RLHF-задач (оценка медицинских ответов AI-модели по rubric)\n5. Предложить экспертам выполнить задачи за $50/час\n6. Показать результаты 2–3 AI-стартапам (не обязательно top labs)\n\nМетрика успеха: (1) 7+ из 10 экспертов согласились и выполнили задачи качественно, (2) quality score от клиента > 8/10, (3) хотя бы 1 клиент готов заплатить за следующую партию задач.\n\nСледующий шаг: автоматизировать AI-интервью, расширить до 100 экспертов в 3 доменах, заключить первый контракт на $5–10K.",
         },
       },
+      {
+        company: "ServiceTitan",
+        detail: "~$9B IPO. Домашние услуги. First quality vertical AI winner",
+      },
+      {
+        company: "Veeva",
+        detail: "$38B. Фарма CRM. De-facto стандарт вертикали",
+      },
+      {
+        company: "Toast",
+        detail: "$1B+ revenue. Рестораны. POS → compound startup",
+      },
     ],
     unitboxApplication:
-      "Unitbox строит вертикального AI-агента для Bali real estate: знает все проекты, цены, наличие юнитов, финансовые модели. Может квалифицировать лидов, сравнивать проекты, генерировать отчёты. Это не chatbot — это AI property consultant.",
+      "Winner-take-vertical для Bali RE catalog. Первый AI-native + proprietary data. После Бали → Thailand, Dubai. Bali RE catalog = unclaimed vertical.",
     icon: "Bot",
   },
   ...(mechanicsBC as Mechanic[]),

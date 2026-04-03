@@ -1,64 +1,72 @@
 export const mechanicsDE: any[] = [
   // ── CATEGORY: ai-operations ──────────────────────────────────────
   {
-    id: "ai-coo",
-    title: "AI COO",
+    id: "ai-operations-team",
+    title: "AI Operations Team",
     category: "ai-operations",
-    author: "Multiple",
-    summary: "AI обрабатывает operational задачи 3-5 сотрудников",
+    author: "SaaStr, Multiple",
+    summary: "20 узких AI-агентов + 1-2 человека = full operations, 140% revenue",
     whatIsIt:
-      "AI для замены операционных функций: calendar, email triage, PM, bookkeeping, reporting. Stack $3-12K/год вместо $60-100K на COO.",
+      "AI-агенты как primary workforce: не один «умный» помощник, а команда из 10-20 узкоспециализированных агентов, каждый выполняющий конкретную операционную функцию (calendar, email triage, PM, bookkeeping, reporting, SDR, support). 1-2 человека управляют и закрывают сложные кейсы. Stack $3-12K/год вместо $200-500K на команду.",
     howItWorks: [
-      "Список всех операционных задач",
-      "Для каждой — AI tool: Granola, Notion AI, Reclaim.ai, Truewind",
+      "Map все операционные задачи team",
+      "Специализированный AI agent на каждую (не один universal)",
+      "Агенты 24/7: calendar, email, PM, bookkeeping, SDR, support",
       "Автоматизации между ними через n8n/Make",
-      "AI рутина, человек стратегия",
-      "$3-12K/год вместо $60-100K",
+      "1-2 человека: стратегия, high-value sales, сложные deals",
     ],
     keyInsight:
-      "38% семизначных бизнесов в 2026 управляются solopreneurs с AI. Ошибка: автоматизировать всё сразу. Начинай с самой repetitive задачи.",
+      "SaaStr: 140% Q1 revenue с 1.25 человека + 20 AI агентов. 38% семизначных бизнесов в 2026 управляются solopreneurs с AI. 20 узких агентов > 1 «умный». Cost per meeting: $50-100 vs $200-500. Ошибка: автоматизировать всё сразу — начинай с самой repetitive задачи.",
     examples: [
+      {
+        company: "SaaStr",
+        detail: "140% Q1 2026. 1.25 человека + 20 agents",
+      },
       {
         company: "Solopreneur stack 2026",
         detail: "$3-12K/год: Granola, Notion AI, Reclaim, Truewind",
       },
       {
-        company: "SaaStr",
-        detail: "140% Q1 revenue, 1.25 человека + 20 AI агентов",
-      },
-      {
         company: "Pieter Levels",
         detail: "$3-5M/год, 0 сотрудников. AI handles support, admin, analytics",
       },
+      {
+        company: "11x.ai Alice",
+        detail: "AI SDR $3-5K/мес vs $60-80K/год человек",
+      },
+      {
+        company: "Artisan Ava",
+        detail: "AI BDR: research → personalize → send → follow-up",
+      },
     ],
     unitboxApplication:
-      "Unitbox уже AI COO: Claude Code как CTO, auto-sync, AI agents. Добавить: AI для financial reporting, client comms, pipeline mgmt.",
-    icon: "UserCog",
+      "Расширить: AI для outreach, ответов покупателям, market research, content, financial reporting, client comms. 1 человек + 10 agents = full ops.",
+    icon: "Network",
   },
   {
-    id: "byoa",
-    title: "BYOA — Build Your Own AI",
+    id: "byoa-knowledge-vault",
+    title: "BYOA / Knowledge Vault",
     category: "ai-operations",
-    author: "Alex Hormozi",
-    summary: "Тренируй AI на данных компании — единственный настоящий моат",
+    author: "Alex Hormozi, Glean",
+    summary: "Тренируй AI на проприетарных данных компании — единственный настоящий моат. Implementation > information.",
     whatIsIt:
-      "Стратегия Hormozi: каждая компания должна построить AI на своих уникальных данных — кейсах, workflows, знаниях клиентов. Невозможно скопировать.",
+      "Стратегия Hormozi: каждая компания должна построить AI на своих уникальных данных — кейсах, workflows, знаниях клиентов. Конвертация знаний (книги, кейсы, SOP) в Knowledge Vault (RAG + curated expert content) даёт персонализированные ответы вместо generic. ACQ AI даёт implementation, не information. Невозможно скопировать.",
     howItWorks: [
-      "Собери проприетарные данные (документы, кейсы, SOP)",
-      "Структурируй в Knowledge Vault (RAG/vector DB)",
-      "Обучи AI-ассистента",
-      "Дай сотрудникам доступ",
+      "Собери проприетарные данные (документы, кейсы, SOP, книги)",
+      "Структурируй в Knowledge Vault (RAG/vector DB/embeddings)",
+      "Обучи AI-ассистента — personalised answers вместо generic",
+      "Дай сотрудникам/клиентам доступ",
       "Каждый кейс усиливает AI — compound advantage",
     ],
     keyInsight:
-      "Hormozi: «Когда стоимость интеллекта → 0, моат = проприетарные данные». ACQ AI обучен на $31M консалтинга + все книги. Невозможно повторить.",
+      "Hormozi: «Когда стоимость интеллекта → 0, моат = проприетарные данные». ACQ AI обучен на $31M консалтинга + все книги. Glean ($7.2B) = enterprise Knowledge Vault по всем данным компании. ChatGPT = generic. Knowledge Vault = «вот как Hormozi решал эту проблему у бизнеса X с revenue Y».",
     examples: [
       {
         company: "ACQ AI",
         detail: "Обучен на $31M консалтинга. Implementation, не information",
         caseStudy: {
           mechanicInAction: "Acquisition.com превратила $31M консалтинговых данных (1026+ бизнесов) в продукт ACQ AI. 80% знаний никогда не публиковались — сырые данные из реальных сессий: constraint analyses, diagnostic sessions, offer designs, converting scripts.\n\nПроприетарная Knowledge Vault — не generic chatbot, а система с worldview и playbooks. Даёт имплементацию, а не информацию: готовые скрипты, ценовые модели, воронки.\n\nACQ AI запущен в 2025. ACQ Vantage (community + AI + workshops) — март 2026. 845 участников.",
-          jtbd: "**Core Job:** Собственник бизнеса $1-10M застрял на плато — хочет конкретный план (оффер, воронка, скрипт, цены) для роста 2-3x без дорогих консультантов.\n\n**Push:** Консультанты $500-1000/час и дают теорию. ChatGPT даёт generic советы. Pull: $31M реального опыта за $299/мес. Готовые артефакты за минуты.\n\n**Consumption Chain:** YouTube 3.87M → книги $100M Offers → ACQ AI $3K + $299/мес → ACQ Vantage $1K/мес.",
+          jtbd: "**Core Job:** Собственник бизнеса $1-10M застрял на плато — хочет конкретный план (оффер, воронка, скрипт, цены) для роста 2-3x без дорогих консультантов.\n\n**Push:** Консультанты $500-1000/час и дают теорию. ChatGPT даёт generic советы. Pull: $31M реального опыта за $299/мес. Готовые артефакты за минуты.\n\n**Consumption Chain:** YouTube 3.87M → книги $100M Offers → ACQ AI $3K + $299/мес → ACQ Vantage $1К/мес.",
           monetization: "**Тарифы:** ACQ AI: $3,000 initiation + $299/мес. ACQ Vantage: $1,000/мес (community + AI + workshops).\n\n845 участников Vantage ≈ ~$10M ARR. CAC ≈ $0 (контент-маркетинг, 3.87M YouTube). Gross margin ~85-90%.\n\nПортфель Acquisition.com: $250M+ годовой выручки.",
           marketing: "**GTM:** Content-led + community-led. Нет outbound, нет paid ads. YouTube 3.87M подписчиков, 880M+ просмотров. Книги-бестселлеры. Skool community.\n\nReferral: \"Make Your Membership Free\" — 2 реферала = бесплатная подписка.\n\n**Первые клиенты:** Gym Launch (2016-2017) — лично помогал владельцам. ACQ AI — монетизация hot audience.",
           impact: "**Для клиента:** Оффер: 2-4 недели → 1 день. Консалтинг: $15-50K → $299-1,000/мес. Скрипт: trial & error → готовый за минуты. Pricing model с защитой 37% маржи.\n\n**Для компании:** 2016 $0 → 2021 $46.2M exit → 2026 портфель $250M+, net worth $100-350M. YouTube: 0 → 3.87M, 880M просмотров.",
@@ -69,12 +77,8 @@ export const mechanicsDE: any[] = [
         },
       },
       {
-        company: "Knowledge Vaults trend",
-        detail: "Тренируй AI на экспертном контенте за 15 минут",
-      },
-      {
         company: "Glean",
-        detail: "$4.6B оценка — enterprise AI search по всем данным компании",
+        detail: "$7.2B оценка — enterprise AI search по всем данным компании",
         caseStudy: {
           mechanicInAction: "Glean воплощает BYOA через корпоративный Knowledge Vault. Индексирует ВСЕ внутренние данные — Slack, email, Drive, Jira, Salesforce, Confluence, GitHub и 100+ коннекторов — и строит уникальный Knowledge Graph для каждого клиента. Три слоя: контент, люди, активность.\n\n100+ коннекторов с реплицированными permissions. Model-agnostic abstraction layer. Сознательный отказ от PLG — только enterprise через CIO, минимум 100 seats.\n\nОснование 2019, $100M ARR за 3 года (март 2025), $200M ARR через 9 месяцев. Оценка $7.2B.",
           jtbd: "**Core Job:** Мгновенно находить любую внутреннюю информацию через один поиск когда компания 200→2000+ сотрудников.\n\n**Switching Trigger:** Опрос: \"найти информацию\" — топ-жалоба. 30%+ времени на поиск, а не работу.\n\n**Push:** Внутренний поиск находит 10%. Slack — ответ через часы. Новички не знают где искать. Pull: один поиск по всем системам. AI-ответы с цитатами. 80% adoption (Motive).",
@@ -87,9 +91,17 @@ export const mechanicsDE: any[] = [
           mvpVersion: "**Эксперимент:** Выгрузить 100-200 документов в векторную базу (Pinecone/Qdrant). RAG-чат на OpenAI API + LangChain. Дать 10-15 сотрудникам на неделю через Streamlit.\n\n**Метрика:** >60% вопросов получают полезный ответ. Возвращаются >3 раз за неделю. Хотя бы 1 \"нашёл то, что не мог найти раньше\".\n\n**Следующий шаг:** 2-3 реальных коннектора (Slack, Drive, Notion). Полный корпус одного отдела. 50 сотрудников.",
         },
       },
+      {
+        company: "Dexa.ai",
+        detail: "«Спроси Hormozi» — AI отвечает из 4000+ видео",
+      },
+      {
+        company: "Custom GPTs",
+        detail: "Тысячи обученных на экспертном контенте",
+      },
     ],
     unitboxApplication:
-      "78 правил, данные 97 девелоперов, цены/юниты Бали = Knowledge Vault. Открыть как продукт: «Спроси AI всё о рынке Бали».",
+      "78 правил, данные 97 девелоперов, цены/юниты Бали = Knowledge Vault. Открыть как продукт: «Спроси AI всё о рынке Бали». Продавать доступ инвесторам.",
     icon: "Brain",
   },
   {
@@ -202,185 +214,55 @@ export const mechanicsDE: any[] = [
       "AI support для покупателей: вопросы о проектах, ценах, ROI. 80% мгновенно. 20% сложных → менеджер.",
     icon: "Headphones",
   },
-  {
-    id: "knowledge-vault",
-    title: "Knowledge Vault",
-    category: "ai-operations",
-    author: "Hormozi ecosystem",
-    summary:
-      "AI на экспертном контенте за 15 минут — заменяет курсы и консалтинг",
-    whatIsIt:
-      "Конвертация знаний (книги, кейсы, SOP) в AI-ассистента. RAG + curated expert content = персонализированные ответы.",
-    howItWorks: [
-      "Собери expert content",
-      "Загрузи в RAG (vector DB + embeddings)",
-      "AI отвечает на основе всего контента",
-      "Personalised answers вместо generic",
-      "Монетизируй или используй internal",
-    ],
-    keyInsight:
-      "ACQ AI даёт implementation, не information. ChatGPT = generic. Knowledge Vault = «вот как Hormozi решал эту проблему у бизнеса X с revenue Y».",
-    examples: [
-      {
-        company: "ACQ AI",
-        detail: "$31M консалтинга. Implementation answers",
-      },
-      {
-        company: "Dexa.ai",
-        detail: "«Спроси Hormozi» — AI отвечает из 4000+ видео",
-      },
-      {
-        company: "Custom GPTs",
-        detail: "Тысячи обученных на экспертном контенте",
-      },
-    ],
-    unitboxApplication:
-      "Knowledge Vault о Бали: данные каталога, research, финмодели, зонирование. Продавать доступ инвесторам.",
-    icon: "BookOpen",
-  },
-  {
-    id: "ai-competitive-intelligence",
-    title: "AI Competitive Intelligence",
-    category: "ai-operations",
-    author: "Firecrawl, Browserbase",
-    summary:
-      "Скрейпинг конкурентов → AI → проприетарные датасеты real-time",
-    whatIsIt:
-      "Автоматический мониторинг конкурентов: скрейпинг, анализ цен, product changes, hiring patterns.",
-    howItWorks: [
-      "Скрейпинг конкурентов (Firecrawl + n8n)",
-      "AI классифицирует данные",
-      "Alerts при значимых изменениях",
-      "AI weekly competitive report",
-      "Данные компаундятся → тренды",
-    ],
-    keyInsight:
-      "Проприетарные datasets = ценнейший asset. Данные о конкурентах невозможно купить. Hormozi «proprietary data moat» в действии.",
-    examples: [
-      {
-        company: "Firecrawl",
-        detail: "Web scraping API для AI. Структурированные datasets",
-      },
-      {
-        company: "Clay.com",
-        detail: "75 providers + AI enrichment для competitive intel",
-      },
-      {
-        company: "Crayon, Klue",
-        detail: "Enterprise CI platforms. $10-50K/год",
-      },
-    ],
-    unitboxApplication:
-      "Автомониторинг цен конкурентных каталогов, новых проектов на Бали, AI-отчёты для девелоперов.",
-    icon: "Radar",
-  },
-  {
-    id: "20-ai-agents-team",
-    title: "20 AI Agents = Team",
-    category: "ai-operations",
-    author: "SaaStr",
-    summary: "20 AI агентов + 1.25 человека → 140% revenue",
-    whatIsIt:
-      "SaaStr: заменили sales team на 20 AI агентов + 1.25 человека. 140% целевого Q1 revenue.",
-    howItWorks: [
-      "Map все задачи team",
-      "Специализированный AI agent на каждую",
-      "Агенты 24/7, 10x лидов",
-      "1.25 человека управляют + закрывают сложные deals",
-      "Cost per meeting: $50-100 vs $200-500",
-    ],
-    keyInsight:
-      "AI agents = primary workforce, не помощники. 20 узких агентов > 1 «умный». Каждый специализирован.",
-    examples: [
-      {
-        company: "SaaStr",
-        detail: "140% Q1 2026. 1.25 человека + 20 agents",
-      },
-      {
-        company: "11x.ai Alice",
-        detail: "AI SDR $3-5K/мес vs $60-80K/год человек",
-      },
-      {
-        company: "Artisan Ava",
-        detail: "AI BDR: research → personalize → send → follow-up",
-      },
-    ],
-    unitboxApplication:
-      "Расширить: AI для outreach, ответов покупателям, market research, content. 1 человек + 10 agents = full ops.",
-    icon: "Network",
-  },
 
   // ── CATEGORY: content-media ──────────────────────────────────────
   {
-    id: "ai-content-pipeline",
-    title: "AI Content Pipeline",
+    id: "ai-content-machine",
+    title: "AI Content Machine",
     category: "content-media",
-    author: "Multiple",
-    summary: "1 контент → AI → 10+ форматов автоматически",
+    author: "Alex Hormozi, Greg Isenberg, Multiple",
+    summary:
+      "1 anchor content → AI → 10+ форматов + lead gen + marketing на автопилоте",
     whatIsIt:
-      "Один anchor content → AI разбивает на десятки форматов: social posts, email, short videos, карусели.",
+      "Полный цикл AI-контента: создай ценный anchor content (видео, deep-dive, гайд), AI разбивает на десятки форматов (social, email, shorts, карусели), привлекает leads через value, AI автоматически nurtures и converts. Content creation + distribution + lead gen в одном pipeline.",
     howItWorks: [
-      "Создай anchor content (видео, longread, подкаст)",
-      "AI извлекает ключевые идеи",
-      "Генерирует: 5 Twitter, 3 LinkedIn, 1 email, 10 short video scripts",
-      "Адаптирует tone под платформу",
-      "Планируй публикации на неделю",
+      "Создай anchor content (видео, longread, вебинар, гайд)",
+      "AI извлекает ключевые идеи, генерирует 10+ форматов",
+      "Распространи через SEO + social + email",
+      "Собери leads через value exchange (email за гайд/report)",
+      "AI nurtures, A/B тестирует, квалифицирует и бронирует calls",
     ],
     keyInsight:
-      "Agencies: $5-15K/мес за managed pipeline. Себестоимость $500-1K. Маржа 80-90%. Но: чистый AI-контент деградирует. Winning = AI production + human curation.",
+      "Hormozi: «Давай так много value бесплатно, что люди чувствуют себя обязанными заплатить». Agencies: $5-15K/мес за managed pipeline, себестоимость $500-1K, маржа 80-90%. Но: чистый AI-контент деградирует. Winning = AI production + human curation + creativity.",
     examples: [
       {
-        company: "Hormozi content",
-        detail: "1 видео → 20+ clips, posts, emails. 3.9M YouTube",
+        company: "Hormozi content machine",
+        detail: "1 видео → 20+ clips, posts, emails. 3.9M YouTube → leads для Acquisition.com",
+      },
+      {
+        company: "HubSpot",
+        detail: "$2.6B+ ARR. Free tools + education → leads. Классика content-first",
       },
       {
         company: "Opus Clip",
         detail: "AI нарезает длинные видео на вирусные shorts",
       },
       {
+        company: "Late Checkout (Greg Isenberg)",
+        detail: "Автоматизирует маркетинг для портфеля стартапов. Podcast → leads",
+      },
+      {
         company: "AI content agencies",
         detail: "$5-15K/мес. 10x output, 80% меньше costs",
       },
+      {
+        company: "Swell AI, Blotato",
+        detail: "Repurpose контент в 10+ форматов, адаптирует под платформу",
+      },
     ],
     unitboxApplication:
-      "Один deep-dive о проекте → AI: 10 Instagram, Telegram updates, emails, YouTube shorts. Каждый проект = контент-актив.",
+      "Один deep-dive о проекте → AI: 10 Instagram, Telegram updates, emails, YouTube shorts. Бесплатный Bali RE market report → email capture → AI nurture → demo каталога → close. Каждый проект = контент-актив.",
     icon: "Newspaper",
-  },
-  {
-    id: "vibe-marketing",
-    title: "Vibe Marketing",
-    category: "content-media",
-    author: "Greg Isenberg",
-    summary:
-      "AI трансформирует контент в множество форматов — маркетинг на автопилоте",
-    whatIsIt:
-      "AI-driven маркетинг: полная автоматизация content transformation, A/B testing, targeting.",
-    howItWorks: [
-      "Seed контент (testimonial, case study)",
-      "AI tools: Swell, Opus Clip, Blotato",
-      "AI тестирует варианты",
-      "AI анализирует что работает",
-      "Marketing machine 24/7",
-    ],
-    keyInsight:
-      "Isenberg: «Маркетинг перестаёт быть ручным трудом». Один маркетолог = работа 5. Но: generic AI content = noise. Human creativity + AI execution.",
-    examples: [
-      {
-        company: "Late Checkout",
-        detail: "Автоматизирует маркетинг для портфеля стартапов",
-      },
-      {
-        company: "Swell AI",
-        detail: "Repurposes контент в 10+ форматов",
-      },
-      {
-        company: "Blotato",
-        detail: "AI adapts content для разных платформ",
-      },
-    ],
-    unitboxApplication:
-      "AI автоматически генерирует маркетинг для каждого нового проекта — Instagram, Telegram, email, YouTube.",
-    icon: "Megaphone",
   },
   {
     id: "curation-as-business",
