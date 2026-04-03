@@ -231,44 +231,123 @@ export function MechanicSheet({ mechanic, open, onOpenChange }: MechanicSheetPro
 
               {activeCase.caseStudy ? (
                 <div className="flex flex-col gap-6 p-6">
-                  <CaseStudySection label="Что делает компания">
-                    {activeCase.caseStudy.whatTheyDo}
-                  </CaseStudySection>
+                  {/* v2 sections (9-section deep research) */}
+                  {activeCase.caseStudy.mechanicInAction && (
+                    <>
+                      <CaseStudySection label="Механика в действии">
+                        {activeCase.caseStudy.mechanicInAction}
+                      </CaseStudySection>
+                      <Separator />
+                    </>
+                  )}
 
-                  <Separator />
+                  {activeCase.caseStudy.jtbd && (
+                    <>
+                      <CaseStudySection label="JTBD клиента">
+                        {activeCase.caseStudy.jtbd}
+                      </CaseStudySection>
+                      <Separator />
+                    </>
+                  )}
 
-                  <CaseStudySection label="История создания">
-                    {activeCase.caseStudy.originStory}
-                  </CaseStudySection>
+                  {activeCase.caseStudy.monetization && (
+                    <>
+                      <CaseStudySection label="Монетизация">
+                        {activeCase.caseStudy.monetization}
+                      </CaseStudySection>
+                      <Separator />
+                    </>
+                  )}
 
-                  <Separator />
+                  {activeCase.caseStudy.marketing && (
+                    <>
+                      <CaseStudySection label="Маркетинг и дистрибуция">
+                        {activeCase.caseStudy.marketing}
+                      </CaseStudySection>
+                      <Separator />
+                    </>
+                  )}
 
-                  <CaseStudySection label="Финансы и метрики">
-                    {activeCase.caseStudy.financials}
-                  </CaseStudySection>
+                  {activeCase.caseStudy.impact && (
+                    <>
+                      <CaseStudySection label="До/После — импакт">
+                        {activeCase.caseStudy.impact}
+                      </CaseStudySection>
+                      <Separator />
+                    </>
+                  )}
 
-                  <Separator />
+                  {activeCase.caseStudy.tocConstraint && (
+                    <>
+                      <CaseStudySection label="Ограничение (TOC)">
+                        {activeCase.caseStudy.tocConstraint}
+                      </CaseStudySection>
+                      <Separator />
+                    </>
+                  )}
 
-                  <CaseStudySection label="Как используют механику">
-                    {activeCase.caseStudy.howTheyUseIt}
-                  </CaseStudySection>
+                  {activeCase.caseStudy.trizContradictions && (
+                    <>
+                      <CaseStudySection label="Противоречия (TRIZ)">
+                        {activeCase.caseStudy.trizContradictions}
+                      </CaseStudySection>
+                      <Separator />
+                    </>
+                  )}
 
-                  <Separator />
+                  {activeCase.caseStudy.conditions && (
+                    <>
+                      <CaseStudySection label="Условия успеха">
+                        {activeCase.caseStudy.conditions}
+                      </CaseStudySection>
+                      <Separator />
+                    </>
+                  )}
 
-                  <CaseStudySection label="Ключевые клиенты">
-                    {activeCase.caseStudy.keyClients}
-                  </CaseStudySection>
+                  {activeCase.caseStudy.mvpVersion && (
+                    <section>
+                      <h3 className="text-sm font-semibold mb-2">MVP версия</h3>
+                      <div className="rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 p-4">
+                        <p className="text-sm leading-relaxed text-emerald-900 dark:text-emerald-200 whitespace-pre-line">
+                          {activeCase.caseStudy.mvpVersion}
+                        </p>
+                      </div>
+                    </section>
+                  )}
 
-                  <Separator />
-
-                  <section>
-                    <h3 className="text-sm font-semibold mb-2">Уроки для Unitbox</h3>
-                    <div className="rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 p-4">
-                      <p className="text-sm leading-relaxed text-amber-900 dark:text-amber-200 whitespace-pre-line">
-                        {activeCase.caseStudy.lessonsForUnitbox}
-                      </p>
-                    </div>
-                  </section>
+                  {/* v1 legacy sections (fallback for old data) */}
+                  {!activeCase.caseStudy.mechanicInAction && activeCase.caseStudy.whatTheyDo && (
+                    <>
+                      <CaseStudySection label="Что делает компания">
+                        {activeCase.caseStudy.whatTheyDo}
+                      </CaseStudySection>
+                      <Separator />
+                      <CaseStudySection label="История создания">
+                        {activeCase.caseStudy.originStory}
+                      </CaseStudySection>
+                      <Separator />
+                      <CaseStudySection label="Финансы и метрики">
+                        {activeCase.caseStudy.financials}
+                      </CaseStudySection>
+                      <Separator />
+                      <CaseStudySection label="Как используют механику">
+                        {activeCase.caseStudy.howTheyUseIt}
+                      </CaseStudySection>
+                      <Separator />
+                      <CaseStudySection label="Ключевые клиенты">
+                        {activeCase.caseStudy.keyClients}
+                      </CaseStudySection>
+                      <Separator />
+                      <section>
+                        <h3 className="text-sm font-semibold mb-2">Уроки для Unitbox</h3>
+                        <div className="rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 p-4">
+                          <p className="text-sm leading-relaxed text-amber-900 dark:text-amber-200 whitespace-pre-line">
+                            {activeCase.caseStudy.lessonsForUnitbox}
+                          </p>
+                        </div>
+                      </section>
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="p-6">
