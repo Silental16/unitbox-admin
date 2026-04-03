@@ -4,13 +4,17 @@ import { useState } from "react"
 import {
   AlertTriangleIcon,
   BoldIcon,
+  CheckIcon,
   ChevronDownIcon,
+  ChevronRightIcon,
   InfoIcon,
   InboxIcon,
   ItalicIcon,
   MoreHorizontalIcon,
+  PlusCircleIcon,
   PlusIcon,
   SearchIcon,
+  TypeIcon,
   UnderlineIcon,
 } from "lucide-react"
 
@@ -156,17 +160,20 @@ function getStatusDot(status: string) {
   return found?.dot ?? "bg-muted-foreground"
 }
 
-const compactListData = [
-  { id: 1, name: "Sarah Chen", role: "Sales Lead", tag: "Active", avatar: "SC" },
-  { id: 2, name: "Marcus Johnson", role: "BD Manager", tag: "New", avatar: "MJ" },
-  { id: 3, name: "Elena Petrova", role: "Account Exec", tag: "Active", avatar: "EP" },
-  { id: 4, name: "Raj Patel", role: "Regional Dir", tag: "Away", avatar: "RP" },
+const voiceListData = [
+  { id: 1, name: "Blondie - Intense Woman", subtitle: "Powerful British female voice with dramatic flair", language: "English", extra: "+10", category: "Characters", age: "2y", count: "36.7K", verified: true, avatar: "BI" },
+  { id: 2, name: "Rob - Tough & Calloused", subtitle: "A tough British man. Gritty, Experienced, Strong.", language: "English", extra: "+13", category: "Characters", age: "2y", count: "50.9K", verified: false, avatar: "RT" },
+  { id: 3, name: "Jessica Anne Bogart", subtitle: "Jessica Anne Bogart — warm, versatile voice", language: "English", extra: "+16", category: "Characters", age: "2y", count: "255.6K", verified: true, avatar: "JA" },
+  { id: 4, name: "Jason - Energetic, Joyful", subtitle: "JollyBolt — Playful — Wor...", language: "Turkish", extra: "", category: "Characters", age: "2y", count: "11.5K", verified: false, avatar: "JE" },
+  { id: 5, name: "Matthew Schmitz", subtitle: "Matthew Schmitz — historical narrator", language: "English", extra: "+5", category: "Characters", age: "2y", count: "27.1K", verified: true, avatar: "MS" },
+  { id: 6, name: "Xavier - Dominating", subtitle: "Gaming — Unreal...", language: "English", extra: "+8", category: "Characters", age: "2y", count: "98.3K", verified: false, avatar: "XD" },
 ]
 
-const spaciousListData = [
-  { id: 1, name: "GPT-4 Turbo", tag: "New", count: 128 },
-  { id: 2, name: "Claude Opus", tag: null, count: 256 },
-  { id: 3, name: "Gemini Ultra", tag: "New", count: 64 },
+const modelListData = [
+  { id: 1, name: "Flash", tag: "New" as const, count: 333, color: "from-amber-400 to-orange-500" },
+  { id: 2, name: "Turbo v2.5", tag: null, count: 892, color: "from-blue-400 to-cyan-500" },
+  { id: 3, name: "Veo 2", tag: "New" as const, count: 156, color: "from-purple-400 to-pink-500" },
+  { id: 4, name: "Multilingual v2", tag: null, count: 1205, color: "from-emerald-400 to-teal-500" },
 ]
 
 const COLOR_TOKENS = [
@@ -465,63 +472,104 @@ export default function SandboxPage() {
           <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
             Lists
           </h2>
-          <div className="grid gap-4 md:grid-cols-2">
-            {/* Compact list */}
+          <div className="grid gap-6 lg:grid-cols-2">
+            {/* Compact list — Voice Library style */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-sm">Compact List</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-0">
-                {compactListData.map((item) => (
+                <div className="flex items-center gap-1.5 px-3 py-2 mb-1">
+                  <span className="text-xs font-medium text-muted-foreground">Weekly spotlight - Character Voices</span>
+                  <ChevronRightIcon className="size-3 text-muted-foreground" />
+                </div>
+                {voiceListData.map((item) => (
                   <div
                     key={item.id}
-                    className="group flex items-center gap-3 rounded-[16px] px-3 py-2 hover:bg-muted transition-colors"
+                    className="group flex items-center gap-3 rounded-[16px] px-3 py-2 hover:bg-muted transition-colors duration-75"
                   >
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-foreground text-[11px] font-medium text-background">
-                      {item.avatar}
+                    {/* Avatar with optional verified badge */}
+                    <div className="relative shrink-0">
+                      <div className="flex size-8 items-center justify-center rounded-full bg-foreground text-[11px] font-medium text-background">
+                        {item.avatar}
+                      </div>
+                      {item.verified && (
+                        <div className="absolute -top-0.5 -right-0.5 size-[14px] rounded-full bg-foreground flex items-center justify-center">
+                          <CheckIcon className="size-2 text-background" />
+                        </div>
+                      )}
                     </div>
+
+                    {/* Name & subtitle */}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold truncate">{item.name}</p>
-                      <p className="text-xs text-muted-foreground">{item.role}</p>
+                      <p className="text-sm text-muted-foreground truncate">{item.subtitle}</p>
                     </div>
-                    <Badge size="sm" variant="secondary">{item.tag}</Badge>
-                    <Button
-                      size="icon-sm"
-                      variant="ghost"
-                      className="opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <MoreHorizontalIcon />
-                    </Button>
+
+                    {/* Language badges */}
+                    <div className="hidden sm:flex items-center gap-1 shrink-0">
+                      <span className="text-sm text-muted-foreground">{item.language}</span>
+                      {item.extra && (
+                        <span className="text-xs text-muted-foreground">{item.extra}</span>
+                      )}
+                    </div>
+
+                    {/* Category */}
+                    <span className="hidden md:block text-sm text-muted-foreground shrink-0">{item.category}</span>
+
+                    {/* Age */}
+                    <span className="hidden md:block text-sm text-muted-foreground tabular-nums shrink-0">{item.age}</span>
+
+                    {/* Count */}
+                    <span className="text-sm text-muted-foreground tabular-nums shrink-0 w-14 text-right">{item.count}</span>
+
+                    {/* Action buttons */}
+                    <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                      <Button size="icon-sm" variant="ghost" className="size-8 rounded-lg">
+                        <PlusCircleIcon className="size-4" />
+                      </Button>
+                      <Button size="icon-sm" variant="ghost" className="size-8 rounded-lg">
+                        <TypeIcon className="size-4" />
+                      </Button>
+                      <Button size="icon-sm" variant="ghost" className="size-8 rounded-lg">
+                        <MoreHorizontalIcon className="size-4" />
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </CardContent>
             </Card>
 
-            {/* Spacious list */}
+            {/* Spacious list — Models style */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-sm">Spacious List</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-1">
-                {spaciousListData.map((item) => (
+                {modelListData.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-4 rounded-xl px-3 py-3 hover:bg-muted transition-colors"
+                    className="flex items-center gap-4 rounded-xl px-3 py-3 hover:bg-muted transition-colors duration-75"
                   >
-                    <div className="flex size-12 shrink-0 items-center justify-center rounded-3xl bg-muted text-sm font-medium">
+                    {/* Avatar — gradient squircle */}
+                    <div className={`flex size-12 shrink-0 items-center justify-center rounded-3xl bg-gradient-to-br ${item.color} text-sm font-medium text-white`}>
                       {item.name.slice(0, 2)}
                     </div>
+
+                    {/* Name + optional tag */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="text-sm font-semibold">{item.name}</p>
+                        <p className="text-sm font-medium">{item.name}</p>
                         {item.tag && (
-                          <Badge size="sm" className="bg-foreground text-background">
+                          <span className="h-4 px-1.5 text-[10px] rounded-full bg-muted font-medium inline-flex items-center">
                             {item.tag}
-                          </Badge>
+                          </span>
                         )}
                       </div>
                     </div>
-                    <Badge variant="secondary">{item.count}k tokens</Badge>
+
+                    {/* Count */}
+                    <Badge variant="secondary" className="tabular-nums">{item.count}</Badge>
                   </div>
                 ))}
               </CardContent>
