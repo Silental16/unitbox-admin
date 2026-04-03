@@ -2,13 +2,16 @@
 
 import { useState } from "react"
 import {
-  SearchIcon,
-  PlusIcon,
-  MoreHorizontalIcon,
-  PlayIcon,
-  TrashIcon,
-  SettingsIcon,
+  AlertTriangleIcon,
+  BoldIcon,
+  ChevronDownIcon,
+  InfoIcon,
   InboxIcon,
+  ItalicIcon,
+  MoreHorizontalIcon,
+  PlusIcon,
+  SearchIcon,
+  UnderlineIcon,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -72,6 +75,71 @@ import {
   EmptyTitle,
   EmptyDescription,
 } from "@/components/ui/empty"
+import { Separator } from "@/components/ui/separator"
+import { Kbd } from "@/components/ui/kbd"
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog"
+import { Skeleton } from "@/components/ui/skeleton"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Progress } from "@/components/ui/progress"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { Toggle } from "@/components/ui/toggle"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu"
+import {
+  Item,
+  ItemContent,
+  ItemTitle,
+  ItemDescription as ItemDesc,
+  ItemActions,
+} from "@/components/ui/item"
+import { FieldGroup } from "@/components/ui/field"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
+import { ButtonGroup } from "@/components/ui/button-group"
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion"
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible"
+
+import { FILL_STATUSES } from "@/lib/data/catalog-projects"
 
 // --- Mock data ---
 
@@ -83,12 +151,9 @@ const tableData = [
   { id: 5, name: "Bali Baza", status: "error", units: 15, price: "$95k" },
 ]
 
-const statusColors: Record<string, string> = {
-  pending: "bg-yellow-500",
-  filling: "bg-blue-500",
-  filled: "bg-emerald-500",
-  published: "bg-emerald-500",
-  error: "bg-red-500",
+function getStatusDot(status: string) {
+  const found = FILL_STATUSES.find((s) => s.value === status)
+  return found?.dot ?? "bg-muted-foreground"
 }
 
 const compactListData = [
@@ -104,8 +169,25 @@ const spaciousListData = [
   { id: 3, name: "Gemini Ultra", tag: "New", count: 64 },
 ]
 
+const COLOR_TOKENS = [
+  { name: "background", var: "--background" },
+  { name: "foreground", var: "--foreground" },
+  { name: "primary", var: "--primary" },
+  { name: "secondary", var: "--secondary" },
+  { name: "muted", var: "--muted" },
+  { name: "accent", var: "--accent" },
+  { name: "destructive", var: "--destructive" },
+  { name: "chart-1", var: "--chart-1" },
+  { name: "chart-2", var: "--chart-2" },
+  { name: "chart-3", var: "--chart-3" },
+  { name: "chart-4", var: "--chart-4" },
+  { name: "chart-5", var: "--chart-5" },
+]
+
 export default function SandboxPage() {
   const [segmented, setSegmented] = useState("overview")
+  const [segmentedControl, setSegmentedControl] = useState("Week")
+  const [collapsibleOpen, setCollapsibleOpen] = useState(false)
 
   return (
     <div className="flex flex-col gap-4">
@@ -200,10 +282,10 @@ export default function SandboxPage() {
               <div className="flex flex-col gap-2">
                 <span className="text-xs font-medium text-muted-foreground">Status badges</span>
                 <div className="flex flex-wrap gap-2">
-                  {["pending", "filling", "filled", "published", "error"].map((status) => (
-                    <Badge key={status} variant="secondary" className="gap-1.5">
-                      <span className={`size-1.5 rounded-full ${statusColors[status]}`} />
-                      <span className="capitalize">{status}</span>
+                  {FILL_STATUSES.map((s) => (
+                    <Badge key={s.value} variant="secondary" className="gap-1.5">
+                      <span className={`size-1.5 rounded-full ${s.dot}`} />
+                      <span>{s.label}</span>
                     </Badge>
                   ))}
                 </div>
@@ -329,13 +411,13 @@ export default function SandboxPage() {
             </Card>
 
             <div className="bg-[rgba(0,0,0,0.02)] rounded-3xl p-2">
-              <div className="bg-white rounded-2xl p-5 shadow-card">
+              <div className="bg-background rounded-2xl p-5 shadow-card">
                 <h3 className="text-lg font-medium">Chart Wrapper</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Outer: bg-[rgba(0,0,0,0.02)] rounded-3xl p-2
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Inner: bg-white rounded-2xl p-5 shadow-card
+                  Inner: bg-background rounded-2xl p-5 shadow-card
                 </p>
               </div>
             </div>
@@ -352,18 +434,10 @@ export default function SandboxPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-xs font-medium uppercase text-muted-foreground">
-                      Project
-                    </TableHead>
-                    <TableHead className="text-xs font-medium uppercase text-muted-foreground">
-                      Status
-                    </TableHead>
-                    <TableHead className="text-xs font-medium uppercase text-muted-foreground text-right">
-                      Units
-                    </TableHead>
-                    <TableHead className="text-xs font-medium uppercase text-muted-foreground text-right">
-                      Avg Price
-                    </TableHead>
+                    <TableHead>Project</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Units</TableHead>
+                    <TableHead className="text-right">Avg Price</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -372,7 +446,7 @@ export default function SandboxPage() {
                       <TableCell className="font-medium">{row.name}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1.5">
-                          <span className={`size-1.5 rounded-full ${statusColors[row.status]}`} />
+                          <span className={`size-1.5 rounded-full ${getStatusDot(row.status)}`} />
                           <span className="capitalize text-sm">{row.status}</span>
                         </div>
                       </TableCell>
@@ -401,7 +475,7 @@ export default function SandboxPage() {
                 {compactListData.map((item) => (
                   <div
                     key={item.id}
-                    className="group flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-muted transition-colors"
+                    className="group flex items-center gap-3 rounded-[16px] px-3 py-2 hover:bg-muted transition-colors"
                   >
                     <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-foreground text-[11px] font-medium text-background">
                       {item.avatar}
@@ -432,7 +506,7 @@ export default function SandboxPage() {
                 {spaciousListData.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-4 rounded-lg px-3 py-3 hover:bg-muted transition-colors"
+                    className="flex items-center gap-4 rounded-xl px-3 py-3 hover:bg-muted transition-colors"
                   >
                     <div className="flex size-12 shrink-0 items-center justify-center rounded-3xl bg-muted text-sm font-medium">
                       {item.name.slice(0, 2)}
@@ -585,8 +659,9 @@ export default function SandboxPage() {
                   {["Day", "Week", "Month"].map((label) => (
                     <button
                       key={label}
+                      onClick={() => setSegmentedControl(label)}
                       className={
-                        label === "Week"
+                        segmentedControl === label
                           ? "bg-white rounded-[8px] px-3 h-7 text-sm font-medium shadow-sm transition-all"
                           : "px-3 h-7 text-sm font-medium text-muted-foreground rounded-[8px] transition-all hover:text-foreground"
                       }
@@ -614,6 +689,422 @@ export default function SandboxPage() {
                     Create Project
                   </Button>
                 </Empty>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 11. Separator & Kbd */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Separator & Kbd
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Horizontal separator</span>
+                <Separator />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Vertical separator between elements</span>
+                <div className="flex items-center gap-3 h-8">
+                  <span className="text-sm">Home</span>
+                  <Separator orientation="vertical" className="h-4" />
+                  <span className="text-sm">Settings</span>
+                  <Separator orientation="vertical" className="h-4" />
+                  <span className="text-sm">Profile</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Keyboard shortcuts</span>
+                <div className="flex flex-wrap gap-3">
+                  <Kbd>⌘K</Kbd>
+                  <Kbd>⌘S</Kbd>
+                  <Kbd>Esc</Kbd>
+                  <Kbd>⌘⇧P</Kbd>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 12. Alert */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Alert
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <Alert>
+                <InfoIcon className="size-4" />
+                <AlertTitle>Information</AlertTitle>
+                <AlertDescription>
+                  This is a default informational alert with a title and description.
+                </AlertDescription>
+              </Alert>
+
+              <Alert variant="destructive">
+                <AlertTriangleIcon className="size-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  Something went wrong. Please check your input and try again.
+                </AlertDescription>
+              </Alert>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 13. AlertDialog */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Alert Dialog
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive">Delete Project</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete the project
+                      and remove all associated data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction>Continue</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 14. Skeleton */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Skeleton
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <div className="flex items-center gap-4">
+                <Skeleton className="size-12 rounded-full" />
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="h-4 w-[250px]" />
+                  <Skeleton className="h-4 w-[200px]" />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <Skeleton className="h-[125px] w-full rounded-xl" />
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-[80%]" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 15. Tooltip */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Tooltip
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <TooltipProvider>
+                <div className="flex gap-4">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline">Hover me</Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>This is a tooltip</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline" size="icon">
+                        <PlusIcon />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Add new item</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              </TooltipProvider>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 16. Popover */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Popover
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline">Open Popover</Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80">
+                  <div className="flex flex-col gap-2">
+                    <h4 className="text-sm font-medium">Popover Content</h4>
+                    <p className="text-sm text-muted-foreground">
+                      This is a popover with some content. You can put forms, lists, or any other content here.
+                    </p>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 17. Progress */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Progress
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2 max-w-md">
+                <span className="text-xs font-medium text-muted-foreground">25%</span>
+                <Progress value={25} />
+              </div>
+              <div className="flex flex-col gap-2 max-w-md">
+                <span className="text-xs font-medium text-muted-foreground">60%</span>
+                <Progress value={60} />
+              </div>
+              <div className="flex flex-col gap-2 max-w-md">
+                <span className="text-xs font-medium text-muted-foreground">100%</span>
+                <Progress value={100} />
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 18. Avatar */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Avatar
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <div className="flex items-center gap-4">
+                <Avatar className="size-8">
+                  <AvatarImage src="https://github.com/shadcn.png" alt="User" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+
+                <Avatar>
+                  <AvatarFallback>AB</AvatarFallback>
+                </Avatar>
+
+                <Avatar className="size-14">
+                  <AvatarFallback className="text-lg">XL</AvatarFallback>
+                </Avatar>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 19. Toggle & ToggleGroup */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Toggle & ToggleGroup
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Single toggles</span>
+                <div className="flex gap-2">
+                  <Toggle aria-label="Toggle bold">
+                    <BoldIcon className="size-4" />
+                  </Toggle>
+                  <Toggle aria-label="Toggle italic">
+                    <ItalicIcon className="size-4" />
+                  </Toggle>
+                  <Toggle aria-label="Toggle underline">
+                    <UnderlineIcon className="size-4" />
+                  </Toggle>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Toggle group</span>
+                <ToggleGroup type="multiple">
+                  <ToggleGroupItem value="bold" aria-label="Toggle bold">
+                    <BoldIcon className="size-4" />
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="italic" aria-label="Toggle italic">
+                    <ItalicIcon className="size-4" />
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="underline" aria-label="Toggle underline">
+                    <UnderlineIcon className="size-4" />
+                  </ToggleGroupItem>
+                </ToggleGroup>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 20. DropdownMenu */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Dropdown Menu
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline">
+                    Open Menu
+                    <ChevronDownIcon className="size-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 21. Item / Field / InputGroup / ButtonGroup */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Item / InputGroup / ButtonGroup
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Item (outline variant)</span>
+                <Item variant="outline">
+                  <ItemContent>
+                    <ItemTitle>Project Configuration</ItemTitle>
+                    <ItemDesc>Manage your project settings and preferences</ItemDesc>
+                  </ItemContent>
+                  <ItemActions>
+                    <Button size="sm" variant="outline">Configure</Button>
+                  </ItemActions>
+                </Item>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground">InputGroup with search addon</span>
+                <FieldGroup>
+                  <InputGroup className="max-w-sm">
+                    <InputGroupAddon>
+                      <SearchIcon className="size-4" />
+                    </InputGroupAddon>
+                    <InputGroupInput placeholder="Search..." />
+                  </InputGroup>
+                </FieldGroup>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground">ButtonGroup</span>
+                <ButtonGroup>
+                  <Button variant="outline">Left</Button>
+                  <Button variant="outline">Right</Button>
+                </ButtonGroup>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 22. Accordion */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Accordion
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>What is Unitbox?</AccordionTrigger>
+                  <AccordionContent>
+                    Unitbox is a real estate catalog platform focused on emerging markets like Bali.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2">
+                  <AccordionTrigger>How does AI filling work?</AccordionTrigger>
+                  <AccordionContent>
+                    AI agents parse project materials (PDFs, spreadsheets, websites) and populate
+                    all database fields following 78 domain-specific rules.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-3">
+                  <AccordionTrigger>What tech stack is used?</AccordionTrigger>
+                  <AccordionContent>
+                    Next.js, NestJS, PostgreSQL, Supabase, and shadcn/ui for the admin interface.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 23. Collapsible */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Collapsible
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <Collapsible open={collapsibleOpen} onOpenChange={setCollapsibleOpen}>
+                <div className="flex items-center gap-2">
+                  <CollapsibleTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      <ChevronDownIcon className={`size-4 transition-transform ${collapsibleOpen ? "rotate-180" : ""}`} />
+                      {collapsibleOpen ? "Hide" : "Show"} details
+                    </Button>
+                  </CollapsibleTrigger>
+                </div>
+                <CollapsibleContent className="mt-3">
+                  <div className="rounded-lg border px-4 py-3 text-sm text-muted-foreground">
+                    This content is hidden by default and can be toggled with the button above.
+                    Use Collapsible for progressive disclosure of secondary information.
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 24. Color Palette */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Color Palette
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
+                {COLOR_TOKENS.map((token) => (
+                  <div key={token.name} className="flex flex-col gap-1.5">
+                    <div
+                      className="aspect-square w-full rounded-lg border"
+                      style={{ backgroundColor: `var(${token.var})` }}
+                    />
+                    <span className="text-[10px] font-medium text-muted-foreground truncate">
+                      {token.name}
+                    </span>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
