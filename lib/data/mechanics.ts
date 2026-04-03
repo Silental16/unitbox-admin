@@ -175,8 +175,19 @@ export const mechanics: Mechanic[] = [
       "Hormozi: «AI не заменяет людей — AI заменяет неэффективность». Скучные бизнесы имеют низкую техническую грамотность = мало конкуренции за AI-внедрение. Codie Sanchez использовала ChatGPT Operator для создания flipping-бизнеса на Facebook Marketplace.",
     examples: [
       {
-        company: "Codie Sanchez portfolio",
-        detail: "Покупает прачечные, автомойки, сервисные бизнесы и оптимизирует через AI. Contrarian Thinking community — 9K+ членов",
+        company: "Codie Sanchez / Contrarian Thinking",
+        detail: "25+ бизнесов, 9 цифр revenue. Ex-Goldman → Main Street HoldCo. NYT bestseller",
+        caseStudy: {
+          mechanicInAction: "• Ex-Goldman Sachs / Vanguard, 15 лет на Wall Street → основала Contrarian Thinking (медиа 1M+ подписчиков) + Main Street HoldCo (25+ скучных бизнесов)\n• Портфель: автомойки, прачечные, вендинг, трейлерные парки — 9 цифр (100M+) совокупной выручки\n• AI-инъекция: автоматизация бухгалтерии, CRM, маркетинга, планирования\n• Книга-бестселлер NYT: Main Street Millionaire\n• AI-клон на Delphi для персонализированных консультаций\n• Нарратив «Boring is the new sexy» — контринтуитивный хук",
+          jtbd: "**Core Job (покупатель курса):** Вырваться из корпорации через покупку бизнеса, а не стартап с нуля.\n\n**Functional:** Найти скучный бизнес с cashflow, провести сделку, масштабировать через AI.\n\n**Emotional:** Контроль и свобода — не работать «на дядю».\n\n**Core Job (HoldCo):** Портфель cashflow-бизнесов с минимальным участием через AI + community flywheel.",
+          monetization: "**Community:** 9K+ платных участников. **VC фонд:** инвестиции в Main Street. **HoldCo:** 25+ бизнесов, 8+ цифр revenue.\n\n**Книга:** NYT bestseller → воронка в community. **YouTube/TikTok/Newsletter:** 1M+ → спонсорство + lead gen.\n\n**Events:** мастермайнды, live events. **AI-клон Delphi:** масштабирование консалтинга.",
+          marketing: "• Контент-маховик: YouTube + TikTok (1.5M за 24 мес) + Newsletter (1M+)\n• «Boring is the new sexy» — провокационный хук\n• SOWS фреймворк + 130 скучных бизнесов — лид-магнит\n• «Ex-Wall Street → Main Street» — доверие через трек-рекорд\n• Книга → подкасты → community → HoldCo — каждый слой конвертит",
+          impact: "**Портфель:** 25+ бизнесов, 9 цифр revenue. **Медиа:** 1M+ еженедельных, 1.5M+ соцсети. **Community:** 9K+ платных. **Книга:** NYT bestseller. Создала категорию «boring business acquisition».",
+          tocConstraint: "**Ограничение:** Пропускная способность сделок — community генерирует лиды, но due diligence = bottleneck.\n\n**Решение:** AI-клон для консалтинга + events для «сделай первую сделку».\n\n**Куда сместилось:** Операционное управление портфелем HoldCo при масштабировании.",
+          trizContradictions: "**ТП #1:** Масштаб портфеля vs операционное внимание к каждому. AI для рутины + наёмные операторы + community deal-sourcing.\n\n**ТП #2:** Контент простой (масса) vs сделки сложные (риск). «Воронка сложности»: бесплатный упрощает, платное — глубину.\n\n**Физическое:** Бизнес скучный (cashflow) И привлекательный (чтобы покупали курс). Бизнес скучный, ПУТЬ подаётся как exciting.",
+          conditions: "**Capital:** Стартовый + creative financing (seller financing, SBA loans).\n\n**Рынок:** 30M+ SMB в США.\n\n**Личный бренд:** Контент-маховик для deal flow.\n\n**AI:** Работает только если бизнес уже работает (нельзя автоматизировать хаос).\n\n**Толерантность:** Скучные бизнесы не гламурные.",
+          mvpVersion: "**Гипотеза:** Скучный бизнес + AI = высокая маржа + масштаб без найма.\n\n**Эксперимент:** Купить 1 бизнес за $50-200K через seller financing. AI для бухгалтерии, CRM, маркетинга. Документировать в контенте.\n\n**Метрика:** Операционка −50%, cashflow стабилен.\n\n**Следующий шаг:** 2-3 бизнеса → community/курс по модели Codie.",
+        },
       },
       {
         company: "Hormozi portfolio (Acquisition.com)",

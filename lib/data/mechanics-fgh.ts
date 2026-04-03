@@ -208,7 +208,18 @@ export const mechanicsFGH: any[] = [
       },
       {
         company: "GitHub Copilot",
-        detail: "~40% кода AI. Programmer reviews 60%. Productivity 2x",
+        detail: "4.7M платных, 20M юзеров, 90% Fortune 100. Acceptance rate 30% — last mile в действии",
+        caseStudy: {
+          mechanicInAction: "• Copilot генерирует код с acceptance rate ~30% — 1 из 3 предложений принимается. 88% принятого сохраняется в коммите\n• AI = черновик, человек = редактор и судья. Last mile — архитектура, безопасность, бизнес-логика\n• Из Bing Code Search (2014) → OpenAI Codex (GPT-3 + 159 ГБ Python) → Copilot (2021)\n• Microsoft купил GitHub (2018) + эксклюзивная лицензия GPT-3 → стратегическая синергия\n• К 2026: ~4.7M платных, 20M total, 90% Fortune 100, 42% рынка AI-кодинга ($7.37B)\n• Годами субсидировал (терял $20-80/юзер) ради захвата доли → поднял цены + Enterprise",
+          jtbd: "**Core Job:** Написать код быстрее без потери качества.\n\n**Push:** Ручной набор, Stack Overflow копипаст, дедлайны.\n\n**Pull:** AI pair programmer — подсказывает в контексте, не отвлекает.\n\n**Anxiety:** Баги/уязвимости от AI, проблемы с лицензиями.\n\n**Habit:** Привычка писать вручную, недоверие к автодополнению.\n\n**Metrics:** Ускорение задач до 55%, acceptance 30%, retention кода 88%.",
+          monetization: "**Тарифы:** Free (ограничен). Individual $10/мес. Business $19/user/мес. Enterprise $39/user/мес (SSO, audit).\n\n**Масштаб:** 4.7M платных, рост 75% YoY. ARR ~$1-2B. 42% рынка AI-кодинга.\n\n**Unit economics:** Субсидировал годами ($20-80 loss/user). Стратегия: захватить → поднять цены → допродать Workspace/Enterprise.",
+          marketing: "• Дистрибуция через GitHub (100M+ разработчиков) — CAC ≈ 0\n• VS Code (74% рынка) — Copilot появляется где разработчик уже работает\n• Viral: разработчик пробует → команда → Enterprise\n• 90% Fortune 100 через top-down + bottom-up\n• Бесплатно для open source и студентов — привычка\n• «Your AI pair programmer» — не замена, а напарник",
+          impact: "**Для клиента:** Ускорение до 55%. Acceptance 30%. Retention 88%. 11 недель до полной реализации gains.\n\n**Для компании:** 20M users, 4.7M платных. 90% Fortune 100. 42% рынка ($7.37B).\n\n**Last Mile:** 70% генерируется, но 30% отвергнутых = архитектура, безопасность, бизнес-логика — определяют качество.",
+          tocConstraint: "**Ограничение:** Acceptance rate 30% — модель не понимает полный контекст проекта.\n\n**Exploit:** Copilot Chat + Workspace — больше контекста через RAG по репозиторию.\n\n**Elevate:** От completions к агентам — Copilot Agent mode делает задачи целиком.\n\n**Куда сместилось:** Trust. Чем больше AI делает, тем сложнее верифицировать.",
+          trizContradictions: "**ТП #1:** Автономность vs Контроль — больше кода = быстрее, но теряется понимание. #15 Динамичность: адаптивный уровень — от completions до agent mode.\n\n**ТП #2:** Скорость vs Безопасность — принимать всё = быстро, но уязвимости. #3 Местное качество: inline security scanning.\n\n**Физическое:** Длинное (экономия) И Короткое (точность). Разделение: inline completions + длинные блоки по запросу (Chat).",
+          conditions: "**Работает:** Рутинная часть (80%) + экспертная (20%). Высокая стоимость ошибки. Пользователь — эксперт. Быстрый feedback (CI).\n\n**НЕ работает:** Junior без ментора. Задача целиком экспертная. Acceptance cost > rejection cost (медицина). AI >90% accuracy — last mile исчезает.",
+          mvpVersion: "**Гипотеза:** AI-черновик + human review ускоряет работу на 30%+ при acceptance >25%.\n\n**Эксперимент:** Разбить процесс на шаги. Автоматизировать рутинные (генерация, предзаполнение). UI для review (diff, accept/reject).\n\n**Метрика:** Acceptance >25%, время −30%.\n\n**Для Unitbox:** AI генерирует описание проекта (80%), менеджер правит USP, цифры, tone (20% judgment).",
+        },
       },
     ],
     unitboxApplication:
@@ -283,8 +294,19 @@ export const mechanicsFGH: any[] = [
       "Support: -30-50%. Content: -50-70% junior writers. Dev: 0% layoffs, 2-3x productivity. Pattern: AI eliminates task layers.",
     examples: [
       {
-        company: "Klarna",
-        detail: "AI = 2/3 support = 700 FTE. People → relationship roles",
+        company: "Klarna (workforce transformation)",
+        detail: "5527→3000 сотрудников (−46%) через AI + attrition. Revenue/employee +152%. Зарплаты +60%",
+        caseStudy: {
+          mechanicInAction: "• С 5 527 (2022) до ~3 000 (2025) — сокращение на 46% БЕЗ массовых увольнений, через hiring freeze + attrition\n• AI-чатбот заменил 700 саппорт-агентов. Маркетинг: 80%+ контента AI. Инженеры на AI-копилотах\n• Revenue per employee +152%. Зарплаты оставшихся +60%\n• Ключевой поворот (2025-2026): CEO признал 'we went too far' — падение качества, рост жалоб\n• Klarna начала заново нанимать → гибридная модель\n• Доля технических сотрудников: 36% → 52%. 96% используют AI ежедневно",
+          jtbd: "**Functional:** Обслуживать растущую базу без линейного роста штата.\n\n**Emotional:** Лидер AI-трансформации в fintech.\n\n**Social:** Показать инвесторам рост эффективности перед IPO.\n\n**Скрытая работа:** Сохранить качество при сокращении — именно здесь провал.",
+          monetization: "**Экономия:** $40M/год на замене 700 контракторов. Revenue/employee: +152%. Зарплаты: +60%.\n\n**Скрытые расходы:** Потеря клиентов, cost of reversal (повторный найм), репутационный ущерб перед IPO.\n\n**Вывод:** Чистая экономия ниже заявленной — не учитывает quality degradation.",
+          marketing: "• Siemiatkowski — публичные заявления → Bloomberg, Fortune, CNBC\n• AI-клон CEO для квартального отчёта — виральный PR\n• «AI replaces tasks, not roles» для IPO\n• После разворота — cautionary tale: «AI hype → reality check»",
+          impact: "**Трансформация:** Саппорт: рутина → AI, люди → эскалации. Маркетинг: ручное → prompt engineering. Инженеры: код → код с AI-копилотами.\n\n**Mix:** 52% технических (было 36%). Revenue/employee +152%. Зарплаты +60%.\n\n**Провал:** Generic AI ответы → жалобы → потеря trust → reversal.",
+          tocConstraint: "**Ограничение:** Качество customer experience.\n\n**Klarna подчинила всё скорости/экономии** — но constraint был в качестве сложных кейсов.\n\n**Когда AI стал bottleneck качества:** жалобы → потеря клиентов → репутационный риск. Решение: гибрид — AI фильтрует L1, люди обеспечивают L2+ quality.",
+          trizContradictions: "**ТП #1:** Эффективность (меньше людей) vs Качество (эмпатия, judgment). #1 Сегментация: AI-L1 + human-L2. #35 Изменение параметров: не замена людей, а изменение ЧТО делают.\n\n**ТП #2:** Сократить штат vs Сохранить экспертизу. #5 Объединение: 1 человек + AI = производительность троих, +60% зарплата.\n\n**Физическое:** Маленький (экономия) И Большой (покрытие). AI на фронтлайне (объём), люди на глубине (качество).",
+          conditions: "**Работает:** Высокая доля рутинных задач. Attrition + hiring freeze (не увольнения). Метрика качества. Готовность к reversal.\n\n**НЕ работает:** Роли с empathy/judgment. Нет мониторинга (Klarna пропустила деградацию). PR-давление не делать reversal. IPO-контекст: метрики > качество.",
+          mvpVersion: "**Шаг 1:** Аудит задач — классифицировать AI-пригодность (L1/L2/L3).\n**Шаг 2:** Hiring freeze + AI copilot оставшимся.\n**Шаг 3:** Quality gate ДО масштабирования.\n**Шаг 4:** Пилот на 1 отделе: 3 мес, productivity + quality + satisfaction.\n**Шаг 5:** 50% экономии → зарплаты, 50% → AI-инфра.\n**Шаг 6:** Гибрид с первого дня — НЕ повторять ошибку Klarna.",
+        },
       },
       {
         company: "Копирайтинг",
