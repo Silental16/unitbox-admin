@@ -10,6 +10,7 @@ import {
   EyeIcon,
   TrendingUpIcon,
   CheckSquareIcon,
+  LightbulbIcon,
   SunIcon,
   MoonIcon,
   LogOutIcon,
@@ -48,6 +49,7 @@ const navGroups = [
     items: [
       { title: "Preview", href: "/preview", icon: EyeIcon },
       { title: "Unitbox ROI", href: "/roi", icon: TrendingUpIcon },
+      { title: "Mechanics", href: "/mechanics", icon: LightbulbIcon },
     ],
   },
 ]
