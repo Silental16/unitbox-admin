@@ -97,7 +97,7 @@ export function TopOffersTable({ data }: { data: TopOffer[] }) {
                   <TableCell className="text-right tabular-nums">
                     {offer.units.toLocaleString()}
                   </TableCell>
-                  <TableCell className="text-right font-semibold text-amber-500 tabular-nums">
+                  <TableCell className="text-right font-semibold text-foreground tabular-nums">
                     {offer.uniqueViewers.toLocaleString()}
                   </TableCell>
                   <TableCell className="text-right tabular-nums">

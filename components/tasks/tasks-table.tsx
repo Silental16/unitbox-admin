@@ -236,7 +236,7 @@ export function TasksTable({
                   </TableCell>
                   <TableCell>
                     {task.deadline ? (
-                      <span className={`text-xs tabular-nums whitespace-nowrap ${isOverdue ? "text-red-500 font-medium" : "text-muted-foreground"}`}>
+                      <span className={`text-xs tabular-nums whitespace-nowrap ${isOverdue ? "text-destructive font-medium" : "text-muted-foreground"}`}>
                         {formatDate(task.deadline)}
                       </span>
                     ) : (

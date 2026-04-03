@@ -2,10 +2,8 @@
 
 import { cn } from "@/lib/utils"
 
-function getHealthColor(score: number): string {
-  if (score >= 70) return "text-emerald-500"
-  if (score >= 40) return "text-amber-500"
-  return "text-red-500"
+function getHealthColor(_score: number): string {
+  return "text-foreground"
 }
 
 function getHealthBg(score: number): string {

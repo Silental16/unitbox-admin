@@ -6,11 +6,11 @@ export type SalesStatus = "lead" | "intro_sent" | "meeting_done" | "offer_sent" 
 
 export const SALES_STATUSES: { value: SalesStatus; label: string; dot: string; bg: string; text: string }[] = [
   { value: "lead", label: "Lead", dot: "bg-slate-300", bg: "bg-muted", text: "text-muted-foreground" },
-  { value: "intro_sent", label: "Intro Sent", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
-  { value: "meeting_done", label: "Meeting Done", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
-  { value: "offer_sent", label: "Offer Sent", dot: "bg-purple-500", bg: "bg-purple-100 dark:bg-purple-900/30", text: "text-purple-700 dark:text-purple-400" },
-  { value: "client", label: "Client", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
-  { value: "declined", label: "Declined", dot: "bg-red-500", bg: "bg-red-100 dark:bg-red-900/30", text: "text-red-700 dark:text-red-400" },
+  { value: "intro_sent", label: "Intro Sent", dot: "bg-blue-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "meeting_done", label: "Meeting Done", dot: "bg-amber-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "offer_sent", label: "Offer Sent", dot: "bg-purple-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "client", label: "Client", dot: "bg-emerald-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "declined", label: "Declined", dot: "bg-red-500", bg: "bg-muted", text: "text-muted-foreground" },
 ]
 
 export interface DeveloperProject {

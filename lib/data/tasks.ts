@@ -8,16 +8,16 @@ export type TaskStage = "concept" | "design" | "development"
 
 export const TASK_STATUSES: { value: TaskStatus; label: string; dot: string; bg: string; text: string }[] = [
   { value: "backlog", label: "Backlog", dot: "bg-slate-400", bg: "bg-muted", text: "text-muted-foreground" },
-  { value: "todo", label: "Todo", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
-  { value: "in_progress", label: "In Progress", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
-  { value: "review", label: "Review", dot: "bg-purple-500", bg: "bg-purple-100 dark:bg-purple-900/30", text: "text-purple-700 dark:text-purple-400" },
-  { value: "done", label: "Done", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
+  { value: "todo", label: "Todo", dot: "bg-blue-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "in_progress", label: "In Progress", dot: "bg-amber-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "review", label: "Review", dot: "bg-purple-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "done", label: "Done", dot: "bg-emerald-500", bg: "bg-muted", text: "text-foreground" },
 ]
 
 export const TASK_PRIORITIES: { value: TaskPriority; label: string; dot: string; bg: string; text: string }[] = [
-  { value: "p0", label: "P0 Critical", dot: "bg-red-500", bg: "bg-red-100 dark:bg-red-900/30", text: "text-red-700 dark:text-red-400" },
-  { value: "p1", label: "P1 High", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
-  { value: "p2", label: "P2 Medium", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
+  { value: "p0", label: "P0 Critical", dot: "bg-red-500", bg: "bg-destructive/10", text: "text-destructive" },
+  { value: "p1", label: "P1 High", dot: "bg-amber-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "p2", label: "P2 Medium", dot: "bg-blue-500", bg: "bg-muted", text: "text-foreground" },
   { value: "p3", label: "P3 Low", dot: "bg-slate-400", bg: "bg-muted", text: "text-muted-foreground" },
 ]
 
@@ -36,9 +36,9 @@ export const TASK_SOURCES: Record<TaskSource, string> = {
 }
 
 export const AJTBD_TIERS: { value: AjtbdTier; label: string; bg: string; text: string }[] = [
-  { value: "s", label: "S-tier", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
-  { value: "a", label: "A-tier", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
-  { value: "b", label: "B-tier", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
+  { value: "s", label: "S-tier", bg: "bg-muted", text: "text-foreground" },
+  { value: "a", label: "A-tier", bg: "bg-muted", text: "text-foreground" },
+  { value: "b", label: "B-tier", bg: "bg-muted", text: "text-foreground" },
   { value: "c", label: "C-tier", bg: "bg-muted", text: "text-muted-foreground" },
 ]
 
@@ -58,9 +58,9 @@ export const SEGMENT_LABELS: Record<TaskSegment, string> = {
 }
 
 export const TASK_STAGES: { value: TaskStage; label: string; dot: string; bg: string; text: string }[] = [
-  { value: "concept", label: "Концепт", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
-  { value: "design", label: "Дизайн", dot: "bg-purple-500", bg: "bg-purple-100 dark:bg-purple-900/30", text: "text-purple-700 dark:text-purple-400" },
-  { value: "development", label: "Разработка", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
+  { value: "concept", label: "Концепт", dot: "bg-blue-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "design", label: "Дизайн", dot: "bg-purple-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "development", label: "Разработка", dot: "bg-amber-500", bg: "bg-muted", text: "text-foreground" },
 ]
 
 export interface Task {

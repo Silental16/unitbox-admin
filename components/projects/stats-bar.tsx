@@ -14,8 +14,8 @@ export function StatsBar({ projects }: StatsBarProps) {
   const totalUnits = projects.reduce((sum, p) => sum + p.unitsCount, 0)
 
   const stats = [
-    { label: "Filled", value: filled, color: "text-[#096]" },
-    { label: "In Progress", value: filling, color: "text-[#e17100]" },
+    { label: "Filled", value: filled, color: "text-foreground" },
+    { label: "In Progress", value: filling, color: "text-foreground" },
     { label: "Pending", value: pending, color: "text-muted-foreground" },
     { label: "Total Units", value: totalUnits, color: "text-foreground" },
   ]

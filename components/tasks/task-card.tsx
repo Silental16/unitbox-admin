@@ -86,7 +86,7 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
             </Badge>
           )}
           {task.deadline && (
-            <span className={`text-[11px] tabular-nums ${isOverdue ? "text-red-500 font-medium" : "text-muted-foreground"}`}>
+            <span className={`text-[11px] tabular-nums ${isOverdue ? "text-destructive font-medium" : "text-muted-foreground"}`}>
               {formatDate(task.deadline)}
             </span>
           )}

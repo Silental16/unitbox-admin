@@ -30,10 +30,10 @@ export const MATERIAL_TYPES: { value: MaterialType; label: string; icon: string 
 ]
 
 export const CHANGE_SOURCES: { value: ChangeSource; label: string; dot: string; bg: string; text: string }[] = [
-  { value: "ai_fill", label: "AI Fill", dot: "bg-purple-500", bg: "bg-purple-100 dark:bg-purple-900/30", text: "text-purple-700 dark:text-purple-400" },
-  { value: "sync", label: "Sync", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
+  { value: "ai_fill", label: "AI Fill", dot: "bg-purple-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "sync", label: "Sync", dot: "bg-blue-500", bg: "bg-muted", text: "text-foreground" },
   { value: "manual", label: "Manual", dot: "bg-slate-400", bg: "bg-muted", text: "text-muted-foreground" },
-  { value: "cron", label: "Cron", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
+  { value: "cron", label: "Cron", dot: "bg-amber-500", bg: "bg-muted", text: "text-foreground" },
 ]
 
 export interface CatalogProject {

@@ -38,9 +38,9 @@ import { calculateIcpScore, getScoreTier, countActiveUnits, countActiveProjects,
 
 const RESEARCH_OPTIONS: { value: ResearchStatus; label: string; dot: string; bg: string; text: string }[] = [
   { value: "not_started", label: "Not Started", dot: "bg-slate-300", bg: "bg-muted", text: "text-muted-foreground" },
-  { value: "outdated", label: "Outdated", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
-  { value: "ready", label: "Ready", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
-  { value: "completed", label: "Done", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
+  { value: "outdated", label: "Outdated", dot: "bg-amber-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "ready", label: "Ready", dot: "bg-blue-500", bg: "bg-muted", text: "text-foreground" },
+  { value: "completed", label: "Done", dot: "bg-emerald-500", bg: "bg-muted", text: "text-foreground" },
 ]
 
 const MIN_WIDTH = 400
@@ -60,14 +60,14 @@ function statusBadge(status: string) {
   switch (status) {
     case "presale":
       return (
-        <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+        <Badge className="bg-muted text-foreground">
           Presale
         </Badge>
       )
     case "building":
     case "construction":
       return (
-        <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+        <Badge className="bg-muted text-foreground">
           Building
         </Badge>
       )
@@ -81,11 +81,11 @@ function statusBadge(status: string) {
 function icpBadgeClass(tier: string) {
   switch (tier) {
     case "high":
-      return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
+      return "bg-muted text-foreground"
     case "medium":
-      return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+      return "bg-muted text-foreground"
     default:
-      return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
+      return "bg-muted text-muted-foreground"
   }
 }
 
@@ -395,7 +395,7 @@ export function DeveloperSheet({
                                 </span>
                               )}
                               {project.roi && (
-                                <span className="inline-flex items-center gap-1 rounded bg-emerald-50 px-1.5 py-px text-xs text-emerald-700">
+                                <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-px text-xs text-foreground">
                                   <TrendingUpIcon className="size-2.5 shrink-0" />
                                   {project.roi}
                                 </span>

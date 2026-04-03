@@ -307,8 +307,8 @@ export function MechanicSheet({ mechanic, open, onOpenChange }: MechanicSheetPro
                   {activeCase.caseStudy.mvpVersion && (
                     <section>
                       <h3 className="text-sm font-semibold mb-2">MVP версия</h3>
-                      <div className="rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 p-4">
-                        <p className="text-sm leading-relaxed text-emerald-900 dark:text-emerald-200 whitespace-pre-line">
+                      <div className="rounded-md bg-muted border border-border p-4">
+                        <p className="text-sm leading-relaxed text-foreground whitespace-pre-line">
                           {activeCase.caseStudy.mvpVersion}
                         </p>
                       </div>
@@ -340,8 +340,8 @@ export function MechanicSheet({ mechanic, open, onOpenChange }: MechanicSheetPro
                       <Separator />
                       <section>
                         <h3 className="text-sm font-semibold mb-2">Уроки для Unitbox</h3>
-                        <div className="rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 p-4">
-                          <p className="text-sm leading-relaxed text-amber-900 dark:text-amber-200 whitespace-pre-line">
+                        <div className="rounded-md bg-muted border border-border p-4">
+                          <p className="text-sm leading-relaxed text-foreground whitespace-pre-line">
                             {activeCase.caseStudy.lessonsForUnitbox}
                           </p>
                         </div>
@@ -444,8 +444,8 @@ export function MechanicSheet({ mechanic, open, onOpenChange }: MechanicSheetPro
 
                 <section>
                   <h3 className="text-sm font-semibold mb-2">Применение в Unitbox</h3>
-                  <div className="rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 p-4">
-                    <p className="text-sm leading-relaxed text-amber-900 dark:text-amber-200">
+                  <div className="rounded-md bg-muted border border-border p-4">
+                    <p className="text-sm leading-relaxed text-foreground">
                       {mechanic.unitboxApplication}
                     </p>
                   </div>

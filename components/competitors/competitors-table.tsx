@@ -45,9 +45,9 @@ function SortIcon({ column, current }: { column: SortColumn; current: SortOption
 }
 
 const THREAT_LEVEL_CONFIG: Record<ThreatLevel, { label: string; bg: string; text: string }> = {
-  high: { label: "HIGH", bg: "bg-red-100 dark:bg-red-900/30", text: "text-red-700 dark:text-red-300" },
-  medium: { label: "MEDIUM", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-300" },
-  low: { label: "LOW", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-300" },
+  high: { label: "HIGH", bg: "bg-destructive/10", text: "text-destructive" },
+  medium: { label: "MEDIUM", bg: "bg-muted", text: "text-foreground" },
+  low: { label: "LOW", bg: "bg-muted", text: "text-foreground" },
 }
 
 const CHAIN_LINK_LABELS: Record<ChainLink, string> = {
@@ -60,9 +60,9 @@ const CHAIN_LINK_LABELS: Record<ChainLink, string> = {
 }
 
 const RESEARCH_STATUS_CONFIG: Record<CompetitorResearchStatus, { label: string; dot: string; bg: string; text: string }> = {
-  not_started: { label: "Не начато", dot: "bg-slate-300 dark:bg-slate-600", bg: "bg-muted", text: "text-muted-foreground" },
-  in_progress: { label: "В процессе", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
-  completed: { label: "Готово", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
+  not_started: { label: "Не начато", dot: "bg-slate-300", bg: "bg-muted", text: "text-muted-foreground" },
+  in_progress: { label: "В процессе", dot: "bg-blue-500", bg: "bg-muted", text: "text-foreground" },
+  completed: { label: "Готово", dot: "bg-emerald-500", bg: "bg-muted", text: "text-foreground" },
 }
 
 function ResearchStatusSelect({ status, onChange }: { status: CompetitorResearchStatus; onChange: (v: CompetitorResearchStatus) => void }) {

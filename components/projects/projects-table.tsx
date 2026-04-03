@@ -147,7 +147,7 @@ export function ProjectsTable({
               <TableCell className="text-right tabular-nums font-medium">
                 {project.totalUnits > 0 ? (
                   <span>
-                    <span className="text-emerald-600 dark:text-emerald-400">{project.availableUnits}</span>
+                    <span className="text-foreground">{project.availableUnits}</span>
                     <span className="text-muted-foreground font-normal">/{project.totalUnits}</span>
                   </span>
                 ) : "—"}
@@ -157,7 +157,7 @@ export function ProjectsTable({
               </TableCell>
               <TableCell className="text-center">
                 {project.sheetsUrl ? (
-                  <CheckIcon className="size-4 text-emerald-500 mx-auto" />
+                  <CheckIcon className="size-4 text-muted-foreground mx-auto" />
                 ) : (
                   <MinusIcon className="size-4 text-muted-foreground/30 mx-auto" />
                 )}

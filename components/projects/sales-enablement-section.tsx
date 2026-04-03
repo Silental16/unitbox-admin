@@ -105,12 +105,12 @@ const TYPE_LABELS: Record<string, string> = {
 }
 
 const TYPE_COLORS: Record<string, string> = {
-  hook: "bg-amber-100 text-amber-800",
-  key_advantage: "bg-blue-100 text-blue-800",
-  investor_benefit: "bg-green-100 text-green-800",
-  concept: "bg-purple-100 text-purple-800",
-  market_gap: "bg-orange-100 text-orange-800",
-  guarantee: "bg-emerald-100 text-emerald-800",
+  hook: "bg-muted text-foreground",
+  key_advantage: "bg-muted text-foreground",
+  investor_benefit: "bg-muted text-foreground",
+  concept: "bg-muted text-foreground",
+  market_gap: "bg-muted text-foreground",
+  guarantee: "bg-muted text-foreground",
 }
 
 export function SalesEnablementSection({ data }: { data: SalesEnablementData | null }) {
@@ -134,10 +134,10 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
     <div className="space-y-6">
       {/* Hook */}
       {(data.hookEn || data.hookRu) && (
-        <div className="rounded-lg border bg-gradient-to-r from-amber-50 to-orange-50 p-4">
+        <div className="rounded-lg border bg-muted p-4">
           <div className="flex items-center gap-2 mb-2">
-            <TargetIcon className="size-4 text-amber-600" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-amber-600">Hook</span>
+            <TargetIcon className="size-4 text-muted-foreground" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Hook</span>
           </div>
           {data.hookEn && <p className="text-sm font-semibold">{data.hookEn}</p>}
           {data.hookRu && <p className="text-sm text-muted-foreground mt-1">{data.hookRu}</p>}
@@ -165,7 +165,7 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
                 {point.headline_en && <p className="font-medium">{point.headline_en}</p>}
                 {point.argument_en && <p className="text-muted-foreground text-xs mt-0.5">{point.argument_en}</p>}
                 {point.vs_market_en && (
-                  <p className="text-xs text-green-600 mt-0.5">vs market: {point.vs_market_en}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">vs market: {point.vs_market_en}</p>
                 )}
               </div>
             ))}
@@ -214,19 +214,19 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
             <div className="flex gap-3 mt-2">
               {trust.booking_rating && (
                 <Badge variant="outline" className="gap-1">
-                  <StarIcon className="size-3 text-blue-600" />
+                  <StarIcon className="size-3 text-muted-foreground" />
                   Booking {trust.booking_rating}
                 </Badge>
               )}
               {trust.tripadvisor_rating && (
                 <Badge variant="outline" className="gap-1">
-                  <StarIcon className="size-3 text-green-600" />
+                  <StarIcon className="size-3 text-muted-foreground" />
                   TripAdvisor {trust.tripadvisor_rating}
                 </Badge>
               )}
               {trust.google_rating && (
                 <Badge variant="outline" className="gap-1">
-                  <StarIcon className="size-3 text-yellow-600" />
+                  <StarIcon className="size-3 text-muted-foreground" />
                   Google {trust.google_rating}
                 </Badge>
               )}
@@ -249,7 +249,7 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
           {trust.guarantees && Object.keys(trust.guarantees).length > 0 && (
             <div className="mt-3">
               <p className="text-xs font-medium mb-1.5 flex items-center gap-1.5">
-                <ShieldCheckIcon className="size-3.5 text-green-600" />
+                <ShieldCheckIcon className="size-3.5 text-muted-foreground" />
                 Guarantees
               </p>
               <div className="space-y-1 text-xs">
@@ -301,7 +301,7 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
               <p className="text-xs font-medium mb-1.5">Top Selling Points</p>
               {cheatsheet.top_selling_points.map((sp, i) => (
                 <div key={i} className="flex items-start gap-2 text-sm py-1">
-                  <span className="text-green-600 font-bold text-xs mt-0.5">{i + 1}.</span>
+                  <span className="text-muted-foreground font-bold text-xs mt-0.5">{i + 1}.</span>
                   <div>
                     <p>{sp.point_en}</p>
                     {sp.vs_market_en && (
@@ -322,8 +322,8 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
               </p>
               {cheatsheet.objections.map((obj, i) => (
                 <div key={i} className="text-sm py-1.5 border-b last:border-0">
-                  <p className="text-amber-700 font-medium text-xs">&ldquo;{obj.objection_en}&rdquo;</p>
-                  <p className="text-green-700 text-xs mt-0.5">&rarr; {obj.answer_en}</p>
+                  <p className="text-foreground font-medium text-xs">&ldquo;{obj.objection_en}&rdquo;</p>
+                  <p className="text-muted-foreground text-xs mt-0.5">&rarr; {obj.answer_en}</p>
                 </div>
               ))}
             </div>
@@ -366,7 +366,7 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
                 <div key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Badge variant="outline" className="text-[9px] py-0">{s.type}</Badge>
                   {s.url ? (
-                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="truncate hover:underline text-blue-600">
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="truncate hover:underline text-foreground underline">
                       {s.url.slice(0, 60)}...
                     </a>
                   ) : (

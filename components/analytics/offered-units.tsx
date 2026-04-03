@@ -24,7 +24,7 @@ export function OfferedUnits({ data }: { data: OfferedUnit[] }) {
             {data.map((unit) => (
               <div key={unit.name} className="flex items-center justify-between">
                 <span className="text-sm font-medium">{unit.name}</span>
-                <span className="text-sm tabular-nums text-amber-500">
+                <span className="text-sm tabular-nums text-muted-foreground">
                   in {unit.count.toLocaleString()} offers
                 </span>
               </div>

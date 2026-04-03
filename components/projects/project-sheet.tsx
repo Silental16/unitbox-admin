@@ -164,7 +164,7 @@ function EditableUrlField({
             }}
           />
           <button onClick={handleSave} className="shrink-0 p-1 rounded hover:bg-muted">
-            <CheckIcon className="size-3.5 text-emerald-600" />
+            <CheckIcon className="size-3.5 text-muted-foreground" />
           </button>
           <button onClick={handleCancel} className="shrink-0 p-1 rounded hover:bg-muted">
             <XIcon className="size-3.5 text-muted-foreground" />
@@ -356,7 +356,7 @@ export function ProjectSheet({
                 <TabsTrigger value="sales">
                   Sales
                   {salesEnablement && (
-                    <Badge variant="secondary" className="ml-1.5 tabular-nums text-[10px] px-1.5 py-0 bg-amber-100 text-amber-700">
+                    <Badge variant="secondary" className="ml-1.5 tabular-nums text-[10px] px-1.5 py-0">
                       ✦
                     </Badge>
                   )}

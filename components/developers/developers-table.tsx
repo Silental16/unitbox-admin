@@ -66,13 +66,13 @@ function toggleSort(column: SortColumn, current: SortOption, defaultDir: "asc" |
 function originBadgeVariant(tag: string) {
   switch (tag) {
     case "eu":
-      return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+      return "bg-muted text-foreground"
     case "ru":
-      return "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300"
+      return "bg-muted text-foreground"
     case "au":
-      return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+      return "bg-muted text-foreground"
     default:
-      return "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+      return "bg-muted text-muted-foreground"
   }
 }
 
@@ -95,10 +95,10 @@ function SortIcon({ column, current }: { column: SortColumn; current: SortOption
 }
 
 const RESEARCH_STATUS_CONFIG: Record<ResearchStatus, { label: string; dot: string; bg: string; text: string }> = {
-  not_started: { label: "Not Started", dot: "bg-slate-300 dark:bg-slate-600", bg: "bg-muted", text: "text-muted-foreground" },
-  outdated: { label: "Outdated", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
-  ready: { label: "Ready", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
-  completed: { label: "Done", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
+  not_started: { label: "Not Started", dot: "bg-slate-300", bg: "bg-muted", text: "text-muted-foreground" },
+  outdated: { label: "Outdated", dot: "bg-amber-500", bg: "bg-muted", text: "text-foreground" },
+  ready: { label: "Ready", dot: "bg-blue-500", bg: "bg-muted", text: "text-foreground" },
+  completed: { label: "Done", dot: "bg-emerald-500", bg: "bg-muted", text: "text-foreground" },
 }
 
 function ResearchStatusSelect({ status, onChange }: { status: ResearchStatus; onChange: (v: ResearchStatus) => void }) {
@@ -220,7 +220,7 @@ export function DevelopersTable({
               const completedProj = countCompletedProjects(dev)
               const totalProj = dev.projectList.length
               const subscriber = isSubscriber(dev.name)
-              const highlight = subscriber || dev.salesStatus === "client" ? "border-l-2 border-l-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20" : ""
+              const highlight = subscriber || dev.salesStatus === "client" ? "border-l-2 border-l-primary/30 bg-muted/50" : ""
               return (
               <tbody
                 key={dev.id}
@@ -231,7 +231,7 @@ export function DevelopersTable({
                   <TableCell>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className={`font-medium truncate max-w-[220px] ${subscriber ? "text-emerald-700 dark:text-emerald-400" : ""}`}>
+                        <span className={`font-medium truncate max-w-[220px]`}>
                           {dev.name}
                         </span>
                         <span
