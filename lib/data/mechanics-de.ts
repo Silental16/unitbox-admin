@@ -161,8 +161,18 @@ export const mechanicsDE: any[] = [
     examples: [
       {
         company: "Devin (Cognition)",
-        detail:
-          "AI software engineer. Все 4 patterns: планирует, кодит, тестирует, исправляет",
+        detail: "$73M ARR, $10.2B оценка. AI software engineer: все 4 patterns + Windsurf IDE",
+        caseStudy: {
+          mechanicInAction: "• 2023: Scott Wu, Steven Hao, Walden Yan — 3 золотых медалиста IOI — основали Cognition AI\n• Wu — дропаут Harvard, founding engineer Scale AI, CTO Lunchclub, программирует с 9 лет\n• Devin = автономный AI-инженер с песочницей (shell, редактор, браузер) — все 4 паттерна Ng\n• Reflection: анализирует ошибки, исправляет код итеративно — 67% PR мёрджатся (было 34%)\n• Tool Use: сам гуглит документацию, запускает тесты, деплоит\n• Planning: long-term reasoning, разбивает задачу на тысячи решений\n• Multi-Agent: после покупки Windsurf (IDE) — экосистема автономный агент + copilot\n• ARR: $1M (сент 2024) → $73M (июн 2025) — 73x за 9 мес. Оценка $10.2B",
+          jtbd: "**Core Job:** Делегировать рутинные задачи (миграции, баги, security patches) надёжному junior-разработчику.\n\n**Trigger:** Копятся задачи, команда фокусируется на архитектуре.\n\n**Push:** Junior dev $25-50/час, долго, нужен review. AI copilot — только автокомплит.\n\n**Pull:** Автономный агент решает задачи end-to-end за $9/час, 4x быстрее.\n\n**Anxiety:** «AI сломает прод» — sandbox + plan preview + human approve merge.\n\n**Metrics:** Merge rate 67%, 4x ускорение, 2x эффективнее по ресурсам за год.",
+          monetization: "**Тарифы:** От $20/мес минимум, pay-as-you-go $2.25/ACU (~$9/час). Team: $2.00/ACU (~$8/час).\n\n**ARR:** $1M (сент 2024) → $73M (июн 2025) — 73x за 9 мес. С Windsurf: ~$150M combined.\n\n**Раунды:** $21M seed (Founders Fund) → $175M Series A ($2B) → $500M ($9.8B) → $400M ($10.2B).\n\n**Unit economics:** $9/час vs junior dev $25-50/час — 3-5x дешевле.",
+          marketing: "• Вирусный запуск (март 2024): видео «first AI software engineer» — миллионы просмотров\n• Снижение цены $500 → $20 (25x) — взорвало adoption\n• Case studies: Nubank (12x efficiency), EightSleep (3x output), security fixes (20x быстрее)\n• Покупка Windsurf — сотни enterprise-клиентов + IDE-канал\n• Microsoft Azure partnership\n• Annual Performance Review — прозрачность метрик как контент",
+          impact: "**Для клиента:** Security vulnerability: 30 мин → 1.5 мин (20x). Миграции: месяцы → недели. Стоимость проектов: −50%. Output: 3x больше фич.\n\n**Для компании:** $1M → $73M ARR за 9 мес. Оценка $10.2B. SWE-bench: 13.86% (конкуренты max 1.96%).",
+          tocConstraint: "**Ограничение:** Доверие разработчиков к автономному агенту (merge rate 67% — треть PR отклоняется).\n\n**Решение:** Публикация метрик quality, sandbox-изоляция, human-in-the-loop approve.\n\n**Куда сместилось:** Вся стратегия (покупка Windsurf, снижение цен) подчинена увеличению trust — от copilot к autonomous постепенно.",
+          trizContradictions: "**ТП #1:** АВТОНОМНЫЙ (экономия) и КОНТРОЛИРУЕМЫЙ (безопасность). #35 Изменение параметров: sandbox + plan preview + human approve merge.\n\n**ТП #2:** НИЗКАЯ цена (adoption) и ВЫСОКАЯ (покрытие compute). #1 Сегментация: pay-per-ACU — платишь за работу, idle = $0.\n\n**ИКР:** Агент сам пишет, тестирует и деплоит код с нулём багов без review.",
+          conditions: "**Founders:** 3 золотых медалиста IOI — competitive programming как ДНК архитектуры.\n\n**Timing:** GPT-4+ достиг уровня «надёжный junior» — до этого автономный агент невозможен.\n\n**Дефицит:** Рост зарплат разработчиков — экономический стимул для автоматизации рутины.\n\n**Capital:** $1.1B+ привлечено. ChatGPT создал хайп → инвесторы готовы вкладывать.\n\n**Культура:** DevOps + CLI — разработчики привыкли к автоматизации.",
+          mvpVersion: "**Гипотеза:** Автономный AI-агент решает SWE-задачи end-to-end лучше copilot.\n\n**Эксперимент:** SWE-bench + closed beta с 10 enterprise-командами.\n\n**Метрика:** Merge rate PR (34→67%), время решения (4x), NPS инженеров.\n\n**Следующий шаг:** Покупка Windsurf для всего спектра (copilot + autonomous). Цель: 50% кода Cognition пишет Devin.",
+        },
       },
       {
         company: "Unitbox pipeline",
@@ -203,7 +213,18 @@ export const mechanicsDE: any[] = [
       },
       {
         company: "Klarna",
-        detail: "2/3 чатов AI = 700 FTE. Satisfaction = human level",
+        detail: "2/3 чатов AI = 700 FTE. Экономия $40M/год. Гибридная модель",
+        caseStudy: {
+          mechanicInAction: "• 2005 — Сиемятковский, Адальберт и Якобссон основали Klarna в Стокгольме\n• 2023 — первый финтех с ChatGPT-плагином; предложила OpenAI экспериментировать на Klarna\n• Февраль 2024 — AI-ассистент на OpenAI: 2.3 млн диалогов за первый месяц, 2/3 всех обращений\n• AI обрабатывает L1 (возвраты, споры, платежи); время: 11 → 2 мин; повторные: −25%\n• 24/7 в 23 рынках, 35+ языков\n• Май 2025 — стратегический разворот: вернула людей для сложных кейсов → гибридная модель\n• Ключевое решение: не 100% AI, а освободить людей для эмпатии и judgment",
+          jtbd: "**Core Job:** Решить проблему с платежом быстро и без усилий.\n\n**Trigger:** Неверный счёт, возврат, непонятный статус.\n\n**Push:** Очередь 11 мин, языковой барьер, неудобные часы.\n\n**Pull:** Мгновенно, 24/7, на родном языке.\n\n**Anxiety:** «AI не поймёт нестандартный случай» — бесшовная передача человеку.\n\n**Metrics:** Resolution time 11→2 мин, CSAT паритет, repeat −25%, cost/txn $0.32→$0.19.",
+          monetization: "**Инвестиция:** $2–3 млн. **Экономия 2024:** +$40 млн. **ROI:** 13–20x.\n\nCost/transaction: $0.32 → $0.19 (−40%). Заменил 700+ (позже 853) FTE. Headcount: 5K → 3.8K.\n\nВыручка 2024: $2.81 млрд (+24% YoY). 5 кварталов операционной прибыльности.",
+          marketing: "• OpenAI опубликовал Klarna как flagship кейс — бесплатный PR\n• CEO — AI-евангелист: подкасты (Sequoia, Acquired.fm), AI-клон для квартального отчёта\n• Позиционирование: «AI-first company», не финтех с AI\n• GTM: внутренняя оптимизация → внешний AI-шопинг-ассистент для 150M пользователей",
+          impact: "**Для клиента:** Время: 11→2 мин. Repeat: −25%. CSAT: паритет. 35+ языков, 24/7.\n\n**Для компании:** Cost/txn: −40%. 700+ FTE → AI. Headcount: 5K→3.8K. Revenue: $2.81B (+24%).",
+          tocConstraint: "**Ограничение:** Линейный рост штата (700 агентов × 23 рынка × 35 языков) — стоимость > выручки.\n\n**Решение:** AI обрабатывает 2/3 L1 автоматически; люди на сложных кейсах.\n\n**Куда сместилось:** Качество AI на edge cases; в мае 2025 вернула людей — «полностью AI» ухудшает retention.",
+          trizContradictions: "**ТП #1:** Больше клиентов без роста стоимости. #1 Сегментация (L1-AI, L2-human), #10 Предварительное действие (knowledge base), #34 Отброс/регенерация (рутинные агенты → AI).\n\n**Физическое:** Дешёвая (AI) И эмпатичная (человек). #5 Объединение: гибрид с бесшовной передачей.\n\n**ИКР:** Клиент не замечает кто обслуживает — AI или человек.",
+          conditions: "**Founder:** Сиемятковский — risk-taker (иммигрант, Burger King → $46B финтех).\n\n**Timing:** ChatGPT ноя 2022 → Klarna за 2 мес стала первым партнёром OpenAI.\n\n**Capital:** $2–3M AI при $2.8B выручке — risk ~0, потенциал $40M.\n\n**Scale:** 150M пользователей, 2.3M обращений/мес — данные для обучения.\n\n**Культура:** ML-модели для андеррайтинга ещё до ChatGPT.",
+          mvpVersion: "**Гипотеза:** AI закрывает >50% L1-тикетов с CSAT не хуже людей.\n\n**Эксперимент:** GPT-4 + 100 тикетов из истории + knowledge base. Blind review: агент оценивает AI vs свои ответы.\n\n**Метрика:** Accuracy ≥85%, CSAT ≥4.0/5.0, response <30 сек.\n\n**Следующий шаг:** Shadow mode 5% трафика → замер repeat inquiry rate.",
+        },
       },
       {
         company: "Sierra",
