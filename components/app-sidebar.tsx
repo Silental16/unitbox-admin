@@ -30,7 +30,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarSeparator,
 } from "@/components/ui/sidebar"
 
 const navGroups = [
@@ -77,19 +76,19 @@ export function AppSidebar({
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="p-3">
-        <div className="flex items-center gap-2">
+      <SidebarHeader>
+        <div className="flex h-9 items-center gap-2 rounded-[10px] px-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/unitbox-icon.svg"
             alt="Unitbox"
-            className="size-7 shrink-0 dark:invert"
+            className="size-6 shrink-0 dark:invert"
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/unitbox-wordmark.svg"
             alt="Unitbox"
-            className="h-[18px] w-auto dark:invert transition-opacity duration-200 group-data-[collapsible=icon]:hidden"
+            className="h-[16px] w-auto dark:invert transition-opacity duration-200 group-data-[collapsible=icon]:hidden"
           />
         </div>
       </SidebarHeader>
@@ -125,19 +124,19 @@ export function AppSidebar({
         })}
       </SidebarContent>
       <SidebarFooter>
-        <SidebarSeparator className="opacity-50" />
         <SidebarMenu>
           {userEmail && (
             <SidebarMenuItem>
               <SidebarMenuButton tooltip={userEmail}>
                 {userAvatar ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
                   <img
                     src={userAvatar}
                     alt=""
                     className="size-5 rounded-full"
                   />
                 ) : (
-                  <div className="flex size-5 items-center justify-center rounded-full bg-sidebar-accent text-[11px] font-medium">
+                  <div className="flex size-5 items-center justify-center rounded-full bg-foreground text-[11px] font-medium text-background">
                     {(userName || userEmail).charAt(0).toUpperCase()}
                   </div>
                 )}
