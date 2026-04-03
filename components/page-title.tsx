@@ -9,6 +9,7 @@ const pageTitles: Record<string, string> = {
   "/preview": "Preview",
   "/roi": "Unitbox ROI",
   "/tasks": "Platform Roadmap",
+  "/sandbox": "Component Sandbox",
 }
 
 export function PageTitle() {
