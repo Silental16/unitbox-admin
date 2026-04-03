@@ -12,9 +12,19 @@ export type MechanicCategory =
   | "scaling-org"
   | "mega-patterns"
 
+export interface CaseStudy {
+  whatTheyDo: string
+  originStory: string
+  financials: string
+  howTheyUseIt: string
+  keyClients: string
+  lessonsForUnitbox: string
+}
+
 export interface MechanicExample {
   company: string
   detail: string
+  caseStudy?: CaseStudy
 }
 
 export interface Mechanic {
@@ -308,15 +318,39 @@ export const mechanics: Mechanic[] = [
     examples: [
       {
         company: "Harvey (юридический AI)",
-        detail: "$1.5B оценка. Заменяет младших юристов в топовых фирмах",
+        detail: "$8-11B оценка, $100M+ ARR. Заменяет младших юристов в топовых фирмах",
+        caseStudy: {
+          whatTheyDo: "Harvey — AI-платформа для юридической индустрии. Продукт заменяет рутинную работу младших юристов: юридический research, анализ документов, review контрактов, due diligence и подготовка меморандумов. Не просто «поиск по законам» — а полноценный AI-юрист который понимает контекст дела, применяет прецеденты и генерирует юридические документы.\n\nHarvey использует multi-LLM orchestration: разные AI-модели подбираются под разные задачи (research vs drafting vs analysis), при этом сохраняя юридический контекст и enterprise-grade security.",
+          originStory: "Основатели: Winston Weinberg (ex-юрист O'Melveny & Myers, Stanford Law) и Gabriel Pereyra (ex-DeepMind, Google Brain, Meta AI, neuroscience PhD Oxford). Запущен в конце 2022 года.\n\nGabe Pereyra — research scientist из DeepMind/Google Brain — обеспечил техническую глубину. Winston — практикующий юрист BigLaw — обеспечил domain expertise и access к клиентам. Именно эта комбинация (deep AI + deep domain) сделала Harvey уникальным.\n\nКлючевое решение: ранний partnership с OpenAI для создания custom case law model, обученной на всём американском прецедентном праве. Это дало Harvey head start перед конкурентами.",
+          financials: "• ARR: <$10M (2023) → $75M (апрель 2025) → $100M (август 2025) — рост 400% YoY\n• Оценка: $3B (фев 2025) → $5B (июнь 2025) → $8B (окт 2025) → $11B (фев 2026 переговоры)\n• Привлечено: ~$1B+ суммарно. Инвесторы: Sequoia, GIC, Google Ventures, OpenAI\n• Pricing: $1,200/юрист/мес, 12-месячные контракты, минимум 20 seats\n• 500+ enterprise клиентов, 42% AmLaw 100 используют Harvey",
+          howTheyUseIt: "Harvey = учебник «Vertical AI Agent»:\n\n1. Глубина вместо ширины: не «AI для всех», а «AI для юристов в BigLaw» — узкий фокус\n2. Data moat: custom модель обучена на 20B+ токенов юридического текста (partnership с Voyage AI — модель «voyage-law-2-harvey»)\n3. Workflow integration: встроен в реальные юридические workflow, не standalone chat\n4. Замена job function: заменяет задачи junior associates ($200-400K/год), не «помогает» — делает работу\n5. Enterprise trust: SOC2, encryption, client privilege protection — обязательно для BigLaw\n\nИнтересно: Harvey отказался от собственной вертикальной модели когда frontier модели (GPT-4, Claude) стали обгонять её на собственном BigLaw Bench. Перешёл к orchestration подходу — разные модели для разных задач.",
+          keyClients: "42% AmLaw 100 — крупнейших юридических фирм мира. Среди клиентов:\n• Allen & Overy (одна из Magic Circle фирм) — первый крупный клиент\n• PwC — consulting + legal\n• Macfarlanes, Ashurst — UK BigLaw\n• 500+ enterprise customers globally\n\nGo-to-market: partnership с LexisNexis (крупнейший юридический информационный провайдер) для дистрибуции. Это как если бы Unitbox партнёрился с главным RE-порталом Бали.",
+          lessonsForUnitbox: "1. Комбинация «domain expert + AI expert» — ключевая формула Harvey. Unitbox имеет domain (Bali RE), нужно усиливать AI depth\n2. Pricing = premium ($1,200/seat/мес) потому что заменяет дорогую human labor. Unitbox может pricing against catalog manager salary ($1-2K/мес на Бали)\n3. Partnership с data provider (LexisNexis) = distribution moat. Unitbox → partnership с Bali RE portals?\n4. Отказ от proprietary model в пользу orchestration — прагматичное решение. Unitbox правильно делает используя Claude/GPT как commodity\n5. 400% YoY growth при $1,200/seat — показывает что enterprise ready to pay premium за vertical AI",
+        },
       },
       {
         company: "Sierra (customer service AI)",
-        detail: "$4B+ оценка. Основатель — ex-CEO Salesforce. Заменяет BPO-колл-центры целиком",
+        detail: "$4.5B оценка. Основатель — ex-CEO Salesforce. Заменяет BPO-колл-центры целиком",
+        caseStudy: {
+          whatTheyDo: "Sierra — AI-платформа для customer experience. Создаёт автономных AI-агентов для брендов которые полностью заменяют call-center операторов. Не чатбот — а AI agent который может обрабатывать сложные запросы: отмены, возвраты, troubleshooting, upsell. Работает через чат, email и voice.\n\nКлючевое отличие от Zendesk/Intercom AI: Sierra заменяет BPO целиком (не помогает агентам), и берёт за результат (per resolution), не за seat.",
+          originStory: "Основатели: Bret Taylor (ex-CEO Salesforce, co-chairman OpenAI board, co-creator Google Maps, CTO Facebook) и Clay Bavor (ex-VP Google, руководил Google Labs, AR/VR, Project Starline).\n\nBret Taylor — один из самых серийных и успешных tech-лидеров Silicon Valley. После ухода с поста CEO Salesforce ($30B+ revenue) и co-chairman OpenAI в 2023, он мог делать что угодно. Выбрал customer service потому что увидел: BPO — $200B+ рынок который AI может disrupted полностью.\n\nОснован в конце 2023. Привлёк $175M Series B в январе 2025 при оценке $4.5B. Инвесторы: Sequoia, Benchmark, Greenoaks.",
+          financials: "• Оценка: $4.5B (январь 2025), по данным ряда источников может быть выше в 2026\n• Привлечено: $285M+ суммарно ($110M Series A + $175M Series B)\n• Инвесторы: Sequoia, Benchmark, Greenoaks, ICONIQ\n• Revenue не раскрывается, но модель = per-resolution pricing\n• BPO рынок = $200B+, Sierra целится заменить значительную долю\n• Команда: 200+ сотрудников к концу 2025",
+          howTheyUseIt: "Sierra = Vertical AI Agent для customer service:\n\n1. Полная замена job function: не «помогает агентам», а заменяет L1 + часть L2 целиком\n2. Outcome-based pricing: per resolution, не per seat — клиент платит только за решённые запросы\n3. Brand-specific AI: каждый agent обучен на tone, policies, products конкретного бренда\n4. Multi-channel: chat, email, voice — один AI agent работает везде\n5. «Always improving»: каждое взаимодействие делает agent лучше для этого конкретного бренда\n\nSierra конкурирует не с Zendesk (software for agents) а с Teleperformance и Concentrix (BPO outsourcing) — $33B рынок.",
+          keyClients: "Публично известные клиенты Sierra:\n• WeightWatchers (WW) — health & wellness\n• Sonos — consumer electronics\n• SiriusXM — streaming media\n• OluKai — footwear brand\n• Casper — mattress company\n\nProfileклиентов: mid-to-large consumer brands с high volume customer support. Не enterprise B2B, а B2C бренды где customer experience = competitive advantage.",
+          lessonsForUnitbox: "1. Founder credibility = instant trust. Bret Taylor (ex-CEO Salesforce) мог привлечь любого клиента. Unitbox строит credibility через results и data\n2. Per-resolution pricing — революционная модель. Unitbox может: per qualified lead, per booking, per unit sold\n3. BPO replacement > tool: Sierra не помогает людям — заменяет их. Unitbox должен заменять catalog manager, не помогать ему\n4. Brand-specific AI: каждый Sierra agent кастомизирован. Unitbox AI agent для каждого девелопера знает его проекты, цены, tone\n5. $200B BPO рынок = огромный TAM. Real estate catalog management — меньше, но AI может расширить в lead gen, sales support",
+        },
       },
       {
         company: "Mercor (рекрутинг AI)",
         detail: "3M+ автоматических оценок кандидатов. Вертикальный AI для hiring",
+        caseStudy: {
+          whatTheyDo: "Mercor — AI-платформа для найма. Автоматизирует весь цикл рекрутинга: sourcing кандидатов, скрининг резюме, AI-интервью, оценка skills, matching с вакансиями. Провела 3M+ автоматических оценок кандидатов.\n\nГлавная инновация: AI проводит видео-интервью, оценивает технические и soft skills, и ранжирует кандидатов. Рекрутер получает shortlist с confidence scores вместо 500 резюме.",
+          originStory: "Основатели: Brendan Foody, Adarsh Hiremath и Ivan Zhou — трое студентов из Гарварда, запустили Mercor в 2023 году. Начали как marketplace для AI/ML talent, затем расширились в full-stack recruiting platform.\n\nИзначально фокус на tech hiring (ML engineers, data scientists), но быстро обнаружили что AI-скрининг работает для любых ролей. Pivotнулись в платформу для всего hiring.\n\nПривлекли $32M Series A в 2024, затем значительно увеличили funding в 2025. Y Combinator alumni (W23 batch).",
+          financials: "• Привлечено: $32M Series A (2024), дополнительные раунды в 2025\n• Оценка: по разным данным $250M-500M+ к концу 2025\n• 3M+ оценок кандидатов проведено\n• YC W23 batch alumni\n• Модель: берут процент от найма (success fee) + platform subscription\n• Быстрый рост: от 0 до миллионов оценок за <2 года",
+          howTheyUseIt: "Mercor = Vertical AI Agent для рекрутинга:\n\n1. Замена полного цикла: не «помогает рекрутеру», а делает sourcing → screening → interview → ranking автономно\n2. AI-интервью: видео-интервью с AI-оценкой — замена первого раунда с рекрутером\n3. Data flywheel: каждый наём улучшает модель (какие кандидаты успешны → лучше скрининг)\n4. Skill assessment: не просто keyword matching из резюме, а реальная оценка competencies\n5. Speed: то что recruiter делает за 2 недели, Mercor делает за часы\n\nКонкурирует с recruiting agencies ($150B рынок), не с ATS software.",
+          keyClients: "• Tech компании для найма AI/ML talent (основная ниша)\n• Стартапы из YC ecosystem для быстрого scaling\n• Enterprise для volume hiring\n• Фокус на US рынке, расширение в global\n\nValue proposition: найди лучшего кандидата за дни, не за месяцы. Стоимость найма через Mercor значительно ниже recruiting agency (обычно 20-25% от годовой зарплаты).",
+          lessonsForUnitbox: "1. Студенты из Harvard → $250M+ компания за 2 года. Не нужен 20-летний опыт — нужен правильный вертикальный фокус + AI\n2. Data flywheel: каждый наём → лучше модель → лучше наймы. Unitbox: каждый проект → лучше правила → лучше заполнение\n3. Success fee модель: Mercor зарабатывает когда клиент нанимает. Unitbox: зарабатывать когда девелопер продаёт\n4. YC batch → network effect: доступ к клиентам через ecosystem. Unitbox: Bali developer network = аналогичный effect\n5. От niche (AI talent) к platform (all hiring): начни узко, расширяйся. Unitbox: от Bali → Thailand → Dubai",
+        },
       },
     ],
     unitboxApplication:

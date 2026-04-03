@@ -1,6 +1,8 @@
 "use client"
 
-import { useState, useCallback, useEffect, useRef } from "react"
+import { useState, useCallback, useEffect, useRef, type ReactNode } from "react"
+import { ArrowLeftIcon, ChevronRightIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import {
   UsersIcon,
   BriefcaseIcon,
@@ -63,7 +65,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Card } from "@/components/ui/card"
-import { CATEGORY_LABELS, type Mechanic } from "@/lib/data/mechanics"
+import { CATEGORY_LABELS, type Mechanic, type MechanicExample } from "@/lib/data/mechanics"
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Users: UsersIcon,
@@ -127,14 +129,27 @@ interface MechanicSheetProps {
   onOpenChange: (open: boolean) => void
 }
 
+function CaseStudySection({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <section>
+      <h3 className="text-sm font-semibold mb-2">{label}</h3>
+      <p className="text-sm leading-relaxed whitespace-pre-line">{children}</p>
+    </section>
+  )
+}
+
 export function MechanicSheet({ mechanic, open, onOpenChange }: MechanicSheetProps) {
   const [width, setWidth] = useState(DEFAULT_WIDTH)
   const [dragging, setDragging] = useState(false)
+  const [activeCase, setActiveCase] = useState<MechanicExample | null>(null)
   const startX = useRef(0)
   const startWidth = useRef(0)
 
   useEffect(() => {
-    if (open) setWidth(DEFAULT_WIDTH)
+    if (open) {
+      setWidth(DEFAULT_WIDTH)
+      setActiveCase(null)
+    }
   }, [open])
 
   const handleMouseDown = useCallback(
@@ -193,92 +208,172 @@ export function MechanicSheet({ mechanic, open, onOpenChange }: MechanicSheetPro
         </div>
 
         <ScrollArea className="flex-1 min-h-0 overscroll-contain">
-          {/* Header */}
-          <SheetHeader className="px-6 pt-6 pb-4 pr-12 space-y-3">
-            <div className="flex items-center gap-3">
-              {Icon && (
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted">
-                  <Icon className="size-5 text-muted-foreground" />
-                </div>
-              )}
-              <SheetTitle className="text-lg">{mechanic.title}</SheetTitle>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-1.5">
-              <Badge variant="outline">{mechanic.author}</Badge>
-              <Badge variant="secondary">{CATEGORY_LABELS[mechanic.category]}</Badge>
-            </div>
-
-            <SheetDescription className="text-sm leading-relaxed">
-              {mechanic.summary}
-            </SheetDescription>
-          </SheetHeader>
-
-          <Separator />
-
-          <div className="flex flex-col gap-6 p-6">
-            {/* What is it */}
-            <section>
-              <h3 className="text-sm font-semibold mb-2">Что это</h3>
-              <p className="text-sm leading-relaxed">{mechanic.whatIsIt}</p>
-            </section>
-
-            <Separator />
-
-            {/* How it works */}
-            <section>
-              <h3 className="text-sm font-semibold mb-2">Как работает</h3>
-              <ol className="space-y-2">
-                {mechanic.howItWorks.map((step, i) => (
-                  <li key={i} className="flex gap-2 pl-1">
-                    <span className="text-muted-foreground shrink-0 mt-0.5 tabular-nums text-sm font-medium">
-                      {i + 1}.
-                    </span>
-                    <span className="text-sm leading-relaxed">{step}</span>
-                  </li>
-                ))}
-              </ol>
-            </section>
-
-            <Separator />
-
-            {/* Key insight */}
-            <section>
-              <h3 className="text-sm font-semibold mb-2">Ключевой инсайт</h3>
-              <div className="border-l-4 border-primary/40 pl-4 py-2">
-                <p className="text-sm leading-relaxed italic">{mechanic.keyInsight}</p>
-              </div>
-            </section>
-
-            <Separator />
-
-            {/* Examples */}
-            <section>
-              <h3 className="text-sm font-semibold mb-3">Примеры</h3>
-              <div className="flex flex-col gap-2">
-                {mechanic.examples.map((example, i) => (
-                  <Card key={i} className="p-3">
-                    <p className="text-sm font-medium">{example.company}</p>
-                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      {example.detail}
-                    </p>
-                  </Card>
-                ))}
-              </div>
-            </section>
-
-            <Separator />
-
-            {/* Unitbox application */}
-            <section>
-              <h3 className="text-sm font-semibold mb-2">Применение в Unitbox</h3>
-              <div className="rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 p-4">
-                <p className="text-sm leading-relaxed text-amber-900 dark:text-amber-200">
-                  {mechanic.unitboxApplication}
+          {activeCase ? (
+            /* ── Case Study Drill-Down ── */
+            <>
+              <div className="px-6 pt-6 pb-4 pr-12 space-y-3">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 -ml-2 text-muted-foreground"
+                  onClick={() => setActiveCase(null)}
+                >
+                  <ArrowLeftIcon className="size-4" />
+                  Назад к {mechanic.title}
+                </Button>
+                <h2 className="text-lg font-semibold">{activeCase.company}</h2>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {activeCase.detail}
                 </p>
               </div>
-            </section>
-          </div>
+
+              <Separator />
+
+              {activeCase.caseStudy ? (
+                <div className="flex flex-col gap-6 p-6">
+                  <CaseStudySection label="Что делает компания">
+                    {activeCase.caseStudy.whatTheyDo}
+                  </CaseStudySection>
+
+                  <Separator />
+
+                  <CaseStudySection label="История создания">
+                    {activeCase.caseStudy.originStory}
+                  </CaseStudySection>
+
+                  <Separator />
+
+                  <CaseStudySection label="Финансы и метрики">
+                    {activeCase.caseStudy.financials}
+                  </CaseStudySection>
+
+                  <Separator />
+
+                  <CaseStudySection label="Как используют механику">
+                    {activeCase.caseStudy.howTheyUseIt}
+                  </CaseStudySection>
+
+                  <Separator />
+
+                  <CaseStudySection label="Ключевые клиенты">
+                    {activeCase.caseStudy.keyClients}
+                  </CaseStudySection>
+
+                  <Separator />
+
+                  <section>
+                    <h3 className="text-sm font-semibold mb-2">Уроки для Unitbox</h3>
+                    <div className="rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 p-4">
+                      <p className="text-sm leading-relaxed text-amber-900 dark:text-amber-200 whitespace-pre-line">
+                        {activeCase.caseStudy.lessonsForUnitbox}
+                      </p>
+                    </div>
+                  </section>
+                </div>
+              ) : (
+                <div className="p-6">
+                  <p className="text-sm text-muted-foreground italic">
+                    Подробный кейс ещё не заполнен. Скоро будет добавлен.
+                  </p>
+                </div>
+              )}
+            </>
+          ) : (
+            /* ── Main Mechanic View ── */
+            <>
+              <SheetHeader className="px-6 pt-6 pb-4 pr-12 space-y-3">
+                <div className="flex items-center gap-3">
+                  {Icon && (
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted">
+                      <Icon className="size-5 text-muted-foreground" />
+                    </div>
+                  )}
+                  <SheetTitle className="text-lg">{mechanic.title}</SheetTitle>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline">{mechanic.author}</Badge>
+                  <Badge variant="secondary">{CATEGORY_LABELS[mechanic.category]}</Badge>
+                </div>
+
+                <SheetDescription className="text-sm leading-relaxed">
+                  {mechanic.summary}
+                </SheetDescription>
+              </SheetHeader>
+
+              <Separator />
+
+              <div className="flex flex-col gap-6 p-6">
+                <section>
+                  <h3 className="text-sm font-semibold mb-2">Что это</h3>
+                  <p className="text-sm leading-relaxed">{mechanic.whatIsIt}</p>
+                </section>
+
+                <Separator />
+
+                <section>
+                  <h3 className="text-sm font-semibold mb-2">Как работает</h3>
+                  <ol className="space-y-2">
+                    {mechanic.howItWorks.map((step, i) => (
+                      <li key={i} className="flex gap-2 pl-1">
+                        <span className="text-muted-foreground shrink-0 mt-0.5 tabular-nums text-sm font-medium">
+                          {i + 1}.
+                        </span>
+                        <span className="text-sm leading-relaxed">{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </section>
+
+                <Separator />
+
+                <section>
+                  <h3 className="text-sm font-semibold mb-2">Ключевой инсайт</h3>
+                  <div className="border-l-4 border-primary/40 pl-4 py-2">
+                    <p className="text-sm leading-relaxed italic">{mechanic.keyInsight}</p>
+                  </div>
+                </section>
+
+                <Separator />
+
+                <section>
+                  <h3 className="text-sm font-semibold mb-3">Примеры</h3>
+                  <div className="flex flex-col gap-2">
+                    {mechanic.examples.map((example, i) => (
+                      <Card
+                        key={i}
+                        className={`p-3 ${example.caseStudy ? "cursor-pointer transition-colors hover:bg-accent/50" : ""}`}
+                        onClick={() => example.caseStudy && setActiveCase(example)}
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium">{example.company}</p>
+                            <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                              {example.detail}
+                            </p>
+                          </div>
+                          {example.caseStudy && (
+                            <ChevronRightIcon className="size-4 shrink-0 text-muted-foreground" />
+                          )}
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </section>
+
+                <Separator />
+
+                <section>
+                  <h3 className="text-sm font-semibold mb-2">Применение в Unitbox</h3>
+                  <div className="rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 p-4">
+                    <p className="text-sm leading-relaxed text-amber-900 dark:text-amber-200">
+                      {mechanic.unitboxApplication}
+                    </p>
+                  </div>
+                </section>
+              </div>
+            </>
+          )}
         </ScrollArea>
       </SheetContent>
     </Sheet>
