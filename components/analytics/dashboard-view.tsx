@@ -86,7 +86,7 @@ export function DashboardView({
             Catalog usage statistics
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <DeveloperFilter selected={devFilter} />
           <PeriodSelector current={period} />
         </div>

@@ -44,8 +44,8 @@ export function FilterBar({
   onStageChange,
 }: FilterBarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-      <div className="relative w-full sm:w-auto sm:flex-1 sm:min-w-[180px] sm:max-w-[280px]">
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="relative flex-1 min-w-[200px]">
         <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search tasks..."
@@ -56,7 +56,7 @@ export function FilterBar({
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <Select value={statusFilter} onValueChange={(v) => onStatusChange(v as StatusFilter)}>
-          <SelectTrigger className="w-[120px] sm:w-[140px]">
+          <SelectTrigger className="w-[130px]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent position="popper" align="start">
@@ -74,7 +74,7 @@ export function FilterBar({
           </SelectContent>
         </Select>
         <Select value={priorityFilter} onValueChange={(v) => onPriorityChange(v as PriorityFilter)}>
-          <SelectTrigger className="w-[110px] sm:w-[140px]">
+          <SelectTrigger className="w-[130px]">
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent position="popper" align="start">
@@ -92,7 +92,7 @@ export function FilterBar({
           </SelectContent>
         </Select>
         <Select value={waveFilter} onValueChange={(v) => onWaveChange(v as WaveFilter)}>
-          <SelectTrigger className="w-[100px] sm:w-[120px]">
+          <SelectTrigger className="w-[130px]">
             <SelectValue placeholder="Wave" />
           </SelectTrigger>
           <SelectContent position="popper" align="start">
@@ -107,7 +107,7 @@ export function FilterBar({
           </SelectContent>
         </Select>
         <Select value={stageFilter} onValueChange={(v) => onStageChange(v as StageFilter)}>
-          <SelectTrigger className="w-[120px] sm:w-[140px]">
+          <SelectTrigger className="w-[130px]">
             <SelectValue placeholder="Stage" />
           </SelectTrigger>
           <SelectContent position="popper" align="start">

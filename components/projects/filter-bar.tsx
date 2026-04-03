@@ -37,11 +37,11 @@ export function FilterBar({
           placeholder="Search projects..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-9 rounded-[26px] bg-neutral-200/30 border-neutral-200"
+          className="pl-9"
         />
       </div>
       <Select value={statusFilter} onValueChange={(v) => onStatusFilterChange(v as StatusFilter)}>
-        <SelectTrigger className="w-[140px] rounded-[26px] bg-neutral-200/30 border-neutral-200">
+        <SelectTrigger className="w-[140px]">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
         <SelectContent position="popper" align="start">
