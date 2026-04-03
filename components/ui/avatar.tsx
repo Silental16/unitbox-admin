@@ -73,6 +73,22 @@ function AvatarBadge({ className, ...props }: React.ComponentProps<"span">) {
   )
 }
 
+function AvatarNotification({
+  className,
+  ...props
+}: React.ComponentProps<"span">) {
+  return (
+    <span
+      data-slot="avatar-notification"
+      className={cn(
+        "absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full border border-background bg-[#007AFF]",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
 function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -109,4 +125,5 @@ export {
   AvatarGroup,
   AvatarGroupCount,
   AvatarBadge,
+  AvatarNotification,
 }
