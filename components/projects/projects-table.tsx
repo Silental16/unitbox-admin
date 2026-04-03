@@ -40,8 +40,8 @@ function SortIcon({ column, current }: { column: SortColumn; current: SortOption
 function StatusBadge({ status }: { status: ProjectFillStatus }) {
   const config = FILL_STATUSES.find((s) => s.value === status) ?? FILL_STATUSES[0]
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
-      <span className={`size-1.5 rounded-full shrink-0 ${config.dot}`} />
+    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 h-6 text-xs font-medium ${config.bg} ${config.text}`}>
+      <span className={`size-2 rounded-full shrink-0 ${config.dot}`} />
       {config.label}
     </span>
   )

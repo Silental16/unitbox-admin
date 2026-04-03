@@ -9,13 +9,13 @@ export type MaterialCategory = "general" | "chess" | "financial_model" | "docume
 export type ChangeSource = "ai_fill" | "sync" | "manual" | "cron"
 
 export const FILL_STATUSES: { value: ProjectFillStatus; label: string; dot: string; bg: string; text: string }[] = [
-  { value: "pending", label: "Pending", dot: "bg-slate-300 dark:bg-slate-600", bg: "bg-muted", text: "text-muted-foreground" },
-  { value: "filling", label: "Filling", dot: "bg-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30", text: "text-amber-700 dark:text-amber-400" },
-  { value: "filled", label: "Filled", dot: "bg-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30", text: "text-emerald-700 dark:text-emerald-400" },
-  { value: "published", label: "Published", dot: "bg-violet-500", bg: "bg-violet-100 dark:bg-violet-900/30", text: "text-violet-700 dark:text-violet-400" },
-  { value: "syncing", label: "Syncing", dot: "bg-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400" },
-  { value: "error", label: "Error", dot: "bg-red-500", bg: "bg-red-100 dark:bg-red-900/30", text: "text-red-700 dark:text-red-400" },
-  { value: "archived", label: "Archived", dot: "bg-gray-400 dark:bg-gray-600", bg: "bg-gray-100 dark:bg-gray-900/30", text: "text-gray-600 dark:text-gray-400" },
+  { value: "pending", label: "Pending", dot: "bg-[rgb(166,166,174)]", bg: "bg-muted", text: "text-muted-foreground" },
+  { value: "filling", label: "Filling", dot: "bg-[rgb(245,158,11)]", bg: "bg-muted", text: "text-foreground" },
+  { value: "filled", label: "Filled", dot: "bg-[rgb(16,185,129)]", bg: "bg-muted", text: "text-foreground" },
+  { value: "published", label: "Published", dot: "bg-[rgb(139,92,246)]", bg: "bg-muted", text: "text-foreground" },
+  { value: "syncing", label: "Syncing", dot: "bg-[rgb(59,130,246)]", bg: "bg-muted", text: "text-foreground" },
+  { value: "error", label: "Error", dot: "bg-[rgb(239,68,68)]", bg: "bg-destructive/10", text: "text-destructive" },
+  { value: "archived", label: "Archived", dot: "bg-[rgb(166,166,174)]", bg: "bg-muted", text: "text-muted-foreground" },
 ]
 
 export const MATERIAL_TYPES: { value: MaterialType; label: string; icon: string }[] = [

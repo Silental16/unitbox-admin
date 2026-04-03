@@ -322,8 +322,8 @@ export function ProjectSheet({
           <SheetHeader className="px-6 pt-6 pb-4 pr-12 space-y-3">
             <SheetTitle className="text-lg">{project.name}</SheetTitle>
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${statusConfig.bg} ${statusConfig.text}`}>
-                <span className={`size-1.5 rounded-full shrink-0 ${statusConfig.dot}`} />
+              <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 h-6 text-xs font-medium ${statusConfig.bg} ${statusConfig.text}`}>
+                <span className={`size-2 rounded-full shrink-0 ${statusConfig.dot}`} />
                 {statusConfig.label}
               </span>
               <Badge variant="outline" className="tabular-nums text-[11px]">
