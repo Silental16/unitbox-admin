@@ -208,7 +208,7 @@ export function MechanicsClient() {
                   <button
                     type="button"
                     onClick={(e) => toggleLike(mechanic.id, e)}
-                    className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full transition-all duration-150 hover:bg-muted opacity-0 group-hover/card:opacity-100 focus-visible:opacity-100"
+                    className={`absolute top-3 right-3 flex size-8 items-center justify-center rounded-full transition-all duration-150 hover:bg-muted ${likedIds.has(mechanic.id) ? "opacity-100" : "opacity-0 group-hover/card:opacity-100"} focus-visible:opacity-100`}
                     aria-label={likedIds.has(mechanic.id) ? "Unlike" : "Like"}
                   >
                     <HeartIcon
