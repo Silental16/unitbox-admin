@@ -1,4 +1,16 @@
-export type MechanicCategory = "business-models"
+import { mechanicsBC } from "./mechanics-bc"
+import { mechanicsDE } from "./mechanics-de"
+import { mechanicsFGH } from "./mechanics-fgh"
+
+export type MechanicCategory =
+  | "business-models"
+  | "building-launch"
+  | "sales-distribution"
+  | "ai-operations"
+  | "content-media"
+  | "moats-defense"
+  | "scaling-org"
+  | "mega-patterns"
 
 export interface MechanicExample {
   company: string
@@ -21,6 +33,13 @@ export interface Mechanic {
 
 export const CATEGORY_LABELS: Record<MechanicCategory, string> = {
   "business-models": "A. Бизнес-модели и стратегии",
+  "building-launch": "B. Построение и запуск продуктов",
+  "sales-distribution": "C. Продажи и дистрибуция",
+  "ai-operations": "D. AI в операциях",
+  "content-media": "E. Контент и медиа",
+  "moats-defense": "F. Моаты и защита",
+  "scaling-org": "G. Масштабирование и org design",
+  "mega-patterns": "H. Мега-паттерны",
 }
 
 export const mechanics: Mechanic[] = [
@@ -304,4 +323,7 @@ export const mechanics: Mechanic[] = [
       "Unitbox строит вертикального AI-агента для Bali real estate: знает все проекты, цены, наличие юнитов, финансовые модели. Может квалифицировать лидов, сравнивать проекты, генерировать отчёты. Это не chatbot — это AI property consultant.",
     icon: "Bot",
   },
+  ...(mechanicsBC as Mechanic[]),
+  ...(mechanicsDE as Mechanic[]),
+  ...(mechanicsFGH as Mechanic[]),
 ]
