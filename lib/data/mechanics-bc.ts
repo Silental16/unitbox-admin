@@ -24,8 +24,19 @@ export const mechanicsBC: any[] = [
         detail: "$85K/мес на 4 продуктах, ~95% margins. ShipFast, TrustMRR, CodeFast, DataFast",
       },
       {
-        company: "Pieter Levels",
-        detail: "70+ проектов, 3-4 приносят $3-5M/год. 0 сотрудников. NomadList начался как Google Sheet",
+        company: "Bolt.new (StackBlitz)",
+        detail: "$0→$40M ARR за 5 мес. Full-stack apps из AI-разговора за минуты. 5M регистраций",
+        caseStudy: {
+          mechanicInAction: "• Октябрь 2024: один твит Eric Simons без маркетинга → $0→$4M ARR за 30 дней → $40M за 5 мес\n• 5M регистраций, ~1M DAU. Series B $105.5M, оценка ~$700M\n• 4 года строили WebContainers (Node.js в браузере через WebAssembly) — killer tech без PMF\n• StackBlitz имел $80K ARR — были в неделях от закрытия. Bolt перевернул всё\n• WebContainers + LLM = AI контролирует файловую систему, npm, сервер, терминал в браузере\n• Eric Simons и Albert Pai из Чикаго, кодят с 13 лет. Simons жил в офисе AOL 4 месяца",
+          jtbd: "**Core Job:** Превратить идею в работающее веб-приложение за минуты без знания фреймворков.\n\n**Сегменты:** Non-coder с идеей, разработчик-прототипист, фрилансер/агентство.\n\n**Trigger:** «Хочу показать прототип инвестору/клиенту завтра».\n\n**Push:** create-react-app 3 часа. Figma → разработчику → недели.\n\n**Pull:** Описал → получил работающее приложение. Zero install — всё в браузере.",
+          monetization: "**Тарифы:** Free 300K токенов/день. Pro $20/мес (10M токенов). Enterprise custom.\n\n**ARR:** $0 → $4M (30 дн) → $20M (2 мес) → $40M (5 мес). Прогноз $100M к концу 2025.\n\n**Unit economics:** LLM API < $20/юзер. WebContainers = zero server compute (sandbox в браузере клиента). Bolt Cloud — hosting + DB как доп. revenue.",
+          marketing: "• Один твит, $0 на рекламу. «Я сделал app за 5 мин» = идеальный виральный контент\n• PLG: бесплатный tier → wow за 2 мин → Pro\n• Open source на GitHub → доверие + контрибьюторы\n• «From near-death to $40M ARR» = PR-магнит (Lenny's Podcast, Indie Hackers)\n• Каждый созданный проект = демонстрация продукта",
+          impact: "**Для клиента:** От идеи до working app: недели → минуты. Стоимость прототипа: $5-50K → $2-50.\n\n**Для компании:** Спас StackBlitz от смерти ($80K → $40M ARR). Создал категорию «AI app builder». Доказал что non-coders = огромный TAM для dev tools.",
+          tocConstraint: "**Ограничение (до Bolt):** WebContainers — прорыв без PMF. Разработчикам хватало локальных IDE.\n\n**Решение:** Сменить клиента — вместо разработчиков продавать non-coders. LLM = катализатор.\n\n**Куда сместилось:** Качество генерации — сложные приложения ломаются, токены сжигаются на отладку.",
+          trizContradictions: "**ТП #1:** Сложный full-stack, но юзер не знает код. #24 Посредник: AI + WebContainers скрывают инфраструктуру.\n\n**ТП #2:** Sandbox изолированный, но полный доступ к npm/Node.js. #2 Вынесение: WebAssembly — Node.js В браузере, не на сервере.\n\n**Физическое:** LLM универсальный (любой стек) И специализированный (best practices). #1 Сегментация: выбор модели + system prompts per stack.",
+          conditions: "**Tech readiness:** WebContainers (4 года R&D) + зрелые LLM — оба сошлись.\n\n**Vibe coding тренд:** 2024-2025 — массовый интерес к AI-генерации.\n\n**Неудовлетворённый спрос:** Миллионы non-coders с идеями.\n\n**Предсмертный опыт:** $80K ARR → готовы рискнуть всем.\n\n**Zero friction:** Браузер, ничего устанавливать.",
+          mvpVersion: "**Гипотеза:** Non-coders заплатят за AI full-stack builder в браузере.\n\n**Эксперимент:** WebContainers + LLM API + минимальный UI. Один твит на существующую аудиторию.\n\n**Метрика:** $4M ARR за 30 дней (реальность Bolt).\n\n**Для Unitbox:** Дать девелоперам собрать landing page проекта за 30 мин из данных каталога.",
+        },
       },
       {
         company: "Danny Postma",
@@ -349,9 +360,19 @@ export const mechanicsBC: any[] = [
       "Dharmesh: «Большинство AI-идей проваливаются на Timing — они решают проблему, но AI не даёт 10x advantage над существующими решениями». Если AI делает лишь 2x лучше — не строй.",
     examples: [
       {
-        company: "Agent.ai (Dharmesh)",
-        detail:
-          "Passed PATHS: P=agent discovery, A=every business, T=agents ready, H=HubSpot expertise, S=marketplace",
+        company: "Wiz",
+        detail: "Fastest to $100M ARR (18 мес), $32B acquisition by Google. Идеальный PATHS alignment",
+        caseStudy: {
+          mechanicInAction: "• Самый быстрый SaaS до $100M ARR (18 мес) и $1B ARR (4 года)\n• PATHS alignment:\n  P: Cloud security фрагментирована — 10+ точечных инструментов, CISO тонут в алертах\n  A: Fortune 500 CISO с бюджетом $2-10M. 50%+ Fortune 100 — клиенты\n  T: COVID ускорил cloud migration на 3-5 лет, security отстал\n  H: Agentless API-коннектор — подключение за минуты. Security Graph\n  S: Мультиоблако (AWS+Azure+GCP) = весь enterprise TAM\n• 4 сооснователя из Unit 8200, знают друг друга с 2001. Предыдущий exit: Adallom → Microsoft ($320M)\n• $32B acquisition by Google (2025) — крупнейшая покупка израильской tech-компании",
+          jtbd: "**Core Job:** Видеть и устранять все критические cloud-риски чтобы двигаться быстро без страха взлома.\n\n**Functional:** Единая карта рисков вместо 10 дашбордов. Приоритизация по контексту.\n\n**Emotional:** CISO спит спокойно — 50% клиентов в «Zero Criticals Club».\n\n**Social:** CISO показывает board единый граф рисков и прогресс.",
+          monetization: "**Enterprise SaaS:** ACV $100K-$1M+.\n\n**ARR:** $100M (18 мес) → $350M (Feb 2024) → $750M (Mar 2025) → $1B+ (2026).\n\n**Agentless = низкая стоимость деплоя, NRR >150%. Land: CSPM → Expand: полный CNAPP.\n\n**Exit:** $32B cash (Google) — ~32x ARR.",
+          marketing: "• P-lens: GTM через боль CISO — «вы не видите облачные риски»\n• T-lens: Каждый breach в новостях = лид\n• H-lens: Демо за 5 мин — подключил API, увидел все дыры. PLG для enterprise (редкость)\n• Reference: 50%+ Fortune 100. Gartner Customers' Choice 2 года. Forrester Wave Leader",
+          impact: "**Масштаб:** 50%+ Fortune 100. $100M ARR за 18 мес (рекорд). $32B exit.\n\n**Качество:** 50% клиентов в Zero Criticals Club. Создали категорию CNAPP.\n\n**Команда:** ~2900 сотрудников к 2025.",
+          tocConstraint: "**Ограничение:** Visibility gap — security-команды НЕ ВИДЯТ что в облаке. Agent-based = долго, неполное покрытие.\n\n**Решение:** Agentless API-сканирование → 100% покрытие за минуты. Security Graph → контекстная приоритизация.\n\n**Куда сместилось:** AI CNAPP — следующий цикл автоматизации.",
+          trizContradictions: "**ТП #1:** Глубина сканирования vs Скорость подключения. API snapshot-сканирование (#24 Посредник + #26 Копирование): читает snapshot дисков через cloud API.\n\n**ТП #2:** Полнота покрытия vs Нагрузка на инфру. #2 Вынесение: agentless = нулевая нагрузка при 100%.\n\n**Физическое:** Внутри инфры (чтобы видеть) И Снаружи (не создавать risk surface). API read-only permissions.",
+          conditions: "**Team:** 4 основателя из Unit 8200, предыдущий exit $320M. Rappaport руководил R&D Microsoft Israel.\n\n**Timing:** COVID ускорил cloud на 3-5 лет. Бюджеты +30-40% YoY. SolarWinds/Log4j усилили urgency.\n\n**Tech shift:** On-prem → multicloud = новая attack surface, старые инструменты не покрывают.\n\n**Capital:** $100M Series A out of stealth → мгновенный найм → скорость → winner-take-most.",
+          mvpVersion: "**MVP (дек 2020):** Agentless коннектор к AWS/Azure. За 5 мин показывает все misconfigurations и уязвимости.\n\n**ONE THING:** Подключись и увидь всё. Время до value = минуты, не недели.\n\n**PATHS-валидация:** P (боль видна при демо), A (CISO сразу понимает), T (все мигрируют сейчас), H (agentless = no friction), S (multicloud = весь TAM).",
+        },
       },
       {
         company: "ChatSpot",
@@ -393,9 +414,19 @@ export const mechanicsBC: any[] = [
           "Shaan + Sam Parr: еженедельные AI business ideas через 80/20 lens",
       },
       {
-        company: "AI replacing agencies",
-        detail:
-          "Marketing agency $15-30K → AI tools $2-5K. 80% автоматизации",
+        company: "Jasper AI (cautionary tale)",
+        detail: "$80M→$35M ARR. Generic AI wrapper commoditized после ChatGPT. Pivot в enterprise",
+        caseStudy: {
+          mechanicInAction: "• 80/20 паттерн: агентство $15-30K/мес → Jasper заменил 80% работы за $49-149/мес (0.5% стоимости)\n• Dave Rogenmoser, JP Morgan, Chris Hull — 8 лет пивотов до GPT-3 (YC, 2020). За 7 дней сделали фронтенд к API\n• $80M ARR за 18 мес, оценка $1.5B, 100K клиентов\n• ПОУЧИТЕЛЬНАЯ ИСТОРИЯ: после ChatGPT (ноя 2022) generic AI-копирайтинг = commodity. Revenue: $80M → $35M (−56%)\n• Pivot в enterprise: Brand Voice, AI-агенты, workflows. К 2025-2026: ~$88M, но CEO ушёл\n• Урок: обёртка над чужой моделью без defensibility уязвима",
+          jtbd: "**Core Job:** Производить маркетинговый контент в объёме, недоступном команде людей.\n\n**Chain:** 50+ шаблонов (email, landing, ad) → заполнить поля → AI генерирует 3-5 вариантов за секунды → Brand Voice = тон бренда → маркетолог редактирует 20%.\n\n**Trigger:** «50 вариаций объявлений к завтра, 1 копирайтер».\n\n**Клиенты:** Airbnb, Logitech, Google, Spotify — 50K+ команд.",
+          monetization: "**Тарифы:** Creator $49/мес. Pro $149/мес. Business $899/мес. Enterprise custom.\n\n**Пик:** $80M ARR / 100K клиентов = ~$67/мес ARPU. Маржа: GPT-3 оптом → 10-20x markup.\n\n**Fundraising:** $131M total, оценка $1.5B (окт 2022).\n\n**Падение:** $80M → $35M после ChatGPT. К 2025: ~$88M через enterprise pivot.",
+          marketing: "• Affiliate 30% recurring → армия блогеров/YouTube\n• Facebook-группа 70K+ участников\n• SEO о 'AI copywriting' (dogfooding)\n• Шаблоны как viral hook: каждый новый шаблон = новая аудитория\n• Ребрендинг Jarvis → Jasper (письмо Marvel) — обернули в PR\n• Enterprise pivot 2023: 4x рост enterprise ARR",
+          impact: "**Рост:** $0 → $80M ARR за 18 мес. Unicorn за 18 мес. 100K клиентов.\n\n**Экономия:** $15-30K агентство → $149/мес = 99%. «50 вариаций за 30 мин вместо недели».\n\n**Падение:** $80M → $35M. CEO ушёл. Массовые увольнения.\n\n**Урок:** 80/20 wrapper без моата = временное преимущество.",
+          tocConstraint: "**Фаза 1:** Ограничение = awareness (люди не знали что AI пишет). Решение: affiliate + community.\n\n**Фаза 2:** Ограничение = quality/trust. Решение: Brand Voice + шаблоны.\n\n**Фаза 3:** Ограничение = defensibility. ChatGPT = бесплатный generic AI. Jasper = «платная обёртка над бесплатным».\n\n**Pivot:** От «AI пишет текст» → «AI marketing OS» (агенты, workflows, analytics).",
+          trizContradictions: "**ТП #1:** Контент уникальный для бренда vs генерируется общей моделью. #3 Местное качество: Brand Voice обучается на контенте бренда.\n\n**ТП #2:** Много вариаций vs каждая качественная. #1 Дробление: 50 специализированных шаблонов вместо «напиши текст».\n\n**Нерешённое ФП:** Дифференцирован от ChatGPT И зависим от тех же LLM. Separation in structure (Brand Voice, templates) оказался недостаточным.",
+          conditions: "**Работает 80/20:** Процесс >$5K/мес. 80% шаблонная работа. 20% реально требует человека. Time-to-value <5 мин.\n\n**НЕ работает (урок Jasper):** AI-слой тонкий → commodity risk. Нет proprietary data → клонируют за недели. Underlying model бесплатна → ценность wrapper → 0.\n\n**Защита:** Глубокая интеграция в workflow (Brand Voice, team collab, analytics).",
+          mvpVersion: "**MVP Jasper (7 дней, янв 2021):** Простой UI поверх GPT-3 API. 5-10 шаблонов. Stripe $29/мес. Запуск на тёплую аудиторию курсов.\n\n**Результат:** $1M ARR за 3 мес.\n\n**Формула:** (1) найти дорогой процесс, (2) шаблонный UI над LLM, (3) тёплая аудитория, (4) retention 30 дней.\n\n**Урок:** MVP валидировал спрос, но не построили moat пока было время.",
+        },
       },
       {
         company: "AI SDR",
