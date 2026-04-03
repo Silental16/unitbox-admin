@@ -16,6 +16,6 @@ export function PageTitle() {
   const title = pageTitles[pathname] ?? "Unitbox HQ"
 
   return (
-    <span className="text-sm font-medium text-muted-foreground">{title}</span>
+    <span className="text-[13px] font-medium text-muted-foreground">{title}</span>
   )
 }

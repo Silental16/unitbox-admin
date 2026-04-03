@@ -154,7 +154,7 @@ export function TasksClient({ tasks: initialTasks, currentUser }: { tasks: Task[
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6">
+    <div className="flex flex-col gap-4">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h1 className="text-xl font-semibold tracking-tight text-balance md:text-2xl">Platform Roadmap</h1>

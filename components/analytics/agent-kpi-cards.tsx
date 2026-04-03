@@ -20,8 +20,8 @@ function KpiCard({ title, value, delta }: KpiCardProps) {
   return (
     <Card>
       <CardHeader>
-        <CardDescription>{title}</CardDescription>
-        <CardTitle className="text-2xl tabular-nums">{value}</CardTitle>
+        <CardDescription className="text-[13px] font-medium text-muted-foreground">{title}</CardDescription>
+        <CardTitle className="text-lg font-medium tabular-nums">{value}</CardTitle>
         <Badge variant={delta >= 0 ? "secondary" : "destructive"} className="tabular-nums w-fit">
           {formatDelta(delta)}
         </Badge>

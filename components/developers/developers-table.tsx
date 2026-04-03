@@ -163,7 +163,7 @@ export function DevelopersTable({
 }: DevelopersTableProps) {
   return (
     <TooltipProvider>
-      <div className="rounded-lg border">
+      <div className="rounded-lg border border-border overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>

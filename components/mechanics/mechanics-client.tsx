@@ -174,11 +174,11 @@ export function MechanicsClient() {
       )}
 
       {Array.from(grouped.entries()).map(([category, items]) => (
-        <div key={category} className="flex flex-col gap-3">
+        <div key={category} className="flex flex-col gap-4">
           <h2 className="text-sm font-medium text-muted-foreground tracking-wide">
             {CATEGORY_LABELS[category]}
           </h2>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((mechanic) => {
               const Icon = ICON_MAP[mechanic.icon]
               return (

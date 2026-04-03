@@ -110,14 +110,16 @@ export function CompetitorsClient({
 
   return (
     <div className="flex flex-col gap-4">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-balance">
-          Конкуренты
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          {competitors.length} конкурентов. Сортировка по{" "}
-          {sort.column === "name" ? "name" : sort.column === "threatLevel" ? "threat level" : "size signal"}.
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-balance">
+            Конкуренты
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {competitors.length} конкурентов. Сортировка по{" "}
+            {sort.column === "name" ? "name" : sort.column === "threatLevel" ? "threat level" : "size signal"}.
+          </p>
+        </div>
       </div>
 
       <FilterBar

@@ -88,13 +88,15 @@ export function ProjectsClient({
 
   return (
     <div className="flex flex-col gap-4">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-balance">
-          Catalog Projects
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          {projects.length} projects filled for developer 61. Track fills, materials, and sync history.
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-balance">
+            Catalog Projects
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {projects.length} projects filled for developer 61. Track fills, materials, and sync history.
+          </p>
+        </div>
       </div>
 
       <StatsBar projects={projects} />
