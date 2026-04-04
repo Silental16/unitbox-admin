@@ -17,7 +17,7 @@ function AnnouncementBanner({
   return (
     <div
       className={cn(
-        "group relative inline-flex max-w-full items-center justify-between gap-2 rounded-full border border-input p-1.5",
+        "group relative inline-flex max-w-full items-center justify-between gap-2 rounded-pill border border-input p-1.5",
         className
       )}
       {...props}
