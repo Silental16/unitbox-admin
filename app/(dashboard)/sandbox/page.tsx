@@ -10,12 +10,16 @@ import {
   InfoIcon,
   InboxIcon,
   ItalicIcon,
+  LayoutGridIcon,
   MoreHorizontalIcon,
   PlusCircleIcon,
   PlusIcon,
   SearchIcon,
+  SettingsIcon,
+  Share2Icon,
   TypeIcon,
   UnderlineIcon,
+  ZapIcon,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -117,6 +121,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+  ComboboxEmpty,
+} from "@/components/ui/combobox"
 import {
   Item,
   ItemContent,
@@ -1005,29 +1017,74 @@ export default function SandboxPage() {
           </Card>
         </section>
 
-        {/* 20. DropdownMenu */}
+        {/* 20. DropdownMenu — variations */}
         <section className="flex flex-col gap-4">
           <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
             Dropdown Menu
           </h2>
           <Card className="w-full">
             <CardContent className="flex flex-col gap-6">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline">
-                    Open Menu
-                    <ChevronDownIcon className="size-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Basic menu</span>
+                <div className="flex flex-wrap gap-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline">
+                        Open Menu
+                        <ChevronDownIcon className="size-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Menu with icons & groups (Codespaces style)</span>
+                <div className="flex flex-wrap gap-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="icon-sm">
+                        <MoreHorizontalIcon />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-52">
+                      <DropdownMenuItem>
+                        <PlusIcon className="size-4" />
+                        New with options...
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <SettingsIcon className="size-4" />
+                        Configure container
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <ZapIcon className="size-4" />
+                        Set up prebuilds
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <LayoutGridIcon className="size-4" />
+                        Manage codespaces
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Share2Icon className="size-4" />
+                        Share deep link
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <InfoIcon className="size-4" />
+                        What are codespaces?
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </section>
@@ -1130,6 +1187,48 @@ export default function SandboxPage() {
                   </div>
                 </CollapsibleContent>
               </Collapsible>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 25. Combobox — Multi-select with avatars (Assign Issue style) */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
+            Combobox
+          </h2>
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Searchable select</span>
+                <div className="max-w-sm">
+                  <Combobox>
+                    <ComboboxInput placeholder="Search users..." />
+                    <ComboboxContent>
+                      <ComboboxList>
+                        <ComboboxEmpty>No users found.</ComboboxEmpty>
+                        {[
+                          { value: "shadcn", label: "shadcn", initials: "SC" },
+                          { value: "maxleiter", label: "maxleiter", initials: "ML" },
+                          { value: "evilrabbit", label: "evilrabbit", initials: "ER" },
+                          { value: "pranathip", label: "pranathip", initials: "PR" },
+                          { value: "jorgezreik", label: "jorgezreik", initials: "JZ" },
+                          { value: "shuding", label: "shuding", initials: "SH" },
+                          { value: "rauchg", label: "rauchg", initials: "RG" },
+                        ].map((user) => (
+                          <ComboboxItem key={user.value} value={user.value}>
+                            <div className="flex items-center gap-2">
+                              <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-foreground text-[9px] font-medium text-background">
+                                {user.initials}
+                              </div>
+                              <span>{user.label}</span>
+                            </div>
+                          </ComboboxItem>
+                        ))}
+                      </ComboboxList>
+                    </ComboboxContent>
+                  </Combobox>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </section>
