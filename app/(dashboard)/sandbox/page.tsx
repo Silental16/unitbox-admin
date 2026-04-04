@@ -121,14 +121,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxContent,
-  ComboboxList,
-  ComboboxItem,
-  ComboboxEmpty,
-} from "@/components/ui/combobox"
+import { AssignIssue } from "@/components/cards/assign-issue"
 import {
   Item,
   ItemContent,
@@ -1191,46 +1184,12 @@ export default function SandboxPage() {
           </Card>
         </section>
 
-        {/* 25. Combobox — Multi-select with avatars (Assign Issue style) */}
+        {/* 25. Combobox — Multi-select with avatars (Assign Issue) */}
         <section className="flex flex-col gap-4">
           <h2 className="text-sm font-medium text-muted-foreground tracking-wide uppercase">
             Combobox
           </h2>
-          <Card className="w-full">
-            <CardContent className="flex flex-col gap-6">
-              <div className="flex flex-col gap-2">
-                <span className="text-xs font-medium text-muted-foreground">Searchable select</span>
-                <div className="max-w-sm">
-                  <Combobox>
-                    <ComboboxInput placeholder="Search users..." />
-                    <ComboboxContent>
-                      <ComboboxList>
-                        <ComboboxEmpty>No users found.</ComboboxEmpty>
-                        {[
-                          { value: "shadcn", label: "shadcn", initials: "SC" },
-                          { value: "maxleiter", label: "maxleiter", initials: "ML" },
-                          { value: "evilrabbit", label: "evilrabbit", initials: "ER" },
-                          { value: "pranathip", label: "pranathip", initials: "PR" },
-                          { value: "jorgezreik", label: "jorgezreik", initials: "JZ" },
-                          { value: "shuding", label: "shuding", initials: "SH" },
-                          { value: "rauchg", label: "rauchg", initials: "RG" },
-                        ].map((user) => (
-                          <ComboboxItem key={user.value} value={user.value}>
-                            <div className="flex items-center gap-2">
-                              <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-foreground text-[9px] font-medium text-background">
-                                {user.initials}
-                              </div>
-                              <span>{user.label}</span>
-                            </div>
-                          </ComboboxItem>
-                        ))}
-                      </ComboboxList>
-                    </ComboboxContent>
-                  </Combobox>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <AssignIssue />
         </section>
 
         {/* 24. Color Palette */}
