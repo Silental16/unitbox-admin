@@ -97,7 +97,7 @@ export function CompetitorsTable({
   onResearchStatusChange,
 }: CompetitorsTableProps) {
   return (
-    <div className="rounded-lg border">
+    <div className="rounded-[var(--radius-card)] border">
       <Table>
         <TableHeader>
           <TableRow>

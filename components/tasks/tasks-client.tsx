@@ -176,20 +176,18 @@ export function TasksClient({ tasks: initialTasks, currentUser }: { tasks: Task[
         </Tabs>
       </div>
 
-      <div>
-        <FilterBar
-          search={search}
-          onSearchChange={setSearch}
-          statusFilter={statusFilter}
-          onStatusChange={setStatusFilter}
-          priorityFilter={priorityFilter}
-          onPriorityChange={setPriorityFilter}
-          waveFilter={waveFilter}
-          onWaveChange={setWaveFilter}
-          stageFilter={stageFilter}
-          onStageChange={setStageFilter}
-        />
-      </div>
+      <FilterBar
+        search={search}
+        onSearchChange={setSearch}
+        statusFilter={statusFilter}
+        onStatusChange={setStatusFilter}
+        priorityFilter={priorityFilter}
+        onPriorityChange={setPriorityFilter}
+        waveFilter={waveFilter}
+        onWaveChange={setWaveFilter}
+        stageFilter={stageFilter}
+        onStageChange={setStageFilter}
+      />
 
       {view === "list" ? (
         <TasksTable

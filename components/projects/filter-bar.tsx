@@ -30,8 +30,8 @@ export function FilterBar({
   onStatusFilterChange,
 }: FilterBarProps) {
   return (
-    <div className="flex items-center justify-between">
-      <div className="relative w-[300px]">
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="relative flex-1 min-w-[200px]">
         <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search projects..."
