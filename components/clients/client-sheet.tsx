@@ -1,18 +1,23 @@
 "use client"
 
-import { useState, useCallback, useEffect, useRef } from "react"
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from "@/components/ui/sheet"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { useState, useCallback } from "react"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import {
+  DescriptionsList,
+  DescriptionsItem,
+} from "@/components/ui/descriptions-list"
 import { cn } from "@/lib/utils"
+import {
+  CheckIcon,
+  AlertCircleIcon,
+  ClockIcon,
+  PlusIcon,
+} from "lucide-react"
 import type {
   Client,
   PaymentAccount,
@@ -22,17 +27,12 @@ import type {
 } from "@/lib/data/clients"
 import {
   SUBSCRIPTION_STATUSES,
-  PAYMENT_STATUSES,
   formatCurrency,
   formatDate,
   computeSubscriptionStatus,
 } from "@/lib/data/clients"
 import { SubscriptionDialog } from "./subscription-dialog"
 import { PaymentDialog } from "./payment-dialog"
-
-const MIN_WIDTH = 400
-const MAX_WIDTH = 900
-const DEFAULT_WIDTH = 520
 
 interface ClientSheetProps {
   client: Client | null
@@ -51,10 +51,89 @@ function getStatusConfig(status: string) {
   )
 }
 
-function getPaymentStatusConfig(status: string) {
+function getInitials(name: string): string {
+  return name
+    .split(/\s+/)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2)
+}
+
+function PaymentTimeline({
+  payments,
+  onRecordPayment,
+}: {
+  payments: SubscriptionPayment[]
+  onRecordPayment: (payment: SubscriptionPayment) => void
+}) {
   return (
-    PAYMENT_STATUSES.find((s) => s.value === status) ??
-    PAYMENT_STATUSES[0]
+    <div className="flex flex-col">
+      {payments.map((payment, i) => (
+        <div key={payment.id} className="relative flex gap-3 pb-6 last:pb-0">
+          {/* Vertical connector line */}
+          {i < payments.length - 1 && (
+            <div className="absolute left-4 top-10 bottom-0 border-l-2 border-border" />
+          )}
+          {/* Status dot */}
+          <div
+            className={cn(
+              "size-8 shrink-0 rounded-full flex items-center justify-center",
+              payment.status === "paid"
+                ? "bg-emerald-100 dark:bg-emerald-500/10"
+                : payment.status === "overdue"
+                  ? "bg-red-100 dark:bg-red-500/10"
+                  : "bg-muted"
+            )}
+          >
+            {payment.status === "paid" ? (
+              <CheckIcon className="size-4 text-emerald-600" />
+            ) : payment.status === "overdue" ? (
+              <AlertCircleIcon className="size-4 text-red-500" />
+            ) : (
+              <ClockIcon className="size-4 text-muted-foreground" />
+            )}
+          </div>
+          {/* Content */}
+          <div className="flex-1 pt-1">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium">
+                Payment {payment.installmentNumber}
+              </p>
+              <span className="text-sm font-medium tabular-nums">
+                {formatCurrency(payment.amount)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between mt-0.5">
+              <p className="text-xs text-muted-foreground">
+                {formatDate(payment.dueDate)}
+              </p>
+              {payment.status === "paid" && (
+                <span className="text-xs text-emerald-600">
+                  Paid {formatDate(payment.paidDate!)}
+                </span>
+              )}
+              {(payment.status === "pending" ||
+                payment.status === "overdue") && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-7 text-xs"
+                  onClick={() => onRecordPayment(payment)}
+                >
+                  Record Payment
+                </Button>
+              )}
+            </div>
+            {payment.paymentAccountName && (
+              <p className="text-xs text-muted-foreground mt-0.5">
+                via {payment.paymentAccountName}
+              </p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
   )
 }
 
@@ -67,55 +146,15 @@ export function ClientSheet({
   onSubscriptionCreated,
   onPaymentRecorded,
 }: ClientSheetProps) {
-  const [width, setWidth] = useState(DEFAULT_WIDTH)
-  const [dragging, setDragging] = useState(false)
-  const startX = useRef(0)
-  const startWidth = useRef(0)
-
   const [subscriptionDialogOpen, setSubscriptionDialogOpen] = useState(false)
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false)
-  const [selectedPayment, setSelectedPayment] = useState<SubscriptionPayment | null>(null)
+  const [selectedPayment, setSelectedPayment] =
+    useState<SubscriptionPayment | null>(null)
   const [accounts, setAccounts] = useState(paymentAccounts)
 
   const handleAccountCreated = useCallback((account: PaymentAccount) => {
     setAccounts((prev) => [...prev, account])
   }, [])
-
-  useEffect(() => {
-    if (open) setWidth(DEFAULT_WIDTH)
-  }, [open])
-
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault()
-      e.stopPropagation()
-      setDragging(true)
-      startX.current = e.clientX
-      startWidth.current = width
-    },
-    [width]
-  )
-
-  useEffect(() => {
-    if (!dragging) return
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const delta = startX.current - e.clientX
-      const newWidth = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, startWidth.current + delta))
-      setWidth(newWidth)
-    }
-
-    const handleMouseUp = () => {
-      setDragging(false)
-    }
-
-    document.addEventListener("mousemove", handleMouseMove)
-    document.addEventListener("mouseup", handleMouseUp)
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove)
-      document.removeEventListener("mouseup", handleMouseUp)
-    }
-  }, [dragging])
 
   const openPaymentDialog = useCallback((payment: SubscriptionPayment) => {
     setSelectedPayment(payment)
@@ -128,179 +167,161 @@ export function ClientSheet({
   const currentSub = client.currentSubscription
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange} modal={false}>
+    <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className={cn(
-          "!max-w-none overflow-hidden p-0 flex flex-col",
-          dragging && "select-none"
-        )}
-        style={{ width }}
+        className="w-[420px] sm:w-[540px] !max-w-none overflow-y-auto"
       >
-        {/* Resize handle */}
-        <div
-          onMouseDown={handleMouseDown}
-          className="absolute left-0 top-0 bottom-0 w-3 -translate-x-1/2 cursor-col-resize z-[60] group"
-        >
-          <div
-            className={cn(
-              "absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 transition-colors",
-              dragging ? "bg-primary" : "bg-transparent group-hover:bg-primary/40"
-            )}
-          />
+        {/* Header: avatar + title + status badge */}
+        <div className="flex items-center gap-3 pb-4 border-b border-border">
+          <Avatar className="size-10">
+            <AvatarFallback>{getInitials(client.name)}</AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <h2 className="text-lg font-semibold truncate">{client.name}</h2>
+            <Badge
+              variant="outline"
+              className={cn(statusConfig.bg, statusConfig.text)}
+            >
+              <span
+                className={cn("size-1.5 rounded-full", statusConfig.dot)}
+              />
+              {statusConfig.label}
+            </Badge>
+          </div>
         </div>
 
-        <ScrollArea className="flex-1 min-h-0 overscroll-contain">
-          {/* Header */}
-          <SheetHeader className="px-6 pt-6 pb-4 pr-12 space-y-3">
-            <SheetTitle className="text-lg">{client.name}</SheetTitle>
-            <SheetDescription className="text-xs leading-relaxed">
-              {client.catalogDomain ? (
-                <a
-                  href={`https://${client.catalogDomain}.unitbox.ai`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  {client.catalogDomain}.unitbox.ai
-                </a>
-              ) : (
-                "No domain"
-              )}
-              {" — "}
-              {client.projects} projects, {client.activeUnits} units
-            </SheetDescription>
-          </SheetHeader>
+        {/* Body: DescriptionsList */}
+        <DescriptionsList layout="horizontal" className="py-4">
+          <DescriptionsItem label="Domain">
+            {client.catalogDomain ? (
+              <a
+                href={`https://${client.catalogDomain}.unitbox.ai`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                {client.catalogDomain}.unitbox.ai
+              </a>
+            ) : (
+              "—"
+            )}
+          </DescriptionsItem>
+          <DescriptionsItem label="Projects">{client.projects}</DescriptionsItem>
+          <DescriptionsItem label="Units">
+            {client.activeUnits}
+          </DescriptionsItem>
+          <DescriptionsItem label="Total Revenue">
+            {formatCurrency(client.totalRevenue)}
+          </DescriptionsItem>
+        </DescriptionsList>
 
-          <div className="flex flex-col gap-4 p-6 pt-0">
-            {/* Current subscription card */}
+        {/* Tabs: Subscription / History */}
+        <Tabs defaultValue="subscription">
+          <TabsList>
+            <TabsTrigger value="subscription">Subscription</TabsTrigger>
+            <TabsTrigger value="history">History</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="subscription" className="flex flex-col gap-4 mt-4">
             {currentSub ? (
               <Card className="overflow-hidden">
                 <div className="flex items-center justify-between p-4">
                   <div>
                     <p className="text-sm font-medium">Current Subscription</p>
                     <p className="text-xs text-muted-foreground">
-                      {formatDate(currentSub.startDate)} — {formatDate(currentSub.endDate)}
+                      {formatDate(currentSub.startDate)} —{" "}
+                      {formatDate(currentSub.endDate)}
                     </p>
                   </div>
                   <Badge
                     variant="outline"
                     className={cn(statusConfig.bg, statusConfig.text)}
                   >
-                    <span className={cn("size-1.5 rounded-full", statusConfig.dot)} />
+                    <span
+                      className={cn("size-1.5 rounded-full", statusConfig.dot)}
+                    />
                     {statusConfig.label}
                   </Badge>
                 </div>
 
                 {/* Payment timeline */}
-                <div className="border-t px-4 py-3 space-y-3">
-                  {currentSub.payments.map((payment) => {
-                    const paymentConfig = getPaymentStatusConfig(payment.status)
-                    return (
-                      <div
-                        key={payment.id}
-                        className="flex items-center justify-between"
-                      >
-                        <div className="flex items-center gap-2">
-                          <div
-                            className={cn("size-2 rounded-full", paymentConfig.dot)}
-                          />
-                          <span className="text-sm">
-                            Payment {payment.installmentNumber}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            {formatDate(payment.dueDate)}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium tabular-nums">
-                            {formatCurrency(payment.amount)}
-                          </span>
-                          {payment.status === "pending" && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => openPaymentDialog(payment)}
-                            >
-                              Record
-                            </Button>
-                          )}
-                          {payment.status === "overdue" && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="text-destructive border-destructive/30"
-                              onClick={() => openPaymentDialog(payment)}
-                            >
-                              Record
-                            </Button>
-                          )}
-                          {payment.status === "paid" && (
-                            <span className="text-xs text-emerald-600">
-                              Paid {formatDate(payment.paidDate!)}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    )
-                  })}
+                <div className="border-t px-4 py-4">
+                  <PaymentTimeline
+                    payments={currentSub.payments}
+                    onRecordPayment={openPaymentDialog}
+                  />
                 </div>
               </Card>
             ) : (
               <Card className="p-4">
-                <p className="text-sm text-muted-foreground">No active subscription</p>
+                <p className="text-sm text-muted-foreground">
+                  No active subscription
+                </p>
               </Card>
             )}
 
-            {/* New subscription button */}
             <Button
               variant="outline"
               onClick={() => setSubscriptionDialogOpen(true)}
               className="w-full"
             >
-              + New Subscription
+              <PlusIcon className="size-4" />
+              New Subscription
             </Button>
+          </TabsContent>
 
-            {/* Subscription history */}
-            {client.subscriptions.length > 1 && (
-              <div className="mt-2">
-                <p className="text-sm font-medium mb-3">Subscription History</p>
-                <div className="space-y-2">
-                  {client.subscriptions.slice(1).map((sub) => {
-                    const subStatus = computeSubscriptionStatus(sub)
-                    const subConfig = getStatusConfig(subStatus)
-                    const totalPaid = sub.payments
-                      .filter((p) => p.status === "paid")
-                      .reduce((sum, p) => sum + p.amount, 0)
-                    return (
-                      <Card key={sub.id} className="p-3">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-xs text-muted-foreground">
-                              {formatDate(sub.startDate)} — {formatDate(sub.endDate)}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium tabular-nums">
-                              {formatCurrency(totalPaid)}
-                            </span>
-                            <Badge
-                              variant="outline"
-                              className={cn(subConfig.bg, subConfig.text, "text-xs")}
-                            >
-                              <span className={cn("size-1.5 rounded-full", subConfig.dot)} />
-                              {subConfig.label}
-                            </Badge>
-                          </div>
+          <TabsContent value="history" className="mt-4">
+            {client.subscriptions.length > 1 ? (
+              <div className="space-y-2">
+                {client.subscriptions.slice(1).map((sub) => {
+                  const subStatus = computeSubscriptionStatus(sub)
+                  const subConfig = getStatusConfig(subStatus)
+                  const totalPaid = sub.payments
+                    .filter((p) => p.status === "paid")
+                    .reduce((sum, p) => sum + p.amount, 0)
+                  return (
+                    <Card key={sub.id} className="p-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-xs text-muted-foreground">
+                            {formatDate(sub.startDate)} —{" "}
+                            {formatDate(sub.endDate)}
+                          </p>
                         </div>
-                      </Card>
-                    )
-                  })}
-                </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium tabular-nums">
+                            {formatCurrency(totalPaid)}
+                          </span>
+                          <Badge
+                            variant="outline"
+                            className={cn(
+                              subConfig.bg,
+                              subConfig.text,
+                              "text-xs"
+                            )}
+                          >
+                            <span
+                              className={cn(
+                                "size-1.5 rounded-full",
+                                subConfig.dot
+                              )}
+                            />
+                            {subConfig.label}
+                          </Badge>
+                        </div>
+                      </div>
+                    </Card>
+                  )
+                })}
               </div>
+            ) : (
+              <p className="text-sm text-muted-foreground py-4">
+                No past subscriptions
+              </p>
             )}
-          </div>
-        </ScrollArea>
+          </TabsContent>
+        </Tabs>
 
         {/* Dialogs */}
         <SubscriptionDialog

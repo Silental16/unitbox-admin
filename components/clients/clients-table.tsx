@@ -35,8 +35,18 @@ function isOverdue(dueDate: string) {
 }
 
 export function ClientsTable({ clients, onSelectClient }: ClientsTableProps) {
+  if (clients.length === 0) {
+    return (
+      <div className="rounded-card border border-border overflow-hidden">
+        <div className="flex items-center justify-center py-12 text-sm text-muted-foreground">
+          No clients found
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="rounded-lg border border-border overflow-hidden">
+    <div className="rounded-card border border-border overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow>

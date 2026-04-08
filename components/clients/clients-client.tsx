@@ -3,20 +3,33 @@
 import { useState, useMemo, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
-import { Card } from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuCheckboxItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { ListFilterIcon } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  StatCard,
+  StatCardHeader,
+  StatCardValue,
+} from "@/components/ui/stat-card"
+import {
+  UsersIcon,
+  CreditCardIcon,
+  DollarSignIcon,
+  ClockIcon,
+  SearchIcon,
+  XIcon,
+} from "lucide-react"
+import { cn } from "@/lib/utils"
 import type {
   Client,
   PaymentAccount,
   SubscriptionPackage,
-  SubscriptionStatus,
 } from "@/lib/data/clients"
 import {
   SUBSCRIPTION_STATUSES,
@@ -24,15 +37,6 @@ import {
 } from "@/lib/data/clients"
 import { ClientsTable } from "@/components/clients/clients-table"
 import { ClientSheet } from "@/components/clients/client-sheet"
-
-function SummaryCard({ title, value }: { title: string; value: string | number }) {
-  return (
-    <Card className="p-4">
-      <p className="text-xs text-muted-foreground">{title}</p>
-      <p className="text-2xl font-semibold tabular-nums mt-1">{value}</p>
-    </Card>
-  )
-}
 
 export function ClientsClient({
   clients: initialClients,
@@ -46,7 +50,7 @@ export function ClientsClient({
   const router = useRouter()
   const [clients, setClients] = useState(initialClients)
   const [search, setSearch] = useState("")
-  const [statusFilter, setStatusFilter] = useState<SubscriptionStatus[]>([])
+  const [statusFilter, setStatusFilter] = useState("all")
   const [selectedClient, setSelectedClient] = useState<Client | null>(null)
   const [sheetOpen, setSheetOpen] = useState(false)
 
@@ -84,8 +88,8 @@ export function ClientsClient({
       result = result.filter((c) => c.name.toLowerCase().includes(q))
     }
 
-    if (statusFilter.length > 0) {
-      result = result.filter((c) => statusFilter.includes(c.subscriptionStatus))
+    if (statusFilter !== "all") {
+      result = result.filter((c) => c.subscriptionStatus === statusFilter)
     }
 
     return result
@@ -104,12 +108,6 @@ export function ClientsClient({
     router.refresh()
   }, [router])
 
-  function toggleStatus(status: SubscriptionStatus) {
-    setStatusFilter((prev) =>
-      prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status]
-    )
-  }
-
   return (
     <div className="flex flex-col gap-4">
       {/* Header */}
@@ -117,54 +115,110 @@ export function ClientsClient({
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Clients</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {clients.length} active clients. Total revenue: {formatCurrency(totalRevenue)}
+            {clients.length} clients · Revenue {formatCurrency(totalRevenue)}
           </p>
         </div>
       </div>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-4 gap-3">
-        <SummaryCard title="Total Clients" value={clients.length} />
-        <SummaryCard title="Active Subscriptions" value={activeCount} />
-        <SummaryCard title="Total Revenue" value={formatCurrency(totalRevenue)} />
-        <SummaryCard title="Upcoming Payments" value={upcomingCount} />
+      {/* KPI row */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard>
+          <StatCardHeader>
+            <UsersIcon className="size-4" />
+            Total Clients
+          </StatCardHeader>
+          <StatCardValue>{clients.length}</StatCardValue>
+        </StatCard>
+        <StatCard>
+          <StatCardHeader>
+            <CreditCardIcon className="size-4" />
+            Active Subscriptions
+          </StatCardHeader>
+          <StatCardValue>{activeCount}</StatCardValue>
+        </StatCard>
+        <StatCard>
+          <StatCardHeader>
+            <DollarSignIcon className="size-4" />
+            Total Revenue
+          </StatCardHeader>
+          <StatCardValue>{formatCurrency(totalRevenue)}</StatCardValue>
+        </StatCard>
+        <StatCard>
+          <StatCardHeader>
+            <ClockIcon className="size-4" />
+            Upcoming Payments
+          </StatCardHeader>
+          <StatCardValue>{upcomingCount}</StatCardValue>
+        </StatCard>
       </div>
 
-      {/* Search + filters */}
-      <div className="flex items-center gap-2">
-        <Input
-          placeholder="Search clients..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="max-w-xs h-9"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="h-9 gap-1.5">
-              <ListFilterIcon className="size-3.5" />
-              Status
-              {statusFilter.length > 0 && (
-                <span className="ml-1 rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-medium text-primary-foreground">
-                  {statusFilter.length}
-                </span>
-              )}
+      {/* Filter bar */}
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="relative flex-1 min-w-[200px]">
+            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <Input
+              placeholder="Search clients..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Subscription" />
+            </SelectTrigger>
+            <SelectContent position="popper" align="start">
+              <SelectItem value="all">All statuses</SelectItem>
+              {SUBSCRIPTION_STATUSES.map((s) => (
+                <SelectItem key={s.value} value={s.value}>
+                  <span className="flex items-center gap-1.5">
+                    <span className={cn("size-1.5 rounded-full", s.dot)} />
+                    {s.label}
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        {/* Active filter chips */}
+        {(search || statusFilter !== "all") && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {search && (
+              <Badge variant="secondary" className="gap-1 pr-1">
+                Search: {search}
+                <button
+                  onClick={() => setSearch("")}
+                  className="ml-0.5 rounded-full hover:bg-muted size-4 inline-flex items-center justify-center"
+                >
+                  <XIcon className="size-3" />
+                </button>
+              </Badge>
+            )}
+            {statusFilter !== "all" && (
+              <Badge variant="secondary" className="gap-1 pr-1">
+                Status: {SUBSCRIPTION_STATUSES.find((s) => s.value === statusFilter)?.label}
+                <button
+                  onClick={() => setStatusFilter("all")}
+                  className="ml-0.5 rounded-full hover:bg-muted size-4 inline-flex items-center justify-center"
+                >
+                  <XIcon className="size-3" />
+                </button>
+              </Badge>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 text-xs"
+              onClick={() => {
+                setSearch("")
+                setStatusFilter("all")
+              }}
+            >
+              Clear all
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            {SUBSCRIPTION_STATUSES.map((s) => (
-              <DropdownMenuCheckboxItem
-                key={s.value}
-                checked={statusFilter.includes(s.value)}
-                onCheckedChange={() => toggleStatus(s.value)}
-              >
-                <span className="inline-flex items-center gap-1.5">
-                  <span className={`size-1.5 rounded-full ${s.dot}`} />
-                  {s.label}
-                </span>
-              </DropdownMenuCheckboxItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+          </div>
+        )}
       </div>
 
       {/* Table */}
