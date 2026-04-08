@@ -284,11 +284,11 @@ export default function SandboxPage() {
               <div className="flex flex-col gap-2">
                 <span className="text-xs font-medium text-muted-foreground">Small size</span>
                 <div className="flex flex-wrap gap-2">
-                  <Badge size="sm">Default</Badge>
-                  <Badge size="sm" variant="secondary">Secondary</Badge>
-                  <Badge size="sm" variant="outline">Outline</Badge>
-                  <Badge size="sm" variant="destructive">Destructive</Badge>
-                  <Badge size="sm" variant="ghost">Ghost</Badge>
+                  <Badge>Default</Badge>
+                  <Badge variant="secondary">Secondary</Badge>
+                  <Badge variant="outline">Outline</Badge>
+                  <Badge variant="destructive">Destructive</Badge>
+                  <Badge variant="ghost">Ghost</Badge>
                 </div>
               </div>
               <div className="flex flex-col gap-2">

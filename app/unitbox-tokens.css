@@ -1,0 +1,122 @@
+/* Unitbox Design System — Semantic Tokens
+   Import this file in your globals.css AFTER shadcn base:
+   @import "./unitbox-tokens.css";
+
+   To customize per-project, override any variable in :root {}
+*/
+
+@theme inline {
+  /* Semantic radius tokens — change here, updates all components */
+  --radius-field: 0.75rem;       /* 12px — buttons, inputs, textareas */
+  --radius-control: 0.625rem;    /* 10px — select triggers, combobox */
+  --radius-menu: 0.625rem;       /* 10px — dropdown/select/popover containers */
+  --radius-menu-item: 0.5rem;    /* 8px  — items inside menus (menu - 2px) */
+  --radius-card: 1rem;           /* 16px — cards */
+  --radius-dialog: 1.5rem;       /* 24px — dialogs, modals */
+  --radius-pill: 9999px;         /* pill — badges, avatars, banners */
+}
+
+:root {
+  /* Semantic trend colors */
+  --color-trend-up: rgb(22, 163, 74);         /* green-600 */
+  --color-trend-down: rgb(220, 38, 38);       /* red-600 */
+
+  /* Multi-layer shadows */
+  --shadow-card: rgba(0,0,0,0.4) 0 0 1.14px, rgba(0,0,0,0.04) 0 2px 4px;
+  --shadow-card-hover: rgba(0,0,0,0.06) 0 0 0 1px, rgba(0,0,0,0.06) 0 1px 1px -0.5px, rgba(0,0,0,0.06) 0 3px 3px -1.5px;
+  --shadow-modal: rgba(0,0,0,0.06) 0 0 0 1px, rgba(0,0,0,0.06) 0 1px 1px -0.5px, rgba(0,0,0,0.06) 0 3px 3px -1.5px, rgba(0,0,0,0.06) 0 6px 6px -3px, rgba(0,0,0,0.04) 0 12px 12px -6px, rgba(0,0,0,0.04) 0 24px 24px -12px;
+  --shadow-elevation-sm: rgba(16,24,40,0.03) 0 4px 6px -2px, rgba(16,24,40,0.08) 0 12px 16px -4px;
+  --shadow-popover: 0 0 0 1px rgba(0,0,0,0.06), 0 1px 1px -0.5px rgba(0,0,0,0.06), 0 3px 3px rgba(0,0,0,0.06), 0 6px 6px rgba(0,0,0,0.06), 0 12px 12px rgba(0,0,0,0.04), 0 24px 24px rgba(0,0,0,0.04);
+}
+
+.dark {
+  --color-trend-up: rgb(74, 222, 128);        /* green-400 */
+  --color-trend-down: rgb(248, 113, 113);     /* red-400 */
+
+  --shadow-card: rgba(255,255,255,0.06) 0 0 0 1px, rgba(0,0,0,0.2) 0 2px 4px;
+  --shadow-card-hover: rgba(255,255,255,0.08) 0 0 0 1px, rgba(0,0,0,0.3) 0 4px 8px, rgba(0,0,0,0.4) 0 24px 48px;
+  --shadow-modal: rgba(255,255,255,0.06) 0 0 0 1px, rgba(0,0,0,0.3) 0 4px 8px, rgba(0,0,0,0.5) 0 24px 48px;
+  --shadow-elevation-sm: rgba(0,0,0,0.3) 0 4px 6px -2px, rgba(0,0,0,0.5) 0 12px 16px -4px;
+  --shadow-popover: 0 0 0 1px rgba(255,255,255,0.08), 0 1px 1px rgba(0,0,0,0.3), 0 3px 3px rgba(0,0,0,0.3), 0 6px 6px rgba(0,0,0,0.4), 0 12px 12px rgba(0,0,0,0.5), 0 24px 24px rgba(0,0,0,0.5);
+}
+
+/* Component slot styles */
+[data-slot="button"][data-variant="default"] {
+  transition: opacity 0.075s ease;
+}
+[data-slot="button"][data-variant="default"]:hover {
+  opacity: 0.85;
+}
+[data-slot="card"] {
+  box-shadow: var(--shadow-card);
+}
+[data-slot="card"][data-interactive]:hover {
+  box-shadow: var(--shadow-card-hover);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Interactive cursor defaults — pointer for all clickable elements */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"],
+  [role="checkbox"]:not(:disabled),
+  [role="radio"]:not(:disabled),
+  [role="switch"]:not(:disabled),
+  [role="option"],
+  [role="menuitem"],
+  [role="menuitemcheckbox"],
+  [role="menuitemradio"],
+  [data-slot="select-trigger"],
+  [data-slot="combobox-trigger"],
+  [data-slot="accordion-trigger"],
+  [data-slot="collapsible-trigger"],
+  [data-slot="dialog-close"],
+  [data-slot="sheet-close"],
+  [data-slot="tabs-trigger"],
+  [data-slot="segmented-control-item"],
+  summary,
+  a[href],
+  label[for] {
+    cursor: pointer;
+  }
+
+  /* Grab cursor for draggable / resizable handles */
+  [data-slot="slider-thumb"],
+  [data-slot="resizable-handle"] {
+    cursor: grab;
+  }
+  [data-slot="slider-thumb"]:active,
+  [data-slot="resizable-handle"]:active {
+    cursor: grabbing;
+  }
+}
+
+/* Utility classes */
+@layer base {
+  h1, h2, h3, h4 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+  .scroll-fade {
+    mask-image: linear-gradient(to bottom, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
+  }
+  .scroll-fade-x {
+    mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
+  }
+}
+
+@keyframes pulse-reverse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+.animate-pulse-reverse {
+  animation: pulse-reverse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes collapsible-down {
+  from { height: 0; }
+  to { height: var(--radix-collapsible-content-height); }
+}
+@keyframes collapsible-up {
+  from { height: var(--radix-collapsible-content-height); }
+  to { height: 0; }
+}
