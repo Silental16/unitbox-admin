@@ -163,7 +163,7 @@ export function DevelopersTable({
 }: DevelopersTableProps) {
   return (
     <TooltipProvider>
-      <div className="rounded-[var(--radius-card)] border border-border overflow-hidden">
+      <div className="rounded-2xl ring-1 ring-foreground/10 overflow-hidden shadow-[var(--shadow-card)]">
         <Table>
           <TableHeader>
             <TableRow>

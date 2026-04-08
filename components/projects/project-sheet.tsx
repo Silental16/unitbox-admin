@@ -96,7 +96,7 @@ function KVRow({ label, value, href, icon: Icon }: { label: string; value: strin
 function MaterialBlock({ title, count, children }: { title: string; count: number; children: React.ReactNode }) {
   const [open, setOpen] = useState(true)
   return (
-    <div className="rounded-[var(--radius-card)] border">
+    <div className="rounded-2xl ring-1 ring-foreground/10 shadow-[var(--shadow-card)]">
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center justify-between w-full px-3 py-2 text-left hover:bg-muted/50 rounded-t-lg transition-colors"

@@ -4,11 +4,11 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const statCardVariants = cva(
-  "flex flex-col gap-3 rounded-card p-4 text-sm",
+  "flex flex-col gap-3 rounded-2xl p-4 text-sm",
   {
     variants: {
       variant: {
-        default: "border border-border bg-card text-card-foreground",
+        default: "bg-card text-card-foreground ring-1 ring-foreground/10",
         ghost: "bg-muted text-card-foreground",
       },
     },

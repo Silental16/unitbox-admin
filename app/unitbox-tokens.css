@@ -47,10 +47,12 @@
 [data-slot="button"][data-variant="default"]:hover {
   opacity: 0.85;
 }
-[data-slot="card"] {
+[data-slot="card"],
+[data-slot="stat-card"] {
   box-shadow: var(--shadow-card);
 }
-[data-slot="card"][data-interactive]:hover {
+[data-slot="card"][data-interactive]:hover,
+[data-slot="stat-card"][data-interactive]:hover {
   box-shadow: var(--shadow-card-hover);
   transition: box-shadow 0.2s ease;
 }

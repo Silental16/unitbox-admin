@@ -137,7 +137,7 @@ export function TasksTable({
 }: TasksTableProps) {
   return (
     <TooltipProvider>
-      <div className="rounded-[var(--radius-card)] border overflow-x-auto">
+      <div className="rounded-2xl ring-1 ring-foreground/10 overflow-x-auto shadow-[var(--shadow-card)]">
         <Table className="min-w-[600px]">
           <TableHeader>
             <TableRow>
