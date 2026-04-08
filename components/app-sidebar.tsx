@@ -15,8 +15,8 @@ import {
   SunIcon,
   MoonIcon,
   LogOutIcon,
-  UsersIcon,
-  WalletIcon,
+  HandshakeIcon,
+  CpuIcon,
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { createClient } from "@/lib/supabase/client"
@@ -37,16 +37,11 @@ import {
 
 const navGroups = [
   {
-    label: "Business",
+    label: "Workspace",
     items: [
-      { title: "Clients", href: "/clients", icon: UsersIcon },
-      { title: "Developers", href: "/developers", icon: Building2Icon },
       { title: "Analytics", href: "/analytics", icon: BarChart3Icon },
-    ],
-  },
-  {
-    label: "Operations",
-    items: [
+      { title: "Developers", href: "/developers", icon: Building2Icon },
+      { title: "Clients", href: "/clients", icon: HandshakeIcon },
       { title: "Projects", href: "/projects", icon: FolderOpenIcon },
       { title: "Tasks", href: "/tasks", icon: CheckSquareIcon },
       { title: "Competitors", href: "/competitors", icon: ShieldIcon },
@@ -55,9 +50,9 @@ const navGroups = [
   {
     label: "Tools",
     items: [
+      { title: "ROI Calculator", href: "/roi", icon: TrendingUpIcon },
+      { title: "Mechanics", href: "/mechanics", icon: CpuIcon },
       { title: "Preview", href: "/preview", icon: EyeIcon },
-      { title: "Unitbox ROI", href: "/roi", icon: TrendingUpIcon },
-      { title: "Mechanics", href: "/mechanics", icon: LightbulbIcon },
       { title: "Sandbox", href: "/sandbox", icon: PaletteIcon },
     ],
   },

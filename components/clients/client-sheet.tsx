@@ -170,10 +170,10 @@ export function ClientSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-[420px] sm:w-[540px] !max-w-none overflow-y-auto"
+        className="w-[420px] sm:w-[540px] !max-w-none overflow-y-auto p-6"
       >
         {/* Header: avatar + title + status badge */}
-        <div className="flex items-center gap-3 pb-4 border-b border-border">
+        <div className="flex items-center gap-3 pb-4 border-b border-border -mx-6 px-6 -mt-2">
           <Avatar className="size-10">
             <AvatarFallback>{getInitials(client.name)}</AvatarFallback>
           </Avatar>
@@ -192,7 +192,7 @@ export function ClientSheet({
         </div>
 
         {/* Body: DescriptionsList */}
-        <DescriptionsList layout="horizontal" className="py-4">
+        <DescriptionsList layout="horizontal" className="py-4 -mx-6 px-6 border-b border-border">
           <DescriptionsItem label="Domain">
             {client.catalogDomain ? (
               <a
