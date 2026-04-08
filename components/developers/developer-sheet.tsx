@@ -226,7 +226,7 @@ export function DeveloperSheet({
               return (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${sales.bg} ${sales.text}`}>
+                    <button className={`inline-flex items-center gap-1.5 rounded-[var(--radius-menu-item)] px-2 py-0.5 text-xs font-medium cursor-pointer ${sales.bg} ${sales.text}`}>
                       <span className={`size-1.5 rounded-full shrink-0 ${sales.dot}`} />
                       {sales.label}
                     </button>
@@ -252,7 +252,7 @@ export function DeveloperSheet({
               return (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${opt.bg} ${opt.text}`}>
+                    <button className={`inline-flex items-center gap-1.5 rounded-[var(--radius-menu-item)] px-2 py-0.5 text-xs font-medium cursor-pointer ${opt.bg} ${opt.text}`}>
                       <span className={`size-1.5 rounded-full shrink-0 ${opt.dot}`} />
                       {opt.label}
                     </button>
@@ -276,7 +276,7 @@ export function DeveloperSheet({
               ICP {score}
             </Badge>
             {developer.origin && (
-              <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              <span className="inline-flex items-center rounded-[var(--radius-menu-item)] bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                 {developer.origin}
               </span>
             )}

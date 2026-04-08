@@ -134,7 +134,7 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
     <div className="space-y-6">
       {/* Hook */}
       {(data.hookEn || data.hookRu) && (
-        <div className="rounded-lg border bg-muted p-4">
+        <div className="rounded-[var(--radius-field)] border bg-muted p-4">
           <div className="flex items-center gap-2 mb-2">
             <TargetIcon className="size-4 text-muted-foreground" />
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Hook</span>
@@ -153,7 +153,7 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
           </h4>
           <div className="space-y-2">
             {narrative.map((point, i) => (
-              <div key={i} className="rounded-md border p-3 text-sm">
+              <div key={i} className="rounded-[var(--radius-menu-item)] border p-3 text-sm">
                 <div className="flex items-center gap-2 mb-1">
                   <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${TYPE_COLORS[point.type] || "bg-gray-100 text-gray-600"}`}>
                     {TYPE_LABELS[point.type] || point.type}
@@ -184,25 +184,25 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
           </h4>
           <div className="grid grid-cols-2 gap-2 text-sm">
             {trust.years_experience != null && (
-              <div className="rounded-md border p-2">
+              <div className="rounded-[var(--radius-menu-item)] border p-2">
                 <p className="text-xs text-muted-foreground">Experience</p>
                 <p className="font-semibold">{trust.years_experience} years</p>
               </div>
             )}
             {trust.completed_sqm != null && (
-              <div className="rounded-md border p-2">
+              <div className="rounded-[var(--radius-menu-item)] border p-2">
                 <p className="text-xs text-muted-foreground">Built</p>
                 <p className="font-semibold">{trust.completed_sqm.toLocaleString()} m²</p>
               </div>
             )}
             {trust.employees_count != null && (
-              <div className="rounded-md border p-2">
+              <div className="rounded-[var(--radius-menu-item)] border p-2">
                 <p className="text-xs text-muted-foreground">Team</p>
                 <p className="font-semibold">{trust.employees_count}+ people</p>
               </div>
             )}
             {trust.total_units_delivered != null && (
-              <div className="rounded-md border p-2">
+              <div className="rounded-[var(--radius-menu-item)] border p-2">
                 <p className="text-xs text-muted-foreground">Delivered</p>
                 <p className="font-semibold">{trust.total_units_delivered}+ units</p>
               </div>
@@ -286,7 +286,7 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
 
           {/* Quick Pitch */}
           {cheatsheet.quick_pitch_en && (
-            <div className="rounded-md bg-muted/50 p-3 mb-3">
+            <div className="rounded-[var(--radius-menu-item)] bg-muted/50 p-3 mb-3">
               <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground mb-1">Quick Pitch (copy-paste)</p>
               <p className="text-sm">{cheatsheet.quick_pitch_en}</p>
               {cheatsheet.quick_pitch_ru && (
@@ -331,7 +331,7 @@ export function SalesEnablementSection({ data }: { data: SalesEnablementData | n
 
           {/* Ideal Buyer */}
           {cheatsheet.ideal_buyer_en && (
-            <div className="rounded-md border p-2.5 mb-3">
+            <div className="rounded-[var(--radius-menu-item)] border p-2.5 mb-3">
               <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">
                 <UserIcon className="size-3" />
                 Ideal Buyer

@@ -48,7 +48,7 @@ function DroppableColumn({
   return (
     <div
       ref={setNodeRef}
-      className={`flex flex-col gap-1 rounded-lg p-2 min-h-[300px] transition-colors duration-150 ${isOver ? "bg-muted/60" : "bg-muted/30"}`}
+      className={`flex flex-col gap-1 rounded-[var(--radius-card)] p-2 min-h-[300px] transition-colors duration-150 ${isOver ? "bg-muted/60" : "bg-muted/30"}`}
     >
       <div className="flex items-center gap-2 px-1 py-1 mb-1">
         <span className={`size-2 rounded-full ${status.dot}`} />

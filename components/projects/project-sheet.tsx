@@ -96,7 +96,7 @@ function KVRow({ label, value, href, icon: Icon }: { label: string; value: strin
 function MaterialBlock({ title, count, children }: { title: string; count: number; children: React.ReactNode }) {
   const [open, setOpen] = useState(true)
   return (
-    <div className="rounded-lg border">
+    <div className="rounded-[var(--radius-card)] border">
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center justify-between w-full px-3 py-2 text-left hover:bg-muted/50 rounded-t-lg transition-colors"
@@ -330,7 +330,7 @@ export function ProjectSheet({
                 #{project.catalogId}
               </Badge>
               {project.location && (
-                <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                <span className="inline-flex items-center rounded-[var(--radius-menu-item)] bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                   <MapPinIcon className="size-2.5 mr-1" />
                   {project.location}
                 </span>

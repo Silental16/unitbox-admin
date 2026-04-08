@@ -59,7 +59,7 @@ function StatusSelect({ status, onChange }: { status: TaskStatus; onChange: (v: 
   return (
     <Select value={status} onValueChange={(v) => onChange(v as TaskStatus)}>
       <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
-        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
+        <span className={`inline-flex items-center gap-1.5 rounded-[var(--radius-menu-item)] px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
           <span className={`size-1.5 rounded-full shrink-0 ${config.dot}`} />
           {config.label}
         </span>
@@ -83,7 +83,7 @@ function PrioritySelect({ priority, onChange }: { priority: TaskPriority; onChan
   return (
     <Select value={priority} onValueChange={(v) => onChange(v as TaskPriority)}>
       <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
-        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
+        <span className={`inline-flex items-center gap-1.5 rounded-[var(--radius-menu-item)] px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
           <span className={`size-1.5 rounded-full shrink-0 ${config.dot}`} />
           {config.label}
         </span>
@@ -107,7 +107,7 @@ function StageSelect({ stage, onChange }: { stage: TaskStage; onChange: (v: Task
   return (
     <Select value={stage} onValueChange={(v) => onChange(v as TaskStage)}>
       <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
-        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
+        <span className={`inline-flex items-center gap-1.5 rounded-[var(--radius-menu-item)] px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
           <span className={`size-1.5 rounded-full shrink-0 ${config.dot}`} />
           {config.label}
         </span>
@@ -137,7 +137,7 @@ export function TasksTable({
 }: TasksTableProps) {
   return (
     <TooltipProvider>
-      <div className="rounded-lg border overflow-x-auto">
+      <div className="rounded-[var(--radius-card)] border overflow-x-auto">
         <Table className="min-w-[600px]">
           <TableHeader>
             <TableRow>

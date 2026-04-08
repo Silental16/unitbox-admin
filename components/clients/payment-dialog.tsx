@@ -62,7 +62,7 @@ export function PaymentDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-sm">
+      <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Record Payment #{payment.installmentNumber}</DialogTitle>
         </DialogHeader>
@@ -79,7 +79,7 @@ export function PaymentDialog({
               type="date"
               value={paidDate}
               onChange={e => setPaidDate(e.target.value)}
-              className="h-9"
+              className="tabular-nums"
             />
           </Field>
 

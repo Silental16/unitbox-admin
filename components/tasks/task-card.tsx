@@ -44,7 +44,7 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
       style={style}
       data-slot="card"
       data-interactive
-      className={`rounded-lg bg-card text-card-foreground overflow-hidden cursor-pointer active:cursor-grabbing hover:bg-muted/50 transition-all touch-none ${isDragging ? "opacity-40 cursor-grabbing" : ""} ${overlay ? "shadow-lg rotate-2 scale-105 opacity-90 cursor-grabbing" : ""}`}
+      className={`rounded-[var(--radius-card)] bg-card text-card-foreground overflow-hidden cursor-pointer active:cursor-grabbing hover:bg-muted/50 transition-all touch-none ${isDragging ? "opacity-40 cursor-grabbing" : ""} ${overlay ? "shadow-lg rotate-2 scale-105 opacity-90 cursor-grabbing" : ""}`}
       {...attributes}
       {...listeners}
       onClick={(e) => {
@@ -62,14 +62,14 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
         <div className="flex flex-wrap items-center gap-1">
           {priority && (
             <span
-              className={`inline-flex items-center gap-1 rounded-md px-1.5 py-0 text-[11px] font-medium ${priority.bg} ${priority.text}`}
+              className={`inline-flex items-center gap-1 rounded-[var(--radius-menu-item)] px-1.5 py-0 text-[11px] font-medium ${priority.bg} ${priority.text}`}
             >
               <span className={`size-1.5 rounded-full ${priority.dot}`} />
               {priority.label}
             </span>
           )}
           <span
-            className={`inline-flex items-center gap-1 rounded-md px-1.5 py-0 text-[11px] font-medium ${stageConfig.bg} ${stageConfig.text}`}
+            className={`inline-flex items-center gap-1 rounded-[var(--radius-menu-item)] px-1.5 py-0 text-[11px] font-medium ${stageConfig.bg} ${stageConfig.text}`}
           >
             <span className={`size-1.5 rounded-full ${stageConfig.dot}`} />
             {stageConfig.label}
@@ -98,7 +98,7 @@ export function TaskCard({ task, onClick, overlay }: TaskCardProps) {
         </div>
 
         {task.comment && (
-          <span className="inline-flex items-start gap-1.5 text-xs text-muted-foreground bg-muted/80 rounded-md px-2.5 py-1 leading-snug break-all overflow-hidden max-w-full">
+          <span className="inline-flex items-start gap-1.5 text-xs text-muted-foreground bg-muted/80 rounded-[var(--radius-menu-item)] px-2.5 py-1 leading-snug break-all overflow-hidden max-w-full">
             <MessageSquareIcon className="size-3 shrink-0 mt-px" />
             <span className="break-words overflow-wrap-anywhere min-w-0">{task.comment}</span>
           </span>

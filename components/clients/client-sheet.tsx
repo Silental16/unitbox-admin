@@ -80,16 +80,16 @@ function PaymentTimeline({
             className={cn(
               "size-8 shrink-0 rounded-full flex items-center justify-center",
               payment.status === "paid"
-                ? "bg-emerald-100 dark:bg-emerald-500/10"
+                ? "bg-[var(--color-trend-up)]/10"
                 : payment.status === "overdue"
-                  ? "bg-red-100 dark:bg-red-500/10"
+                  ? "bg-destructive/10"
                   : "bg-muted"
             )}
           >
             {payment.status === "paid" ? (
-              <CheckIcon className="size-4 text-emerald-600" />
+              <CheckIcon className="size-4 text-[var(--color-trend-up)]" />
             ) : payment.status === "overdue" ? (
-              <AlertCircleIcon className="size-4 text-red-500" />
+              <AlertCircleIcon className="size-4 text-destructive" />
             ) : (
               <ClockIcon className="size-4 text-muted-foreground" />
             )}
@@ -109,7 +109,7 @@ function PaymentTimeline({
                 {formatDate(payment.dueDate)}
               </p>
               {payment.status === "paid" && (
-                <span className="text-xs text-emerald-600">
+                <span className="text-xs text-[var(--color-trend-up)]">
                   Paid {formatDate(payment.paidDate!)}
                 </span>
               )}
@@ -170,10 +170,11 @@ export function ClientSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-[420px] sm:w-[540px] !max-w-none overflow-y-auto p-6"
+        className="w-[480px] sm:w-[540px] !max-w-none p-0 flex flex-col"
+        showCloseButton={false}
       >
         {/* Header: avatar + title + status badge */}
-        <div className="flex items-center gap-3 pb-4 border-b border-border -mx-6 px-6 -mt-2">
+        <div className="flex items-center gap-3 p-6 pb-4 border-b border-border shrink-0">
           <Avatar className="size-10">
             <AvatarFallback>{getInitials(client.name)}</AvatarFallback>
           </Avatar>
@@ -191,8 +192,9 @@ export function ClientSheet({
           </div>
         </div>
 
+        <div className="flex-1 overflow-y-auto">
         {/* Body: DescriptionsList */}
-        <DescriptionsList layout="horizontal" className="py-4 -mx-6 px-6 border-b border-border">
+        <DescriptionsList layout="horizontal" className="py-4 px-6 border-b border-border">
           <DescriptionsItem label="Domain">
             {client.catalogDomain ? (
               <a
@@ -217,6 +219,7 @@ export function ClientSheet({
         </DescriptionsList>
 
         {/* Tabs: Subscription / History */}
+        <div className="px-6 pt-4 pb-6">
         <Tabs defaultValue="subscription">
           <TabsList>
             <TabsTrigger value="subscription">Subscription</TabsTrigger>
@@ -322,6 +325,8 @@ export function ClientSheet({
             )}
           </TabsContent>
         </Tabs>
+        </div>
+        </div>
 
         {/* Dialogs */}
         <SubscriptionDialog

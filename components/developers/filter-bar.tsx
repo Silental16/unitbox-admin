@@ -93,7 +93,7 @@ export function FilterBar({
       {/* Sales Status — multi-select */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className="h-9 rounded-control text-sm font-normal">
+          <Button variant="outline" size="sm" className="text-sm font-normal">
             {salesFilter.length === 0
               ? "All Statuses"
               : salesFilter.length === 1

@@ -106,7 +106,7 @@ function ResearchStatusSelect({ status, onChange }: { status: ResearchStatus; on
   return (
     <Select value={status} onValueChange={(v) => onChange(v as ResearchStatus)}>
       <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
-        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
+        <span className={`inline-flex items-center gap-1.5 rounded-[var(--radius-menu-item)] px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
           <span className={`size-1.5 rounded-full shrink-0 ${config.dot}`} />
           {config.label}
         </span>
@@ -134,7 +134,7 @@ function SalesStatusSelect({ status, onChange }: { status: SalesStatus; onChange
   return (
     <Select value={status} onValueChange={(v) => onChange(v as SalesStatus)}>
       <SelectTrigger className="h-auto w-auto border-none bg-transparent p-0 shadow-none focus:ring-0 [&>svg]:hidden">
-        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
+        <span className={`inline-flex items-center gap-1.5 rounded-[var(--radius-menu-item)] px-2 py-0.5 text-xs font-medium ${config.bg} ${config.text}`}>
           <span className={`size-1.5 rounded-full shrink-0 ${config.dot}`} />
           {config.label}
         </span>
@@ -163,7 +163,7 @@ export function DevelopersTable({
 }: DevelopersTableProps) {
   return (
     <TooltipProvider>
-      <div className="rounded-lg border border-border overflow-hidden">
+      <div className="rounded-[var(--radius-card)] border border-border overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
@@ -235,7 +235,7 @@ export function DevelopersTable({
                           {dev.name}
                         </span>
                         <span
-                          className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[11px] font-semibold ${originBadgeVariant(dev.originTag)}`}
+                          className={`inline-flex items-center rounded-[var(--radius-menu-item)] px-1.5 py-0.5 text-[11px] font-semibold ${originBadgeVariant(dev.originTag)}`}
                         >
                           {originLabel(dev.originTag)}
                         </span>
@@ -283,7 +283,7 @@ export function DevelopersTable({
                 {dev.comment && (
                   <tr className="group-hover:bg-muted/50 transition-colors">
                     <td colSpan={7} className="px-4 pt-0 pb-3">
-                      <span className="inline-flex items-start gap-1.5 text-xs text-muted-foreground bg-muted/80 rounded-md px-2.5 py-1 leading-snug">
+                      <span className="inline-flex items-start gap-1.5 text-xs text-muted-foreground bg-muted/80 rounded-[var(--radius-menu-item)] px-2.5 py-1 leading-snug">
                         <MessageSquareIcon className="size-3 shrink-0 mt-px" />
                         {dev.comment}
                       </span>

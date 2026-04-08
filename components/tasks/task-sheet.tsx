@@ -150,7 +150,7 @@ export function TaskSheet({
               {/* Status Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${statusConfig.bg} ${statusConfig.text}`}>
+                  <button className={`inline-flex items-center gap-1.5 rounded-[var(--radius-menu-item)] px-2 py-0.5 text-xs font-medium cursor-pointer ${statusConfig.bg} ${statusConfig.text}`}>
                     <span className={`size-1.5 rounded-full shrink-0 ${statusConfig.dot}`} />
                     {statusConfig.label}
                   </button>
@@ -172,7 +172,7 @@ export function TaskSheet({
               {/* Priority Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${priorityConfig.bg} ${priorityConfig.text}`}>
+                  <button className={`inline-flex items-center gap-1.5 rounded-[var(--radius-menu-item)] px-2 py-0.5 text-xs font-medium cursor-pointer ${priorityConfig.bg} ${priorityConfig.text}`}>
                     <span className={`size-1.5 rounded-full shrink-0 ${priorityConfig.dot}`} />
                     {priorityConfig.label}
                   </button>
@@ -194,7 +194,7 @@ export function TaskSheet({
               {/* Stage Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium cursor-pointer ${stageConfig.bg} ${stageConfig.text}`}>
+                  <button className={`inline-flex items-center gap-1.5 rounded-[var(--radius-menu-item)] px-2 py-0.5 text-xs font-medium cursor-pointer ${stageConfig.bg} ${stageConfig.text}`}>
                     <span className={`size-1.5 rounded-full shrink-0 ${stageConfig.dot}`} />
                     {stageConfig.label}
                   </button>

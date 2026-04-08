@@ -106,7 +106,7 @@ function MaterialsList({
         const typeConfig = MATERIAL_TYPES.find((t) => t.value === m.type)
         const Icon = ICON_MAP[typeConfig?.icon ?? "paperclip"] ?? PaperclipIcon
         return (
-          <div key={m.id} className="flex items-start gap-3 rounded-lg border px-3 py-2.5 group w-full overflow-hidden">
+          <div key={m.id} className="flex items-start gap-3 rounded-[var(--radius-field)] border px-3 py-2.5 group w-full overflow-hidden">
             <Icon className="size-4 text-muted-foreground shrink-0 mt-0.5" />
             <div className="min-w-0 flex-1 overflow-hidden">
               <a
@@ -138,7 +138,7 @@ function MaterialsList({
       )}
 
       {adding ? (
-        <div className="space-y-2 rounded-lg border p-3">
+        <div className="space-y-2 rounded-[var(--radius-field)] border p-3">
           <Input
             placeholder="Title (e.g. Project Drive Folder)"
             value={title}

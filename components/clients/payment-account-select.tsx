@@ -43,7 +43,7 @@ export function PaymentAccountSelect({ accounts, value, onChange, onAccountCreat
   return (
     <>
       <Select value={value ?? undefined} onValueChange={onChange}>
-        <SelectTrigger className="h-9">
+        <SelectTrigger>
           <SelectValue placeholder="Select account" />
         </SelectTrigger>
         <SelectContent>
@@ -67,7 +67,7 @@ export function PaymentAccountSelect({ accounts, value, onChange, onAccountCreat
       </Select>
 
       <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
-        <DialogContent className="max-w-sm">
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Add Payment Account</DialogTitle>
           </DialogHeader>

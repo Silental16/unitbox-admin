@@ -34,11 +34,11 @@ export function ChangeLogSection({ changeLog }: ChangeLogSectionProps) {
         return (
           <div
             key={entry.id}
-            className="flex items-start gap-3 rounded-lg border px-3 py-2.5"
+            className="flex items-start gap-3 rounded-[var(--radius-field)] border px-3 py-2.5"
           >
             <div className="flex-1 min-w-0 space-y-1">
               <div className="flex items-center gap-2">
-                <span className={`inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium ${sourceConfig.bg} ${sourceConfig.text}`}>
+                <span className={`inline-flex items-center gap-1 rounded-[var(--radius-menu-item)] px-1.5 py-0.5 text-[11px] font-medium ${sourceConfig.bg} ${sourceConfig.text}`}>
                   <span className={`size-1.5 rounded-full shrink-0 ${sourceConfig.dot}`} />
                   {sourceConfig.label}
                 </span>
@@ -55,7 +55,7 @@ export function ChangeLogSection({ changeLog }: ChangeLogSectionProps) {
                   <summary className="text-muted-foreground cursor-pointer hover:text-foreground transition-colors">
                     Show diff
                   </summary>
-                  <pre className="mt-1 bg-muted rounded-md p-2 overflow-x-auto">
+                  <pre className="mt-1 bg-muted rounded-[var(--radius-menu-item)] p-2 overflow-x-auto">
                     {JSON.stringify(entry.diff, null, 2)}
                   </pre>
                 </details>

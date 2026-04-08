@@ -96,7 +96,7 @@ export function ChessSection({ chessSources, onChessSourcesChange }: ChessSectio
                 {Object.entries(source.colorLegend).map(([color, meaning]) => (
                   <span
                     key={color}
-                    className="inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-[11px]"
+                    className="inline-flex items-center gap-1.5 rounded-[var(--radius-menu-item)] border px-2 py-0.5 text-[11px]"
                   >
                     <span
                       className="size-2.5 rounded-full shrink-0 border"
@@ -113,7 +113,7 @@ export function ChessSection({ chessSources, onChessSourcesChange }: ChessSectio
           {source.lastSyncDiff && Object.keys(source.lastSyncDiff).length > 0 && (
             <div>
               <p className="text-xs font-medium text-muted-foreground mb-1.5">Last Sync Changes</p>
-              <pre className="text-xs bg-muted rounded-md p-2 overflow-x-auto">
+              <pre className="text-xs bg-muted rounded-[var(--radius-menu-item)] p-2 overflow-x-auto">
                 {JSON.stringify(source.lastSyncDiff, null, 2)}
               </pre>
             </div>

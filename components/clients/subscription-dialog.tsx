@@ -157,7 +157,7 @@ export function SubscriptionDialog({
           <Field>
             <FieldLabel>Package</FieldLabel>
             <Select value={selectedPackageId} onValueChange={handlePackageChange}>
-              <SelectTrigger className="h-9">
+              <SelectTrigger>
                 <SelectValue placeholder="Select package" />
               </SelectTrigger>
               <SelectContent>
@@ -177,7 +177,7 @@ export function SubscriptionDialog({
               type="number"
               value={totalPrice}
               onChange={e => handleTotalPriceChange(Number(e.target.value))}
-              className="h-9"
+              className="tabular-nums"
             />
           </Field>
 
@@ -188,7 +188,7 @@ export function SubscriptionDialog({
               type="date"
               value={startDate}
               onChange={e => setStartDate(e.target.value)}
-              className="h-9"
+              className="tabular-nums"
             />
           </Field>
 
@@ -217,7 +217,7 @@ export function SubscriptionDialog({
               1 payment of {formatCurrency(totalPrice)} on {startDate}
             </p>
           ) : (
-            <div className="space-y-3 mt-1 p-4 rounded-lg border bg-muted/30">
+            <div className="space-y-4 mt-1 p-4 rounded-[var(--radius-field)] border bg-muted/30">
               <p className="text-sm font-medium">Payment Schedule</p>
 
               {/* Payment 1 — always immediately */}
@@ -229,7 +229,7 @@ export function SubscriptionDialog({
                   type="number"
                   value={amounts[0] ?? 0}
                   onChange={e => updateAmount(0, Number(e.target.value))}
-                  className="w-24 h-8"
+                  className="w-24"
                 />
                 <span className="text-xs text-muted-foreground">immediately</span>
               </div>
@@ -243,11 +243,11 @@ export function SubscriptionDialog({
                   type="number"
                   value={amounts[1] ?? 0}
                   onChange={e => updateAmount(1, Number(e.target.value))}
-                  className="w-24 h-8"
+                  className="w-24"
                 />
                 <span className="text-xs text-muted-foreground">in</span>
                 <Select value={String(months[1])} onValueChange={v => updateMonth(1, v)}>
-                  <SelectTrigger className="w-20 h-8">
+                  <SelectTrigger className="w-20">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -268,11 +268,11 @@ export function SubscriptionDialog({
                     type="number"
                     value={amounts[2] ?? 0}
                     onChange={e => updateAmount(2, Number(e.target.value))}
-                    className="w-24 h-8"
+                    className="w-24"
                   />
                   <span className="text-xs text-muted-foreground">after payment 2</span>
                   <Select value={String(months[2])} onValueChange={v => updateMonth(2, v)}>
-                    <SelectTrigger className="w-20 h-8">
+                    <SelectTrigger className="w-20">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
