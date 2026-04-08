@@ -15,6 +15,7 @@ import {
   SunIcon,
   MoonIcon,
   LogOutIcon,
+  UsersIcon,
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { createClient } from "@/lib/supabase/client"
@@ -39,6 +40,7 @@ const navGroups = [
     items: [
       { title: "Analytics", href: "/analytics", icon: BarChart3Icon },
       { title: "Developers", href: "/developers", icon: Building2Icon },
+      { title: "Clients", href: "/clients", icon: UsersIcon },
       { title: "Projects", href: "/projects", icon: FolderOpenIcon },
       { title: "Competitors", href: "/competitors", icon: ShieldIcon },
       { title: "Tasks", href: "/tasks", icon: CheckSquareIcon },
