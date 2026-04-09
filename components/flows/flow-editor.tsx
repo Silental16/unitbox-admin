@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useCallback } from "react"
+import Link from "next/link"
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -11,10 +12,9 @@ import {
 } from "@xyflow/react"
 import type { FlowNode, FlowEdge } from "@/components/flow/types"
 import "@xyflow/react/dist/style.css"
-import { ArrowLeft } from "lucide-react"
+import { PauseIcon } from "lucide-react"
 import { useFlowStore } from "@/components/flow/flow-store"
 import { FlowToolbar } from "@/components/flow/flow-toolbar"
-import { FlowSidebar } from "@/components/flow/flow-sidebar"
 import { FlowContextMenu, useContextMenu } from "@/components/flow/flow-context-menu"
 import { EdgeEditor } from "@/components/flow/edge-editor"
 import { useFlowShortcuts } from "@/components/flow/use-flow-shortcuts"
@@ -24,13 +24,15 @@ import { DecisionNodeWidget } from "@/components/flow/nodes/decision-node"
 import { CustomEdge } from "@/components/flow/edges/custom-edge"
 import { SaveIndicator } from "@/components/flow/save-indicator"
 
-// Register node and edge types OUTSIDE the component
 const nodeTypes = {
   process: ProcessNodeWidget,
   job: JobNodeMemo,
   decision: DecisionNodeWidget,
 }
 const edgeTypes = { custom: CustomEdge }
+
+const headerShadow =
+  "0 0 0 1px rgba(0,0,0,0.06), 0 1px 1px -0.5px rgba(0,0,0,0.06), 0 3px 3px -1.5px rgba(0,0,0,0.06)"
 
 interface FlowEditorProps {
   flowId: string
@@ -43,7 +45,6 @@ function FlowCanvas({ flowId, flowName, initialNodes, initialEdges }: FlowEditor
   const store = useFlowStore()
   const [name, setName] = useState(flowName)
 
-  // Initialize store with server data on mount
   useEffect(() => {
     useFlowStore.setState({ nodes: initialNodes, edges: initialEdges, flowId })
   }, [flowId]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -74,7 +75,6 @@ function FlowCanvas({ flowId, flowName, initialNodes, initialEdges }: FlowEditor
     []
   )
 
-  // Editable flow name in header
   const handleNameBlur = useCallback(async () => {
     if (name !== flowName) {
       await store.updateFlowName(name)
@@ -82,10 +82,21 @@ function FlowCanvas({ flowId, flowName, initialNodes, initialEdges }: FlowEditor
   }, [name, flowName, store])
 
   return (
-    <div className="h-[calc(100vh-50px)] -mx-5 -my-8 flex">
-      <div className="flex-1 relative">
-        {/* Header with back button and editable name */}
-        <div className="absolute top-3 left-14 z-10 flex items-center gap-2">
+    <div className="h-screen w-screen bg-[rgb(250,250,250)] relative">
+      {/* Top-left header — ElevenLabs breadcrumb style */}
+      <div className="absolute top-3 left-3 z-10 flex items-center gap-1">
+        <Link
+          href="/flows"
+          className="flex items-center gap-1.5 rounded-[10px] bg-white px-3 py-1.5 text-[13px] font-medium transition-colors hover:bg-accent/50"
+          style={{ boxShadow: headerShadow, color: "rgb(91, 91, 100)" }}
+        >
+          <PauseIcon className="size-3.5" />
+          Flows
+        </Link>
+        <div
+          className="flex items-center rounded-[10px] bg-white py-1"
+          style={{ boxShadow: headerShadow }}
+        >
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -93,39 +104,39 @@ function FlowCanvas({ flowId, flowName, initialNodes, initialEdges }: FlowEditor
             onKeyDown={(e) => {
               if (e.key === "Enter") (e.target as HTMLInputElement).blur()
             }}
-            className="text-sm font-medium bg-transparent border-none outline-none px-2 py-1 rounded-lg hover:bg-accent/50 focus:bg-accent/50 transition-colors"
+            className="bg-transparent border-none outline-none px-3 py-0.5 text-[13px] font-medium text-foreground min-w-[120px] max-w-[300px]"
+            style={{ color: "rgb(15, 15, 16)" }}
           />
-          <SaveIndicator />
         </div>
+        <SaveIndicator />
+      </div>
 
-        <ReactFlow
-          nodes={store.nodes}
-          edges={store.edges}
-          onNodesChange={store.onNodesChange}
-          onEdgesChange={store.onEdgesChange}
-          onConnect={store.onConnect}
-          onNodeContextMenu={onNodeContextMenu}
-          onEdgeContextMenu={onEdgeContextMenu}
-          onPaneContextMenu={onPaneContextMenu}
-          onEdgeDoubleClick={handleEdgeDoubleClick}
-          nodeTypes={nodeTypes}
-          edgeTypes={edgeTypes}
-          defaultEdgeOptions={{ type: "custom" }}
-          connectionMode={ConnectionMode.Loose}
-          snapToGrid
-          snapGrid={[16, 16]}
-          fitView
-        >
-          <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
-          <MiniMap className="!bottom-16 !right-4" />
-        </ReactFlow>
+      {/* React Flow canvas */}
+      <ReactFlow
+        nodes={store.nodes}
+        edges={store.edges}
+        onNodesChange={store.onNodesChange}
+        onEdgesChange={store.onEdgesChange}
+        onConnect={store.onConnect}
+        onNodeContextMenu={onNodeContextMenu}
+        onEdgeContextMenu={onEdgeContextMenu}
+        onPaneContextMenu={onPaneContextMenu}
+        onEdgeDoubleClick={handleEdgeDoubleClick}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        defaultEdgeOptions={{ type: "custom" }}
+        connectionMode={ConnectionMode.Loose}
+        snapToGrid
+        snapGrid={[16, 16]}
+        fitView
+      >
+        <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
+        <MiniMap className="!bottom-20 !right-4" />
+      </ReactFlow>
 
-        {/* Bottom toolbar */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
-          <FlowToolbar />
-        </div>
-
-        <FlowSidebar />
+      {/* Bottom toolbar — centered */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
+        <FlowToolbar />
       </div>
 
       {/* Context menu */}
