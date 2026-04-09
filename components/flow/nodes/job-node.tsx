@@ -266,11 +266,12 @@ function JobNodeComponent({ id, data, selected }: NodeProps<JobNode>) {
       style={{
         boxShadow: selected ? selectedShadow : shadow,
         minWidth: expanded ? 280 : 200,
-        maxWidth: 360,
+        maxWidth: 800,
       }}
     >
       <NodeResizer
         minWidth={expanded ? 280 : 200}
+        maxWidth={800}
         minHeight={60}
         isVisible={!!selected}
         lineStyle={{ border: "none" }}
@@ -320,7 +321,7 @@ function JobNodeComponent({ id, data, selected }: NodeProps<JobNode>) {
       {/* ── Expanded: Full accordion ── */}
       {expanded && (
         <div className="border-t border-[rgba(0,0,29,0.06)]">
-          <Accordion type="multiple" defaultValue={["when", "want"]}>
+          <Accordion type="multiple" defaultValue={["when", "want", "sothat", "solution", "barriers", "problems", "meta"]}>
 
             {/* ── КОГДА ── */}
             <AccordionItem value="when" className="border-none">
