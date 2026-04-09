@@ -55,7 +55,7 @@ export async function getSyncEnabledSources(): Promise<ChessSource[]> {
       "*, catalog_projects!inner(catalog_id, name, id)"
     )
     .eq("sync_enabled", true)
-    .eq("catalog_projects.status", "published")
+    .in("catalog_projects.status", ["published", "filled", "filling"])
     .order("catalog_projects(catalog_id)", { ascending: true });
 
   if (error) throw new Error(`getSyncEnabledSources failed: ${error.message}`);
