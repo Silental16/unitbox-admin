@@ -318,6 +318,38 @@ function JobNodeComponent({ id, data, selected }: NodeProps<JobNode>) {
         )}
       </div>
 
+      {/* ── Summary (collapsed view) ── */}
+      {!expanded && (d.summary || d.context || d.expectedResult || d.soThat) && (
+        <div className="px-3 pb-2.5">
+          {d.summary ? (
+            <p className="text-[11.5px] leading-[1.5]" style={{ color: "rgb(120,120,130)" }}>
+              {d.summary}
+            </p>
+          ) : (
+            <div className="space-y-0.5">
+              {d.context && (
+                <p className="text-[11px] leading-[1.45]" style={{ color: "rgb(140,140,150)" }}>
+                  <span className="font-semibold text-blue-500 text-[9.5px] uppercase tracking-wide mr-1">когда</span>
+                  {d.context.length > 100 ? d.context.slice(0, 100) + "..." : d.context}
+                </p>
+              )}
+              {d.expectedResult && (
+                <p className="text-[11px] leading-[1.45]" style={{ color: "rgb(140,140,150)" }}>
+                  <span className="font-semibold text-emerald-500 text-[9.5px] uppercase tracking-wide mr-1">хочу</span>
+                  {d.expectedResult.length > 100 ? d.expectedResult.slice(0, 100) + "..." : d.expectedResult}
+                </p>
+              )}
+              {d.soThat && (
+                <p className="text-[11px] leading-[1.45]" style={{ color: "rgb(140,140,150)" }}>
+                  <span className="font-semibold text-violet-500 text-[9.5px] uppercase tracking-wide mr-1">чтобы</span>
+                  {d.soThat.length > 100 ? d.soThat.slice(0, 100) + "..." : d.soThat}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* ── Expanded: Full accordion ── */}
       {expanded && (
         <div className="border-t border-[rgba(0,0,29,0.06)]">

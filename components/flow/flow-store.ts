@@ -79,6 +79,7 @@ const defaultProcessData: ProcessNodeData = {
 
 const defaultJobData: JobNodeData = {
   label: "New Job",
+  summary: "",
   level: "small",
   jobType: "sequential",
   context: "",

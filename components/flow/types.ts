@@ -24,6 +24,7 @@ export type TriggerType = "planned-external" | "planned-internal" | "unexpected-
 
 export type JobNodeData = {
   label: string
+  summary: string
   level: JobLevel
   jobType: JobType
   context: string
