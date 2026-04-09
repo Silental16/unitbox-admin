@@ -148,9 +148,10 @@ export async function GET(request: NextRequest) {
       failed,
     })
   } catch (err) {
-    console.error("[chess-setup] Fatal error:", err instanceof Error ? err.message : String(err))
+    const errMsg = err instanceof Error ? err.message : String(err)
+    console.error("[chess-setup] Fatal error:", errMsg)
     return NextResponse.json(
-      { ok: false, error: "internal_error" },
+      { ok: false, error: errMsg },
       { status: 500 }
     )
   }

@@ -52,11 +52,10 @@ export async function getSyncEnabledSources(): Promise<ChessSource[]> {
   const { data, error } = await sb
     .from("project_chess_sources")
     .select(
-      "*, catalog_projects!inner(catalog_id, name, id, \"developersId\")"
+      "*, catalog_projects!inner(catalog_id, name, id)"
     )
     .eq("sync_enabled", true)
     .eq("catalog_projects.status", "published")
-    .eq("catalog_projects.developersId", 61)
     .order("catalog_projects(catalog_id)", { ascending: true });
 
   if (error) throw new Error(`getSyncEnabledSources failed: ${error.message}`);
@@ -205,15 +204,17 @@ export async function logSyncEvent(
  * Get ALL chess sources (regardless of sync_enabled) for projects belonging to a specific developer.
  * Used by setup endpoint to find unconfigured sources.
  */
-export async function getAllSourcesForDeveloper(developerId: number): Promise<ChessSource[]> {
+export async function getAllSourcesForDeveloper(_developerId: number): Promise<ChessSource[]> {
+  // Note: developer_id in Supabase is a UUID (FK to internal developers table),
+  // not the catalog integer ID. Since ALL chess sources in Supabase are dev61 projects,
+  // we return all sources. When other developers are added, filter via developer_id UUID.
   const sb = getClient();
 
   const { data, error } = await sb
     .from("project_chess_sources")
     .select(
-      "*, catalog_projects!inner(catalog_id, name, id, \"developersId\")"
+      "*, catalog_projects!inner(catalog_id, name, id)"
     )
-    .eq("catalog_projects.developersId", developerId)
     .order("catalog_projects(catalog_id)", { ascending: true });
 
   if (error) throw new Error(`getAllSourcesForDeveloper failed: ${error.message}`);
