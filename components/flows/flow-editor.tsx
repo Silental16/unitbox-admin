@@ -20,14 +20,12 @@ import { EdgeEditor } from "@/components/flow/edge-editor"
 import { useFlowShortcuts } from "@/components/flow/use-flow-shortcuts"
 import { ProcessNodeWidget } from "@/components/flow/nodes/process-node"
 import { JobNodeMemo } from "@/components/flow/nodes/job-node"
-import { DecisionNodeWidget } from "@/components/flow/nodes/decision-node"
 import { CustomEdge } from "@/components/flow/edges/custom-edge"
 import { SaveIndicator } from "@/components/flow/save-indicator"
 
 const nodeTypes = {
   process: ProcessNodeWidget,
   job: JobNodeMemo,
-  decision: DecisionNodeWidget,
 }
 const edgeTypes = { custom: CustomEdge }
 

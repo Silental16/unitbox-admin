@@ -1,6 +1,5 @@
 export { ProcessNodeWidget } from "./nodes/process-node"
 export { JobNodeMemo } from "./nodes/job-node"
-export { DecisionNodeWidget } from "./nodes/decision-node"
 export { CustomEdge } from "./edges/custom-edge"
 export { EdgeEditor } from "./edge-editor"
 export { FlowToolbar } from "./flow-toolbar"

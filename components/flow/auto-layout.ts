@@ -15,10 +15,15 @@ export function getLayoutedElements(
     edgesep: 40,
   })
 
+  const jobHeights: Record<string, number> = { note: 100, core: 160, standard: 350, microscope: 600 }
+
   nodes.forEach((node) => {
-    // Estimate node dimensions based on type
-    const width = node.type === "decision" ? 200 : 300
-    const height = node.type === "decision" ? 100 : 180
+    let width = 300
+    let height = 180
+    if (node.type === "job") {
+      const vm = (node.data as any).viewMode || "note"
+      height = jobHeights[vm] ?? 180
+    }
     g.setNode(node.id, { width, height })
   })
 
@@ -31,8 +36,12 @@ export function getLayoutedElements(
   const layoutedNodes = nodes.map((node) => {
     const pos = g.node(node.id)
     // dagre gives center position, React Flow uses top-left
-    const width = node.type === "decision" ? 200 : 300
-    const height = node.type === "decision" ? 100 : 180
+    let width = 300
+    let height = 180
+    if (node.type === "job") {
+      const vm = (node.data as any).viewMode || "note"
+      height = jobHeights[vm] ?? 180
+    }
     return {
       ...node,
       position: {

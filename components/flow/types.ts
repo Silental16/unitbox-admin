@@ -18,6 +18,10 @@ export type JobType =
   | "tax"
   | "orientational"
 
+export type JobViewMode = "note" | "core" | "standard" | "microscope"
+export type Frequency = "daily" | "weekly" | "monthly" | "quarterly" | "yearly" | "once"
+export type TriggerType = "planned-external" | "planned-internal" | "unexpected-external" | "unexpected-internal"
+
 export type JobNodeData = {
   label: string
   level: JobLevel
@@ -30,12 +34,20 @@ export type JobNodeData = {
   soThat: string
   problems: string
   problemSeverity: number
-  expanded: boolean
-}
-
-// -- Decision Node --
-export type DecisionNodeData = {
-  question: string
+  viewMode: JobViewMode
+  emotionsB: string
+  activatingKnowledge: string
+  currentSolution: string
+  solutionSatisfaction: number
+  considerationSet: string
+  barriersToSolution: string
+  barriersToJob: string
+  frequency: Frequency
+  importance: number
+  valueDirection: string
+  businessJob: string
+  personalJob: string
+  triggerType: TriggerType
 }
 
 // -- Edge --
@@ -51,6 +63,5 @@ export type FlowEdgeData = {
 // -- Union types --
 export type ProcessNode = Node<ProcessNodeData, "process">
 export type JobNode = Node<JobNodeData, "job">
-export type DecisionNode = Node<DecisionNodeData, "decision">
-export type FlowNode = ProcessNode | JobNode | DecisionNode
+export type FlowNode = ProcessNode | JobNode
 export type FlowEdge = Edge<FlowEdgeData>

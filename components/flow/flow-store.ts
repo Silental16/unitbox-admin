@@ -15,7 +15,8 @@ import type {
   FlowEdgeData,
   ProcessNodeData,
   JobNodeData,
-  DecisionNodeData,
+  Frequency,
+  TriggerType,
 } from "./types"
 import { mockNodes, mockEdges } from "./mock-data"
 import { getLayoutedElements } from "./auto-layout"
@@ -48,7 +49,7 @@ type FlowState = {
   setActiveEdgeType: (type: FlowEdgeType) => void
   setViewport: (viewport: Viewport) => void
 
-  addNode: (type: "process" | "job" | "decision", position: { x: number; y: number }) => void
+  addNode: (type: "process" | "job", position: { x: number; y: number }) => void
   deleteNode: (id: string) => void
   duplicateNode: (id: string) => void
   updateNodeData: <T extends FlowNode["type"]>(
@@ -88,11 +89,20 @@ const defaultJobData: JobNodeData = {
   soThat: "",
   problems: "",
   problemSeverity: 0,
-  expanded: false,
-}
-
-const defaultDecisionData: DecisionNodeData = {
-  question: "Condition?",
+  viewMode: "note",
+  emotionsB: "",
+  activatingKnowledge: "",
+  currentSolution: "",
+  solutionSatisfaction: 0,
+  considerationSet: "",
+  barriersToSolution: "",
+  barriersToJob: "",
+  frequency: "monthly" as Frequency,
+  importance: 0,
+  valueDirection: "",
+  businessJob: "",
+  personalJob: "",
+  triggerType: "planned-external" as TriggerType,
 }
 
 export const useFlowStore = create<FlowState>()(
@@ -148,10 +158,8 @@ export const useFlowStore = create<FlowState>()(
     let node: FlowNode
     if (type === "process") {
       node = { id, type: "process", position, data: { ...defaultProcessData } }
-    } else if (type === "job") {
-      node = { id, type: "job", position, data: { ...defaultJobData } }
     } else {
-      node = { id, type: "decision", position, data: { ...defaultDecisionData } }
+      node = { id, type: "job", position, data: { ...defaultJobData } }
     }
     set((s) => {
       const nodes = [...s.nodes, node]
@@ -182,7 +190,7 @@ export const useFlowStore = create<FlowState>()(
     }
     set((s) => {
       const nodes = [...s.nodes, clone] as FlowNode[]
-      if (s.flowId) saveToSupabase(s.flowId, s.nodes, s.edges)
+      if (s.flowId) saveToSupabase(s.flowId, nodes, s.edges)
       return { nodes }
     })
   },
@@ -241,11 +249,37 @@ export const useFlowStore = create<FlowState>()(
       .single()
 
     if (data && !error) {
-      set({
-        flowId,
-        nodes: (data.data as any)?.nodes ?? [],
-        edges: (data.data as any)?.edges ?? [],
-      })
+      const rawNodes: FlowNode[] = (data.data as any)?.nodes ?? []
+      const rawEdges: FlowEdge[] = (data.data as any)?.edges ?? []
+
+      // Filter out legacy decision nodes
+      const decisionIds = new Set(
+        rawNodes.filter((n) => (n as any).type === "decision").map((n) => n.id)
+      )
+      const nodes = rawNodes
+        .filter((n) => (n as any).type !== "decision")
+        .map((n) => {
+          if (n.type === "job") {
+            const d = n.data as any
+            return {
+              ...n,
+              data: {
+                ...defaultJobData,
+                ...d,
+                // Migrate old expanded → viewMode
+                viewMode:
+                  d.viewMode ??
+                  (d.expanded === true ? "standard" : "note"),
+              },
+            } as FlowNode
+          }
+          return n
+        })
+      const edges = rawEdges.filter(
+        (e) => !decisionIds.has(e.source) && !decisionIds.has(e.target)
+      )
+
+      set({ flowId, nodes, edges })
     }
   },
 

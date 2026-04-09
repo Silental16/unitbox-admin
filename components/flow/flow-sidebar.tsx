@@ -6,7 +6,6 @@ import {
   PanelLeftOpen,
   GitBranch,
   Briefcase,
-  Diamond,
   LayoutGrid,
   RotateCcw,
   Upload,
@@ -21,16 +20,15 @@ const shadow =
   "0 0 0 1px rgba(0,0,0,0.06), 0 1px 1px -0.5px rgba(0,0,0,0.06), 0 3px 3px -1.5px rgba(0,0,0,0.06)"
 
 const nodeTypes = [
-  { type: "process" as const, label: "Process", icon: GitBranch, color: "rgb(99,45,216)" },
+  { type: "process" as const, label: "Note", icon: GitBranch, color: "rgb(99,45,216)" },
   { type: "job" as const, label: "Job", icon: Briefcase, color: "rgb(59,130,246)" },
-  { type: "decision" as const, label: "Decision", icon: Diamond, color: "rgb(245,158,11)" },
 ]
 
 export function FlowSidebar() {
   const [expanded, setExpanded] = useState(false)
   const { addNode, autoLayout, reset, exportJSON, importFlow } = useFlowStore()
 
-  function handleAddNode(type: "process" | "job" | "decision") {
+  function handleAddNode(type: "process" | "job") {
     addNode(type, { x: Math.random() * 400 + 100, y: Math.random() * 300 + 100 })
   }
 

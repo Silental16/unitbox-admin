@@ -10,7 +10,7 @@ import {
   Upload,
   GitBranch,
   Briefcase,
-  Diamond,
+
   LayoutGrid,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -91,15 +91,11 @@ export function FlowToolbar() {
     >
       <button className={btn} onClick={() => addNode("process", getCenterPosition())}>
         <GitBranch className="size-4" />
-        Process
+        Note
       </button>
       <button className={btn} onClick={() => addNode("job", getCenterPosition())}>
         <Briefcase className="size-4" />
         Job
-      </button>
-      <button className={btn} onClick={() => addNode("decision", getCenterPosition())}>
-        <Diamond className="size-4" />
-        Decision
       </button>
 
       <div className="mx-0.5 h-5 w-px" style={{ backgroundColor: "rgba(0,0,29,0.075)" }} />

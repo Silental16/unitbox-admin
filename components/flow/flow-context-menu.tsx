@@ -149,16 +149,6 @@ export function FlowContextMenu({
           >
             Add Job
           </button>
-          <button
-            className={menuItemClass}
-            onClick={() => {
-              const flowPos = screenToFlowPosition({ x: position.x, y: position.y })
-              useFlowStore.getState().addNode("decision", flowPos)
-              onClose()
-            }}
-          >
-            Add Decision
-          </button>
         </>
       )}
     </div>
