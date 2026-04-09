@@ -12,6 +12,7 @@ import {
   type ProjectChessSource,
   type ProjectChangeEntry,
 } from "./catalog-projects"
+import { mapRowToFlow, type Flow } from "./flows"
 import {
   mapRowToPaymentAccount,
   mapRowToSubscription,
@@ -264,4 +265,21 @@ export async function getSubscriptionPackages(): Promise<SubscriptionPackage[]> 
   }
 
   return (data ?? []).map(mapRowToSubscriptionPackage)
+}
+
+// ─── Flows ───────────────────────────────────────────────────────
+
+export async function getFlows(): Promise<Flow[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("flows")
+    .select("*")
+    .order("updated_at", { ascending: false })
+
+  if (error) {
+    console.error("Failed to fetch flows:", error)
+    return []
+  }
+
+  return (data ?? []).map(mapRowToFlow)
 }

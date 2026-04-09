@@ -11,6 +11,7 @@ import {
   TrendingUpIcon,
   CheckSquareIcon,
   HandshakeIcon,
+  WorkflowIcon,
   CpuIcon,
   PaletteIcon,
   SunIcon,
@@ -61,6 +62,7 @@ const workspaceItems = [
 const toolItems = [
   { name: "ROI Calculator", href: "/roi", icon: TrendingUpIcon },
   { name: "Mechanics", href: "/mechanics", icon: CpuIcon },
+  { name: "Flows", href: "/flows", icon: WorkflowIcon },
   { name: "Preview", href: "/preview", icon: EyeIcon },
   { name: "Sandbox", href: "/sandbox", icon: PaletteIcon },
 ]
