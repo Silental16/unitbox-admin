@@ -125,6 +125,8 @@ function FlowCanvas({ flowId, flowName, initialNodes, initialEdges }: FlowEditor
         defaultEdgeOptions={{ type: "custom" }}
         connectionMode={ConnectionMode.Loose}
         panOnDrag={[1, 2]}
+        panOnScroll
+        zoomOnScroll={false}
         selectionOnDrag={false}
         selectNodesOnDrag={false}
         nodeDragThreshold={2}
