@@ -10,7 +10,7 @@ export type ProcessNodeData = {
 }
 
 // -- Job Node (AJTBD) --
-export type JobLevel = "big" | "core" | "small" | "micro"
+export type JobLevel = "mega" | "big" | "core" | "small" | "micro"
 export type JobType =
   | "frequency"
   | "sequential"

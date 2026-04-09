@@ -53,6 +53,7 @@ const JOB_TYPE_LABELS: Record<JobType, string> = {
 }
 
 const levelStyles: Record<JobLevel, { badge: string; text: string; dot: string }> = {
+  mega: { badge: "bg-rose-500/12", text: "text-rose-600", dot: "bg-rose-500" },
   big: { badge: "bg-violet-500/12", text: "text-violet-600", dot: "bg-violet-500" },
   core: { badge: "bg-blue-500/12", text: "text-blue-600", dot: "bg-blue-500" },
   small: { badge: "bg-emerald-500/12", text: "text-emerald-600", dot: "bg-emerald-500" },
