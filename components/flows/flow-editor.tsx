@@ -130,6 +130,8 @@ function FlowCanvas({ flowId, flowName, initialNodes, initialEdges }: FlowEditor
         selectionOnDrag={false}
         selectNodesOnDrag={false}
         nodeDragThreshold={2}
+        minZoom={0.1}
+        maxZoom={2}
         snapToGrid
         snapGrid={[16, 16]}
         fitView

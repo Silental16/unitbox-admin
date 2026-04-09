@@ -23,7 +23,7 @@ import type {
 
 /* ═══════════════════ Constants ═══════════════════ */
 
-const LEVELS: JobLevel[] = ["core", "small", "micro"]
+const LEVELS: JobLevel[] = ["big", "core", "small", "micro"]
 const JOB_TYPES: JobType[] = ["frequency", "sequential", "viral", "tax", "orientational"]
 const TRIGGER_TYPES: TriggerType[] = ["planned-external", "planned-internal", "unexpected-external", "unexpected-internal"]
 const FREQUENCIES: Frequency[] = ["daily", "weekly", "monthly", "quarterly", "yearly", "once"]
@@ -53,6 +53,7 @@ const JOB_TYPE_LABELS: Record<JobType, string> = {
 }
 
 const levelStyles: Record<JobLevel, { badge: string; text: string; dot: string }> = {
+  big: { badge: "bg-violet-500/12", text: "text-violet-600", dot: "bg-violet-500" },
   core: { badge: "bg-blue-500/12", text: "text-blue-600", dot: "bg-blue-500" },
   small: { badge: "bg-emerald-500/12", text: "text-emerald-600", dot: "bg-emerald-500" },
   micro: { badge: "bg-neutral-400/12", text: "text-neutral-500", dot: "bg-neutral-400" },
