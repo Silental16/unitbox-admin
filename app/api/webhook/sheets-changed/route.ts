@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse, after } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { timingSafeEqual } from "crypto"
 import { getProjectsByIds, logSyncEvent } from "@/lib/sync/supabase-service"
 import { sendTelegram } from "@/lib/sync/telegram"
@@ -93,26 +93,8 @@ export async function POST(request: NextRequest) {
         `🔔 <b>Шахматка изменилась</b>\n\n` +
         `${projectList}\n\n` +
         `Время: ${new Date().toLocaleString("ru-RU", { timeZone: "Asia/Makassar" })}\n\n` +
-        `Sync запущен автоматически.`
+        `Изменение замечено. Синхронизация произойдёт по расписанию (ежедневно 2:17 UTC).`
       )
-
-      // Trigger sync in the background (non-blocking)
-      // Debounce is handled server-side in /api/chess/sync
-      after(async () => {
-        try {
-          const syncUrl = new URL("/api/chess/sync", request.url)
-          await fetch(syncUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${process.env.SYNC_SECRET}`,
-            },
-            body: JSON.stringify({ catalogIds }),
-          })
-        } catch (error) {
-          console.error("[sheets-webhook] Sync trigger failed:", error)
-        }
-      })
 
       return NextResponse.json({ ok: true, type: "content_changed" })
     } catch (error) {

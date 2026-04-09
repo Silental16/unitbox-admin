@@ -52,10 +52,11 @@ export async function getSyncEnabledSources(): Promise<ChessSource[]> {
   const { data, error } = await sb
     .from("project_chess_sources")
     .select(
-      "*, catalog_projects!inner(catalog_id, name, id)"
+      "*, catalog_projects!inner(catalog_id, name, id, \"developersId\")"
     )
     .eq("sync_enabled", true)
     .eq("catalog_projects.status", "published")
+    .eq("catalog_projects.developersId", 61)
     .order("catalog_projects(catalog_id)", { ascending: true });
 
   if (error) throw new Error(`getSyncEnabledSources failed: ${error.message}`);
@@ -184,19 +185,72 @@ export async function logSyncEvent(
   projectId: string,
   action: string,
   summary: string,
-  diff: Record<string, unknown> | null
+  diff: Record<string, unknown> | null,
+  source: "cron" | "webhook" | "manual" = "cron"
 ): Promise<void> {
   const sb = getClient();
 
   const { error } = await sb.from("project_change_log").insert({
     project_id: projectId,
-    source: "cron",
+    source,
     action,
     summary,
     diff: diff ? JSON.stringify(diff) : null,
   });
 
   if (error) throw new Error(`logSyncEvent failed: ${error.message}`);
+}
+
+/**
+ * Get ALL chess sources (regardless of sync_enabled) for projects belonging to a specific developer.
+ * Used by setup endpoint to find unconfigured sources.
+ */
+export async function getAllSourcesForDeveloper(developerId: number): Promise<ChessSource[]> {
+  const sb = getClient();
+
+  const { data, error } = await sb
+    .from("project_chess_sources")
+    .select(
+      "*, catalog_projects!inner(catalog_id, name, id, \"developersId\")"
+    )
+    .eq("catalog_projects.developersId", developerId)
+    .order("catalog_projects(catalog_id)", { ascending: true });
+
+  if (error) throw new Error(`getAllSourcesForDeveloper failed: ${error.message}`);
+
+  return (data || []).map((row) => {
+    const cp = row.catalog_projects as Record<string, unknown>;
+    return {
+      ...row,
+      catalog_id: cp.catalog_id as number,
+      project_name: cp.name as string,
+      project_uuid: cp.id as string,
+      catalog_projects: undefined,
+    } as ChessSource;
+  });
+}
+
+/**
+ * Update a chess source with auto-detected config. Does NOT enable sync.
+ */
+export async function saveAutoDetectedConfig(
+  sourceId: string,
+  syncConfig: Record<string, unknown>,
+  snapshot: Record<string, unknown>,
+  columnsHash: string
+): Promise<void> {
+  const sb = getClient();
+
+  const { error } = await sb
+    .from("project_chess_sources")
+    .update({
+      sync_config: { ...syncConfig, columns_hash: columnsHash },
+      unit_snapshot: snapshot,
+      sync_enabled: false,
+    })
+    .eq("id", sourceId);
+
+  if (error) throw new Error(`saveAutoDetectedConfig failed: ${error.message}`);
 }
 
 /**

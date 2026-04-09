@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server"
-import { timingSafeEqual } from "crypto"
 import {
   getSyncEnabledSources,
   updateChessSource,
@@ -21,6 +20,8 @@ import { computeColumnsHash, colLetterToIndex, indexToColLetter } from "@/lib/sy
 import { sendTelegram } from "@/lib/sync/telegram"
 import { loadProjectUnits, applyChanges } from "@/lib/sync/prod-client"
 
+export const maxDuration = 300
+
 // --- Env (read at runtime, not module level) ---
 
 function getSyncSecret(): string {
@@ -38,6 +39,7 @@ interface SyncDetail {
   error?: string
   dryRun?: boolean
   changeLines?: string[]
+  source?: "cron" | "webhook"
 }
 
 interface SyncSummary {
@@ -118,25 +120,28 @@ async function limitConcurrency<T>(
 // --- Per-project sync ---
 
 async function syncProject(
-  source: ChessSource,
-  dryRun: boolean
+  chessSource: ChessSource,
+  dryRun: boolean,
+  source: "cron" | "webhook" = "webhook"
 ): Promise<SyncDetail> {
-  // Debounce: skip if synced less than 5 minutes ago
-  const lastSync = source.last_successful_sync ? new Date(source.last_successful_sync) : null
-  if (lastSync && (Date.now() - lastSync.getTime()) < 5 * 60 * 1000) {
-    return { status: "debounced" as const, project: source.project_name, catalogId: source.catalog_id }
+  // Debounce: skip if synced less than 5 minutes ago (only for webhook, cron always runs)
+  if (source === "webhook") {
+    const lastSync = chessSource.last_successful_sync ? new Date(chessSource.last_successful_sync) : null
+    if (lastSync && (Date.now() - lastSync.getTime()) < 5 * 60 * 1000) {
+      return { status: "debounced" as const, project: chessSource.project_name, catalogId: chessSource.catalog_id }
+    }
   }
 
   // Concurrency guard: acquire lock to prevent parallel syncs on the same project
-  const locked = await acquireSyncLock(source.id)
+  const locked = await acquireSyncLock(chessSource.id)
   if (!locked) {
-    return { status: "locked" as const, project: source.project_name, catalogId: source.catalog_id }
+    return { status: "locked" as const, project: chessSource.project_name, catalogId: chessSource.catalog_id }
   }
 
   try {
-    return await syncProjectInner(source, dryRun)
+    return await syncProjectInner(chessSource, dryRun)
   } finally {
-    await releaseSyncLock(source.id)
+    await releaseSyncLock(chessSource.id)
   }
 }
 
@@ -343,8 +348,9 @@ async function syncProjectInner(
 async function handleSync(opts: {
   catalogIds?: number[]
   dryRun: boolean
+  source: "cron" | "webhook"
 }): Promise<NextResponse> {
-  const { dryRun } = opts
+  const { dryRun, source: syncSource } = opts
 
   try {
     // Load sync-enabled sources
@@ -371,7 +377,7 @@ async function handleSync(opts: {
 
     // Process with max 3 concurrent
     const tasks = sources.map(
-      (source) => () => syncProject(source, dryRun)
+      (s) => () => syncProject(s, dryRun, syncSource)
     )
     const settled = await limitConcurrency(tasks, 3)
 
@@ -428,8 +434,17 @@ async function handleSync(opts: {
       }
     }
 
-    // Send Telegram summary
-    if (summary.changesApplied > 0 || summary.anomalies > 0) {
+    // Send Telegram summary (always — heartbeat for cron)
+    const ANOMALY_EXPLANATIONS: Record<string, string> = {
+      columns_hash_mismatch: "Структура таблицы изменилась (колонки). Нужна ручная проверка sync_config.",
+      mass_status_change: "Больше 50% юнитов сменили статус. Возможна ошибка в шахматке.",
+      missing_unit: "Юниты пропали из таблицы. Возможно удалены строки.",
+      new_units: "Новые юниты появились в таблице. Нужен ручной fill.",
+      parse_errors: "Ошибки парсинга >10%. Формат таблицы мог измениться.",
+    }
+
+    if (summary.changesApplied > 0 || summary.anomalies > 0 || summary.errors > 0) {
+      // Detailed message for changes/anomalies/errors
       const lines: string[] = []
       lines.push(
         `<b>Chess Sync ${dryRun ? "(DRY RUN)" : ""}</b>`
@@ -447,8 +462,9 @@ async function handleSync(opts: {
             }
           }
         } else if (d.status === "anomaly") {
+          const explanation = ANOMALY_EXPLANATIONS[d.anomalyType || ""] || d.anomalyType
           lines.push(
-            `⚠️ <b>${d.project}</b> (#${d.catalogId}): аномалия — ${d.anomalyType}. Нужен Claude.`
+            `⚠️ <b>${d.project}</b> (#${d.catalogId}): ${explanation}`
           )
         } else if (d.status === "error") {
           lines.push(
@@ -463,6 +479,10 @@ async function handleSync(opts: {
       )
 
       await sendTelegram(lines.join("\n"))
+    } else if (syncSource === "cron") {
+      // Compact heartbeat for zero-change cron runs (not webhook)
+      const totalProjects = summary.synced + summary.noChanges + summary.debounced
+      await sendTelegram(`✅ Daily sync: ${totalProjects} projects, 0 changes`)
     }
 
     return NextResponse.json(summary)
@@ -484,7 +504,7 @@ export async function GET(request: NextRequest) {
   if (!verifySecret(authHeader, cronSecret) && !verifySecret(authHeader, getSyncSecret())) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 })
   }
-  return handleSync({ dryRun: false })
+  return handleSync({ dryRun: false, source: "cron" })
 }
 
 export async function POST(request: NextRequest) {
@@ -503,5 +523,6 @@ export async function POST(request: NextRequest) {
   return handleSync({
     catalogIds: body.catalogIds,
     dryRun: body.dryRun ?? false,
+    source: "webhook",
   })
 }
