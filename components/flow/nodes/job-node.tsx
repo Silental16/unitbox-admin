@@ -17,93 +17,75 @@ import type {
   JobLevel,
   JobType,
   JobNodeData,
-  JobViewMode,
   Frequency,
   TriggerType,
 } from "../types"
 
-// ---------- Constants ----------
+/* ═══════════════════ Constants ═══════════════════ */
 
 const LEVELS: JobLevel[] = ["core", "small", "micro"]
-const JOB_TYPES: JobType[] = [
-  "frequency",
-  "sequential",
-  "viral",
-  "tax",
-  "orientational",
-]
-const VIEW_MODES: JobViewMode[] = ["note", "core", "standard", "microscope"]
-const TRIGGER_TYPES: TriggerType[] = [
-  "planned-external",
-  "planned-internal",
-  "unexpected-external",
-  "unexpected-internal",
-]
-const FREQUENCIES: Frequency[] = [
-  "daily",
-  "weekly",
-  "monthly",
-  "quarterly",
-  "yearly",
-  "once",
-]
+const JOB_TYPES: JobType[] = ["frequency", "sequential", "viral", "tax", "orientational"]
+const TRIGGER_TYPES: TriggerType[] = ["planned-external", "planned-internal", "unexpected-external", "unexpected-internal"]
+const FREQUENCIES: Frequency[] = ["daily", "weekly", "monthly", "quarterly", "yearly", "once"]
 
-const levelStyles: Record<
-  JobLevel,
-  { border: string; badge: string; text: string }
-> = {
-  core: {
-    border: "border-l-blue-500",
-    badge: "bg-blue-500/15",
-    text: "text-blue-600",
-  },
-  small: {
-    border: "border-l-emerald-500",
-    badge: "bg-emerald-500/15",
-    text: "text-emerald-600",
-  },
-  micro: {
-    border: "border-l-neutral-400",
-    badge: "bg-neutral-400/15",
-    text: "text-neutral-500",
-  },
+const TRIGGER_LABELS: Record<TriggerType, string> = {
+  "planned-external": "план. внешний",
+  "planned-internal": "план. внутренний",
+  "unexpected-external": "неожид. внешний",
+  "unexpected-internal": "неожид. внутренний",
 }
 
-const viewModeLabels: Record<JobViewMode, string> = {
-  note: "note",
-  core: "core",
-  standard: "std",
-  microscope: "micro",
+const FREQUENCY_LABELS: Record<Frequency, string> = {
+  daily: "ежедневно",
+  weekly: "еженедельно",
+  monthly: "ежемесячно",
+  quarterly: "ежеквартально",
+  yearly: "ежегодно",
+  once: "разово",
 }
 
-const defaultShadow =
-  "0 0 0 1px rgba(0,0,0,0.06), 0 1px 1px -0.5px rgba(0,0,0,0.06), 0 3px 3px -1.5px rgba(0,0,0,0.06)"
-const selectedShadow =
-  "rgb(15,15,16) 0px 0px 0px 2px, 0 0 0 1px rgba(0,0,0,0.06), 0 1px 1px -0.5px rgba(0,0,0,0.06), 0 3px 3px -1.5px rgba(0,0,0,0.06)"
+const JOB_TYPE_LABELS: Record<JobType, string> = {
+  frequency: "частотная",
+  sequential: "последоват.",
+  viral: "виральная",
+  tax: "налоговая",
+  orientational: "ориентац.",
+}
 
-// ---------- InlineField ----------
+const levelStyles: Record<JobLevel, { badge: string; text: string; dot: string }> = {
+  core: { badge: "bg-blue-500/12", text: "text-blue-600", dot: "bg-blue-500" },
+  small: { badge: "bg-emerald-500/12", text: "text-emerald-600", dot: "bg-emerald-500" },
+  micro: { badge: "bg-neutral-400/12", text: "text-neutral-500", dot: "bg-neutral-400" },
+}
+
+const shadow = "0 0 0 1px rgba(0,0,0,0.06), 0 1px 2px -1px rgba(0,0,0,0.06), 0 2px 6px -2px rgba(0,0,0,0.05)"
+const selectedShadow = "rgb(15,15,16) 0px 0px 0px 2px, 0 0 0 1px rgba(0,0,0,0.06), 0 2px 6px -2px rgba(0,0,0,0.05)"
+
+/* ═══════════════════ InlineField ═══════════════════ */
 
 function InlineField({
   value,
   onChange,
   multiline = false,
   label,
+  placeholder = "Двойной клик для редактирования...",
   className,
 }: {
   value: string
   onChange: (v: string) => void
   multiline?: boolean
   label?: string
+  placeholder?: string
   className?: string
 }) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(value)
-  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
+  const ref = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
 
   useEffect(() => {
     if (editing) {
       setDraft(value)
-      setTimeout(() => inputRef.current?.focus(), 0)
+      setTimeout(() => ref.current?.focus(), 0)
     }
   }, [editing, value])
 
@@ -117,7 +99,7 @@ function InlineField({
     setDraft(value)
   }, [value])
 
-  const handleKeyDown = useCallback(
+  const onKey = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === "Escape") cancel()
       if (!multiline && e.key === "Enter") {
@@ -128,151 +110,89 @@ function InlineField({
     [multiline, confirm, cancel]
   )
 
+  const inputCls = "w-full text-[12.5px] leading-relaxed px-2 py-1 rounded-md outline-none resize-none nodrag font-[400]"
+  const inputStyle: React.CSSProperties = { color: "rgb(15,15,16)", backgroundColor: "rgba(0,0,20,0.035)" }
+
   if (editing) {
-    const shared =
-      "w-full text-[13px] px-1.5 py-1 rounded-md outline-none resize-none nodrag"
     return (
       <div className={className}>
-        {label && (
-          <span
-            className="text-[10px] uppercase tracking-wider mb-0.5 block font-medium"
-            style={{ color: "rgba(0,0,17,0.35)" }}
-          >
-            {label}
-          </span>
-        )}
+        {label && <Label>{label}</Label>}
         {multiline ? (
-          <textarea
-            ref={inputRef as React.RefObject<HTMLTextAreaElement>}
-            className={shared}
-            style={{ color: "rgb(15,15,16)", backgroundColor: "rgba(0,0,23,0.043)" }}
-            rows={3}
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onBlur={confirm}
-            onKeyDown={handleKeyDown}
-          />
+          <textarea ref={ref as React.RefObject<HTMLTextAreaElement>} className={inputCls} style={inputStyle} rows={3} value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={confirm} onKeyDown={onKey} />
         ) : (
-          <input
-            ref={inputRef as React.RefObject<HTMLInputElement>}
-            className={shared}
-            style={{ color: "rgb(15,15,16)", backgroundColor: "rgba(0,0,23,0.043)" }}
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onBlur={confirm}
-            onKeyDown={handleKeyDown}
-          />
+          <input ref={ref as React.RefObject<HTMLInputElement>} className={inputCls} style={inputStyle} value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={confirm} onKeyDown={onKey} />
         )}
       </div>
     )
   }
 
   return (
-    <div className={cn("nodrag", className)} onDoubleClick={() => setEditing(true)}>
-      {label && (
-        <span
-          className="text-[10px] uppercase tracking-wider mb-0.5 block font-medium"
-          style={{ color: "rgba(0,0,17,0.35)" }}
-        >
-          {label}
-        </span>
-      )}
+    <div className={cn("nodrag cursor-text", className)} onDoubleClick={() => setEditing(true)}>
+      {label && <Label>{label}</Label>}
       {value ? (
-        <span
-          className="text-[13px] whitespace-pre-wrap"
-          style={{ color: "rgb(120,120,129)" }}
-        >
-          {value}
-        </span>
+        <span className="text-[12.5px] leading-relaxed whitespace-pre-wrap block" style={{ color: "rgb(100,100,110)" }}>{value}</span>
       ) : (
-        <span className="text-[13px] italic" style={{ color: "rgba(0,0,17,0.25)" }}>
-          Double-click to edit...
-        </span>
+        <span className="text-[12px] italic block" style={{ color: "rgba(0,0,17,0.2)" }}>{placeholder}</span>
       )}
     </div>
   )
 }
 
-// ---------- RatingBar ----------
-
-const colorSchemes = {
-  severity: (v: number) => (v < 4 ? "bg-green-500" : v <= 6 ? "bg-orange-500" : "bg-red-500"),
-  importance: (v: number) => (v < 4 ? "bg-blue-300" : v <= 6 ? "bg-blue-400" : "bg-blue-500"),
-  satisfaction: (v: number) => (v < 4 ? "bg-red-500" : v <= 6 ? "bg-orange-500" : "bg-green-500"),
+function Label({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="text-[10px] uppercase tracking-wide mb-0.5 block font-semibold" style={{ color: "rgba(0,0,17,0.3)" }}>
+      {children}
+    </span>
+  )
 }
 
-function RatingBar({
-  value,
-  onChange,
-  label,
-  colorScheme,
-}: {
+/* ═══════════════════ RatingBar ═══════════════════ */
+
+const colorFns = {
+  severity: (v: number) => (v < 4 ? "bg-emerald-400" : v <= 6 ? "bg-amber-400" : "bg-red-400"),
+  importance: (v: number) => (v < 4 ? "bg-sky-300" : v <= 6 ? "bg-sky-400" : "bg-sky-500"),
+  satisfaction: (v: number) => (v < 4 ? "bg-red-400" : v <= 6 ? "bg-amber-400" : "bg-emerald-400"),
+}
+
+function RatingBar({ value, onChange, label, scheme }: {
   value: number
   onChange: (v: number) => void
   label: string
-  colorScheme: "severity" | "importance" | "satisfaction"
+  scheme: "severity" | "importance" | "satisfaction"
 }) {
-  const getColor = colorSchemes[colorScheme]
+  const color = colorFns[scheme]
   return (
-    <div className="mt-1">
-      <span
-        className="text-[10px] uppercase tracking-wider block mb-1 font-medium"
-        style={{ color: "rgba(0,0,17,0.35)" }}
-      >
-        {label}
-      </span>
-      <div className="flex gap-0.5">
-        {Array.from({ length: 10 }, (_, i) => {
-          const active = i < value
-          const color = active ? getColor(value) : "bg-neutral-200"
-          return (
-            <button
-              key={i}
-              className={cn("h-2 flex-1 rounded-sm transition-colors nodrag", color)}
-              onClick={() => onChange(i + 1 === value ? 0 : i + 1)}
-            />
-          )
-        })}
+    <div className="mt-1.5">
+      <div className="flex items-center justify-between mb-1">
+        <Label>{label}</Label>
+        {value > 0 && <span className="text-[10px] font-semibold tabular-nums" style={{ color: "rgb(100,100,110)" }}>{value}/10</span>}
+      </div>
+      <div className="flex gap-px">
+        {Array.from({ length: 10 }, (_, i) => (
+          <button
+            key={i}
+            className={cn("h-[5px] flex-1 rounded-[2px] transition-colors nodrag", i < value ? color(value) : "bg-neutral-100")}
+            onClick={() => onChange(i + 1 === value ? 0 : i + 1)}
+          />
+        ))}
       </div>
     </div>
   )
 }
 
-// ---------- Section wrapper ----------
-
-function Section({
-  color,
-  title,
-  children,
-}: {
-  color: string
-  title: string
-  children: React.ReactNode
-}) {
-  return (
-    <div
-      className="space-y-1.5 rounded-lg p-2"
-      style={{ backgroundColor: "rgba(0,0,0,0.02)" }}
-    >
-      <span className={cn("text-[10px] font-semibold uppercase tracking-wider", color)}>
-        {title}
-      </span>
-      {children}
-    </div>
-  )
-}
-
-// ---------- Click-to-cycle badge ----------
+/* ═══════════════════ CycleBadge ═══════════════════ */
 
 function CycleBadge<T extends string>({
   value,
   options,
   onChange,
+  labels,
   className,
 }: {
   value: T
   options: readonly T[]
   onChange: (v: T) => void
+  labels?: Record<string, string>
   className?: string
 }) {
   const cycle = useCallback(() => {
@@ -282,315 +202,53 @@ function CycleBadge<T extends string>({
 
   return (
     <button
-      className={cn(
-        "rounded-md px-1.5 py-0.5 text-[11px] font-medium nodrag",
-        className
-      )}
-      style={{
-        backgroundColor: "rgba(0,0,23,0.043)",
-        color: "rgb(120,120,129)",
-      }}
+      className={cn("rounded-md px-1.5 py-[3px] text-[10.5px] font-medium nodrag transition-colors hover:bg-[rgba(0,0,23,0.065)]", className)}
+      style={{ backgroundColor: "rgba(0,0,23,0.04)", color: "rgb(100,100,110)" }}
       onClick={cycle}
     >
-      {value}
+      {labels?.[value] ?? value}
     </button>
   )
 }
 
-// ---------- Truncate helper ----------
+/* ═══════════════════ Section header (for accordion) ═══════════════════ */
 
-function truncate(s: string, max: number): string {
-  if (!s) return ""
-  return s.length > max ? s.slice(0, max) + "..." : s
+const sectionColors: Record<string, string> = {
+  when: "text-blue-500",
+  want: "text-emerald-500",
+  sothat: "text-violet-500",
+  solution: "text-orange-500",
+  barriers: "text-amber-600",
+  problems: "text-red-500",
+  meta: "text-neutral-400",
 }
 
-// ---------- Core view ----------
-
-function CoreView({
-  d,
-  update,
-}: {
-  d: JobNodeData
-  update: (p: Partial<JobNodeData>) => void
-}) {
-  const whenText = [d.context, d.trigger].filter(Boolean).join(" — ")
-  return (
-    <div className="space-y-1.5 px-3.5 pb-3 pt-1">
-      <div className="space-y-1">
-        <p className="text-[11px]" style={{ color: "rgb(120,120,129)" }}>
-          <span className="font-semibold text-blue-500 uppercase text-[10px] mr-1">When:</span>
-          {truncate(whenText, 80) || "—"}
-        </p>
-        <p className="text-[11px]" style={{ color: "rgb(120,120,129)" }}>
-          <span className="font-semibold text-emerald-500 uppercase text-[10px] mr-1">Want:</span>
-          {truncate(d.expectedResult, 80) || "—"}
-        </p>
-        <p className="text-[11px]" style={{ color: "rgb(120,120,129)" }}>
-          <span className="font-semibold text-violet-500 uppercase text-[10px] mr-1">So that:</span>
-          {truncate(d.soThat, 80) || "—"}
-        </p>
-      </div>
-      <div className="flex gap-2">
-        <div className="flex-1">
-          <RatingBar
-            value={d.problemSeverity}
-            onChange={(v) => update({ problemSeverity: v })}
-            label="Problem severity"
-            colorScheme="severity"
-          />
-        </div>
-        <div className="flex-1">
-          <RatingBar
-            value={d.importance}
-            onChange={(v) => update({ importance: v })}
-            label="Importance"
-            colorScheme="importance"
-          />
-        </div>
-      </div>
-    </div>
-  )
+const sectionDots: Record<string, string> = {
+  when: "bg-blue-500",
+  want: "bg-emerald-500",
+  sothat: "bg-violet-500",
+  solution: "bg-orange-500",
+  barriers: "bg-amber-500",
+  problems: "bg-red-500",
+  meta: "bg-neutral-400",
 }
 
-// ---------- Standard view ----------
-
-function StandardView({
-  d,
-  update,
-}: {
-  d: JobNodeData
-  update: (p: Partial<JobNodeData>) => void
-}) {
-  return (
-    <div className="px-3.5 pb-3 pt-1">
-      <Accordion type="multiple" className="nodrag">
-        {/* When */}
-        <AccordionItem value="when" className="border-none">
-          <AccordionTrigger className="py-2 nodrag">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-blue-500">
-              When
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <Section color="text-blue-500" title="">
-              <InlineField label="Context" value={d.context} onChange={(v) => update({ context: v })} multiline />
-              <InlineField label="Trigger" value={d.trigger} onChange={(v) => update({ trigger: v })} />
-              <div className="flex items-center gap-1.5 mt-1">
-                <span className="text-[10px] uppercase tracking-wider font-medium" style={{ color: "rgba(0,0,17,0.35)" }}>
-                  Trigger type
-                </span>
-                <CycleBadge value={d.triggerType} options={TRIGGER_TYPES} onChange={(v) => update({ triggerType: v })} />
-              </div>
-              <InlineField label="Emotions (Point A)" value={d.emotionsA} onChange={(v) => update({ emotionsA: v })} multiline />
-            </Section>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Want */}
-        <AccordionItem value="want" className="border-none">
-          <AccordionTrigger className="py-2 nodrag">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-500">
-              Want
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <Section color="text-emerald-500" title="">
-              <InlineField label="Expected result" value={d.expectedResult} onChange={(v) => update({ expectedResult: v })} multiline />
-              <InlineField label="Success criteria" value={d.successCriteria} onChange={(v) => update({ successCriteria: v })} multiline />
-              <InlineField label="Value direction" value={d.valueDirection} onChange={(v) => update({ valueDirection: v })} multiline />
-            </Section>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Current Solution */}
-        <AccordionItem value="solution" className="border-none">
-          <AccordionTrigger className="py-2 nodrag">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-orange-500">
-              Current Solution
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <Section color="text-orange-500" title="">
-              <InlineField label="Current solution" value={d.currentSolution} onChange={(v) => update({ currentSolution: v })} multiline />
-              <RatingBar value={d.solutionSatisfaction} onChange={(v) => update({ solutionSatisfaction: v })} label="Solution satisfaction" colorScheme="satisfaction" />
-            </Section>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Problems */}
-        <AccordionItem value="problems" className="border-none">
-          <AccordionTrigger className="py-2 nodrag">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-red-500">
-              Problems
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <Section color="text-red-500" title="">
-              <InlineField label="Problems" value={d.problems} onChange={(v) => update({ problems: v })} multiline />
-              <RatingBar value={d.problemSeverity} onChange={(v) => update({ problemSeverity: v })} label="Problem severity" colorScheme="severity" />
-            </Section>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-
-      <RatingBar value={d.importance} onChange={(v) => update({ importance: v })} label="Importance" colorScheme="importance" />
-    </div>
-  )
-}
-
-// ---------- Microscope view ----------
-
-function MicroscopeView({
-  d,
-  update,
-}: {
-  d: JobNodeData
-  update: (p: Partial<JobNodeData>) => void
-}) {
-  return (
-    <div className="px-3.5 pb-3 pt-1">
-      <Accordion type="multiple" className="nodrag">
-        {/* When */}
-        <AccordionItem value="when" className="border-none">
-          <AccordionTrigger className="py-2 nodrag">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-blue-500">
-              When
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <Section color="text-blue-500" title="">
-              <InlineField label="Context" value={d.context} onChange={(v) => update({ context: v })} multiline />
-              <InlineField label="Trigger" value={d.trigger} onChange={(v) => update({ trigger: v })} />
-              <div className="flex items-center gap-1.5 mt-1">
-                <span className="text-[10px] uppercase tracking-wider font-medium" style={{ color: "rgba(0,0,17,0.35)" }}>
-                  Trigger type
-                </span>
-                <CycleBadge value={d.triggerType} options={TRIGGER_TYPES} onChange={(v) => update({ triggerType: v })} />
-              </div>
-              <InlineField label="Emotions (Point A)" value={d.emotionsA} onChange={(v) => update({ emotionsA: v })} multiline />
-              <InlineField label="Activating knowledge" value={d.activatingKnowledge} onChange={(v) => update({ activatingKnowledge: v })} multiline />
-            </Section>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Want + Criteria */}
-        <AccordionItem value="want" className="border-none">
-          <AccordionTrigger className="py-2 nodrag">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-500">
-              Want + Criteria
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <Section color="text-emerald-500" title="">
-              <InlineField label="Expected result" value={d.expectedResult} onChange={(v) => update({ expectedResult: v })} multiline />
-              <InlineField label="Success criteria" value={d.successCriteria} onChange={(v) => update({ successCriteria: v })} multiline />
-              <InlineField label="Value direction" value={d.valueDirection} onChange={(v) => update({ valueDirection: v })} multiline />
-            </Section>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Big Job + Emotions */}
-        <AccordionItem value="bigjob" className="border-none">
-          <AccordionTrigger className="py-2 nodrag">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-violet-500">
-              Big Job + Emotions
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <Section color="text-violet-500" title="">
-              <InlineField label="So that (big job)" value={d.soThat} onChange={(v) => update({ soThat: v })} multiline />
-              <InlineField label="Emotions (Point B)" value={d.emotionsB} onChange={(v) => update({ emotionsB: v })} multiline />
-            </Section>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Current Solution */}
-        <AccordionItem value="solution" className="border-none">
-          <AccordionTrigger className="py-2 nodrag">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-orange-500">
-              Current Solution
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <Section color="text-orange-500" title="">
-              <InlineField label="Current solution" value={d.currentSolution} onChange={(v) => update({ currentSolution: v })} multiline />
-              <RatingBar value={d.solutionSatisfaction} onChange={(v) => update({ solutionSatisfaction: v })} label="Solution satisfaction" colorScheme="satisfaction" />
-            </Section>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Barriers + Alternatives */}
-        <AccordionItem value="barriers" className="border-none">
-          <AccordionTrigger className="py-2 nodrag">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-500">
-              Barriers + Alternatives
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <Section color="text-amber-500" title="">
-              <InlineField label="Barriers to solution" value={d.barriersToSolution} onChange={(v) => update({ barriersToSolution: v })} multiline />
-              <InlineField label="Barriers to job" value={d.barriersToJob} onChange={(v) => update({ barriersToJob: v })} multiline />
-              <InlineField label="Consideration set" value={d.considerationSet} onChange={(v) => update({ considerationSet: v })} multiline />
-            </Section>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Problems */}
-        <AccordionItem value="problems" className="border-none">
-          <AccordionTrigger className="py-2 nodrag">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-red-500">
-              Problems
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <Section color="text-red-500" title="">
-              <InlineField label="Problems" value={d.problems} onChange={(v) => update({ problems: v })} multiline />
-              <RatingBar value={d.problemSeverity} onChange={(v) => update({ problemSeverity: v })} label="Problem severity" colorScheme="severity" />
-            </Section>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Meta */}
-        <AccordionItem value="meta" className="border-none">
-          <AccordionTrigger className="py-2 nodrag">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
-              Meta
-            </span>
-          </AccordionTrigger>
-          <AccordionContent className="pb-2">
-            <Section color="text-neutral-500" title="">
-              <div className="flex items-center gap-1.5 mb-1">
-                <span className="text-[10px] uppercase tracking-wider font-medium" style={{ color: "rgba(0,0,17,0.35)" }}>
-                  Frequency
-                </span>
-                <CycleBadge value={d.frequency} options={FREQUENCIES} onChange={(v) => update({ frequency: v })} />
-              </div>
-              <RatingBar value={d.importance} onChange={(v) => update({ importance: v })} label="Importance" colorScheme="importance" />
-              <InlineField label="Business job" value={d.businessJob} onChange={(v) => update({ businessJob: v })} multiline className="mt-2" />
-              <InlineField label="Personal job" value={d.personalJob} onChange={(v) => update({ personalJob: v })} multiline />
-            </Section>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
-  )
-}
-
-// ---------- Main component ----------
+/* ═══════════════════ Main Component ═══════════════════ */
 
 function JobNodeComponent({ id, data, selected }: NodeProps<JobNode>) {
   const { updateNodeData } = useFlowStore()
   const d = data as JobNodeData
-  const level = d.level
-  const style = levelStyles[level]
-  const viewMode = d.viewMode || "note"
+  const style = levelStyles[d.level]
+  const expanded = (d.viewMode ?? "note") !== "note"
 
   const update = useCallback(
-    (partial: Partial<JobNodeData>) => {
-      updateNodeData(id, partial)
-    },
+    (partial: Partial<JobNodeData>) => updateNodeData(id, partial),
     [id, updateNodeData]
   )
+
+  const toggleExpanded = useCallback(() => {
+    update({ viewMode: expanded ? "note" : "microscope" })
+  }, [expanded, update])
 
   const cycleLevel = useCallback(() => {
     const idx = LEVELS.indexOf(d.level)
@@ -602,86 +260,184 @@ function JobNodeComponent({ id, data, selected }: NodeProps<JobNode>) {
     update({ jobType: JOB_TYPES[(idx + 1) % JOB_TYPES.length] })
   }, [d.jobType, update])
 
-  const cycleViewMode = useCallback(() => {
-    const idx = VIEW_MODES.indexOf(viewMode)
-    update({ viewMode: VIEW_MODES[(idx + 1) % VIEW_MODES.length] })
-  }, [viewMode, update])
-
-  const isWide = viewMode === "standard" || viewMode === "microscope"
-
   return (
     <div
-      className={cn(
-        "group relative rounded-2xl bg-white",
-        isWide ? "min-w-[240px]" : "min-w-[200px]"
-      )}
-      style={{ boxShadow: selected ? selectedShadow : defaultShadow }}
+      className="group relative rounded-xl bg-white"
+      style={{
+        boxShadow: selected ? selectedShadow : shadow,
+        minWidth: expanded ? 280 : 200,
+        maxWidth: 360,
+      }}
     >
       <NodeResizer
-        minWidth={isWide ? 240 : 200}
-        minHeight={80}
+        minWidth={expanded ? 280 : 200}
+        minHeight={60}
         isVisible={!!selected}
         lineStyle={{ border: "none" }}
         handleStyle={{ opacity: 0, width: 12, height: 12 }}
       />
       <NodeHandles />
 
-      {/* Header */}
-      <div className="flex items-center gap-1.5 px-3.5 py-2.5">
-        <button onClick={cycleViewMode} className="nodrag" style={{ color: "rgb(120,120,129)" }}>
-          <ChevronRight
-            className={cn(
-              "size-3.5 transition-transform",
-              viewMode !== "note" && "rotate-90"
-            )}
-          />
+      {/* ── Header ── */}
+      <div className="flex items-center gap-1.5 px-3 py-2">
+        <button onClick={toggleExpanded} className="nodrag shrink-0" style={{ color: "rgb(140,140,150)" }}>
+          <ChevronRight className={cn("size-3.5 transition-transform duration-150", expanded && "rotate-90")} />
         </button>
+        <div className={cn("size-1.5 rounded-full shrink-0", style.dot)} />
         <InlineField
           value={d.label}
           onChange={(v) => update({ label: v })}
+          placeholder="Название работы..."
           className="flex-1 min-w-0"
         />
       </div>
 
-      {/* Badges row */}
-      <div className="flex items-center gap-1.5 px-3.5 pb-2">
-        <button
-          className={cn(
-            "rounded-md px-1.5 py-0.5 text-[11px] font-medium nodrag",
-            style.badge,
-            style.text
-          )}
-          onClick={cycleLevel}
-        >
-          {level}
+      {/* ── Badges ── */}
+      <div className="flex items-center gap-1 px-3 pb-2 flex-wrap">
+        <button className={cn("rounded-md px-1.5 py-[3px] text-[10.5px] font-semibold nodrag", style.badge, style.text)} onClick={cycleLevel}>
+          {d.level}
         </button>
-        <button
-          className="rounded-md px-1.5 py-0.5 text-[11px] font-medium nodrag"
-          style={{
-            backgroundColor: "rgba(0,0,23,0.043)",
-            color: "rgb(120,120,129)",
-          }}
-          onClick={cycleType}
-        >
-          {d.jobType}
-        </button>
-        <span
-          className="rounded-md px-1.5 py-0.5 text-[10px] font-medium"
-          style={{
-            backgroundColor: "rgba(0,0,23,0.043)",
-            color: "rgb(120,120,129)",
-          }}
-        >
-          {viewModeLabels[viewMode]}
-        </span>
+        <CycleBadge value={d.jobType} options={JOB_TYPES} onChange={(v) => update({ jobType: v })} labels={JOB_TYPE_LABELS} />
+        <CycleBadge value={d.frequency} options={FREQUENCIES} onChange={(v) => update({ frequency: v })} labels={FREQUENCY_LABELS} />
+        {d.importance > 0 && (
+          <span className="text-[10px] font-semibold px-1.5 py-[3px] rounded-md tabular-nums" style={{ backgroundColor: "rgba(56,189,248,0.1)", color: "rgb(14,165,233)" }}>
+            {d.importance}/10
+          </span>
+        )}
+        {d.problemSeverity > 0 && (
+          <span className="text-[10px] font-semibold px-1.5 py-[3px] rounded-md tabular-nums" style={{ backgroundColor: d.problemSeverity >= 7 ? "rgba(239,68,68,0.1)" : "rgba(245,158,11,0.1)", color: d.problemSeverity >= 7 ? "rgb(239,68,68)" : "rgb(245,158,11)" }}>
+            боль {d.problemSeverity}/10
+          </span>
+        )}
       </div>
 
-      {/* View mode content */}
-      {viewMode !== "note" && (
-        <div style={{ borderTop: "1px solid rgba(0,0,29,0.075)" }}>
-          {viewMode === "core" && <CoreView d={d} update={update} />}
-          {viewMode === "standard" && <StandardView d={d} update={update} />}
-          {viewMode === "microscope" && <MicroscopeView d={d} update={update} />}
+      {/* ── Expanded: Full accordion ── */}
+      {expanded && (
+        <div className="border-t border-[rgba(0,0,29,0.06)]">
+          <Accordion type="multiple" defaultValue={["when", "want"]} className="nodrag">
+
+            {/* ── КОГДА ── */}
+            <AccordionItem value="when" className="border-none">
+              <AccordionTrigger className="py-1.5 px-3 nodrag hover:no-underline">
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("size-1.5 rounded-full", sectionDots.when)} />
+                  <span className={cn("text-[10.5px] font-semibold uppercase tracking-wide", sectionColors.when)}>Когда</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-3 pb-2 pt-0">
+                <div className="space-y-2 rounded-lg p-2" style={{ backgroundColor: "rgba(0,0,0,0.015)" }}>
+                  <InlineField label="Контекст" value={d.context} onChange={(v) => update({ context: v })} multiline />
+                  <InlineField label="Триггер" value={d.trigger} onChange={(v) => update({ trigger: v })} />
+                  <div className="flex items-center gap-1.5">
+                    <Label>Тип триггера</Label>
+                    <CycleBadge value={d.triggerType} options={TRIGGER_TYPES} onChange={(v) => update({ triggerType: v })} labels={TRIGGER_LABELS} />
+                  </div>
+                  <InlineField label="Негативные эмоции (точка А)" value={d.emotionsA} onChange={(v) => update({ emotionsA: v })} multiline />
+                  <InlineField label="Активирующее знание" value={d.activatingKnowledge} onChange={(v) => update({ activatingKnowledge: v })} multiline />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* ── ХОЧУ ── */}
+            <AccordionItem value="want" className="border-none">
+              <AccordionTrigger className="py-1.5 px-3 nodrag hover:no-underline">
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("size-1.5 rounded-full", sectionDots.want)} />
+                  <span className={cn("text-[10.5px] font-semibold uppercase tracking-wide", sectionColors.want)}>Хочу</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-3 pb-2 pt-0">
+                <div className="space-y-2 rounded-lg p-2" style={{ backgroundColor: "rgba(0,0,0,0.015)" }}>
+                  <InlineField label="Ожидаемый результат" value={d.expectedResult} onChange={(v) => update({ expectedResult: v })} multiline />
+                  <InlineField label="Критерии успеха" value={d.successCriteria} onChange={(v) => update({ successCriteria: v })} multiline />
+                  <InlineField label="Направление ценности" value={d.valueDirection} onChange={(v) => update({ valueDirection: v })} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* ── ЧТОБЫ ── */}
+            <AccordionItem value="sothat" className="border-none">
+              <AccordionTrigger className="py-1.5 px-3 nodrag hover:no-underline">
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("size-1.5 rounded-full", sectionDots.sothat)} />
+                  <span className={cn("text-[10.5px] font-semibold uppercase tracking-wide", sectionColors.sothat)}>Чтобы</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-3 pb-2 pt-0">
+                <div className="space-y-2 rounded-lg p-2" style={{ backgroundColor: "rgba(0,0,0,0.015)" }}>
+                  <InlineField label="Работа выше уровнем (Big Job)" value={d.soThat} onChange={(v) => update({ soThat: v })} multiline />
+                  <InlineField label="Позитивные эмоции (точка Б)" value={d.emotionsB} onChange={(v) => update({ emotionsB: v })} multiline />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* ── ТЕКУЩЕЕ РЕШЕНИЕ ── */}
+            <AccordionItem value="solution" className="border-none">
+              <AccordionTrigger className="py-1.5 px-3 nodrag hover:no-underline">
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("size-1.5 rounded-full", sectionDots.solution)} />
+                  <span className={cn("text-[10.5px] font-semibold uppercase tracking-wide", sectionColors.solution)}>Текущее решение</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-3 pb-2 pt-0">
+                <div className="space-y-2 rounded-lg p-2" style={{ backgroundColor: "rgba(0,0,0,0.015)" }}>
+                  <InlineField label="Текущее решение" value={d.currentSolution} onChange={(v) => update({ currentSolution: v })} multiline />
+                  <RatingBar value={d.solutionSatisfaction} onChange={(v) => update({ solutionSatisfaction: v })} label="Удовлетворённость решением" scheme="satisfaction" />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* ── БАРЬЕРЫ ── */}
+            <AccordionItem value="barriers" className="border-none">
+              <AccordionTrigger className="py-1.5 px-3 nodrag hover:no-underline">
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("size-1.5 rounded-full", sectionDots.barriers)} />
+                  <span className={cn("text-[10.5px] font-semibold uppercase tracking-wide", sectionColors.barriers)}>Барьеры</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-3 pb-2 pt-0">
+                <div className="space-y-2 rounded-lg p-2" style={{ backgroundColor: "rgba(0,0,0,0.015)" }}>
+                  <InlineField label="Барьеры к решению" value={d.barriersToSolution} onChange={(v) => update({ barriersToSolution: v })} multiline />
+                  <InlineField label="Барьеры к работе" value={d.barriersToJob} onChange={(v) => update({ barriersToJob: v })} multiline />
+                  <InlineField label="Consideration set (альтернативы)" value={d.considerationSet} onChange={(v) => update({ considerationSet: v })} multiline />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* ── ПРОБЛЕМЫ ── */}
+            <AccordionItem value="problems" className="border-none">
+              <AccordionTrigger className="py-1.5 px-3 nodrag hover:no-underline">
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("size-1.5 rounded-full", sectionDots.problems)} />
+                  <span className={cn("text-[10.5px] font-semibold uppercase tracking-wide", sectionColors.problems)}>Проблемы</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-3 pb-2 pt-0">
+                <div className="space-y-2 rounded-lg p-2" style={{ backgroundColor: "rgba(0,0,0,0.015)" }}>
+                  <InlineField label="Проблемы" value={d.problems} onChange={(v) => update({ problems: v })} multiline />
+                  <RatingBar value={d.problemSeverity} onChange={(v) => update({ problemSeverity: v })} label="Сила проблемы" scheme="severity" />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* ── МЕТА ── */}
+            <AccordionItem value="meta" className="border-none">
+              <AccordionTrigger className="py-1.5 px-3 nodrag hover:no-underline">
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("size-1.5 rounded-full", sectionDots.meta)} />
+                  <span className={cn("text-[10.5px] font-semibold uppercase tracking-wide", sectionColors.meta)}>Мета</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-3 pb-2 pt-0">
+                <div className="space-y-2 rounded-lg p-2" style={{ backgroundColor: "rgba(0,0,0,0.015)" }}>
+                  <RatingBar value={d.importance} onChange={(v) => update({ importance: v })} label="Важность" scheme="importance" />
+                  <InlineField label="Бизнес-работа" value={d.businessJob} onChange={(v) => update({ businessJob: v })} multiline />
+                  <InlineField label="Личная работа ЛПР" value={d.personalJob} onChange={(v) => update({ personalJob: v })} multiline />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+          </Accordion>
         </div>
       )}
     </div>
