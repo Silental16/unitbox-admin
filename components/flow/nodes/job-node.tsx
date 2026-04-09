@@ -127,7 +127,7 @@ function InlineField({
   }
 
   return (
-    <div className={cn("nodrag cursor-text", className)} onDoubleClick={() => setEditing(true)}>
+    <div className={cn("cursor-text", className)} onDoubleClick={() => setEditing(true)}>
       {label && <Label>{label}</Label>}
       {value ? (
         <span className="text-[12.5px] leading-relaxed whitespace-pre-wrap block" style={{ color: "rgb(100,100,110)" }}>{value}</span>
@@ -314,7 +314,7 @@ function JobNodeComponent({ id, data, selected }: NodeProps<JobNode>) {
       {/* ── Expanded: Full accordion ── */}
       {expanded && (
         <div className="border-t border-[rgba(0,0,29,0.06)]">
-          <Accordion type="multiple" defaultValue={["when", "want"]} className="nodrag">
+          <Accordion type="multiple" defaultValue={["when", "want"]}>
 
             {/* ── КОГДА ── */}
             <AccordionItem value="when" className="border-none">
