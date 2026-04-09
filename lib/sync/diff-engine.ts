@@ -247,7 +247,8 @@ export function hasBlockingAnomaly(
 ): boolean {
   return anomalies.some((a) => {
     if (a.type === "mass_status_change") return true
-    if (a.type === "new_units") return true
+    // new_units is blocking only when there was a previous snapshot (not first sync)
+    if (a.type === "new_units" && stats && stats.matched > 0) return true
     // missing_unit is blocking only when >50% of expected units are missing
     // (partial tab coverage is expected for multi-tab projects)
     if (a.type === "missing_unit" && stats) {
