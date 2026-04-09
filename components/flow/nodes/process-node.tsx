@@ -73,7 +73,13 @@ function ProcessNodeComponent({ id, data, selected }: NodeProps<ProcessNode>) {
         minHeight={80}
         isVisible={!!selected}
         lineStyle={{ border: "none" }}
-        handleStyle={{ opacity: 0, width: 12, height: 12 }}
+        handleStyle={{
+          width: 8,
+          height: 8,
+          borderRadius: 2,
+          background: "rgb(15,15,16)",
+          border: "1.5px solid white",
+        }}
       />
 
       {/* Title */}
