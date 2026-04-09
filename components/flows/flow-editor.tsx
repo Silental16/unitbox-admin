@@ -124,6 +124,10 @@ function FlowCanvas({ flowId, flowName, initialNodes, initialEdges }: FlowEditor
         edgeTypes={edgeTypes}
         defaultEdgeOptions={{ type: "custom" }}
         connectionMode={ConnectionMode.Loose}
+        panOnDrag={[1, 2]}
+        selectionOnDrag={false}
+        selectNodesOnDrag={false}
+        nodeDragThreshold={2}
         snapToGrid
         snapGrid={[16, 16]}
         fitView
